@@ -1,0 +1,39 @@
+source leaprc.ff14SB
+source leaprc.gaff
+loadamberparams frcmod.ionsjc_spce
+
+pbpu_protein = loadpdb "4F1U_cleaned.pdb"
+pbpu_ion = loadmol2 4F1U_PI.mol2
+pbpu = combine{pbpu_protein pbpu_ion}
+
+pbpv_protein = loadpdb "4F1V_cleaned.pdb"
+pbpv_ion = loadmol2 4F1V_PI.mol2
+pbpv = combine{pbpv_protein pbpv_ion}
+
+hpo4 = loadmol2 4F1V_PI.mol2
+
+addions pbpu Na+ 0
+addions pbpu Cl- 0
+addions pbpv Na+ 0
+addions pbpv Cl- 0
+
+saveamberparm pbpu pbpu_nowat.prmtop pbpu_nowat.inpcrd
+saveamberparm pbpv pbpv_nowat.prmtop pbpv_nowat.inpcrd
+saveamberparm hpo4 hpo4_nowat.prmtop hpo4_nowat.inpcrd
+
+savepdb pbpu pbpu_finalLEAP_nowater.pdb
+savepdb pbpv pbpv_finalLEAP_nowater.pdb
+savepdb hpo4 hpo4_finalLEAP_nowater.pdb
+
+solvateoct pbpu TIP3PBOX 12
+solvateoct pbpv TIP3PBOX 12
+solvateoct hpo4 TIP3PBOX 12
+
+saveamberparm pbpu pbpu.prmtop pbpu.inpcrd
+saveamberparm pbpv pbpv.prmtop pbpv.inpcrd
+saveamberparm hpo4 hpo4.prmtop hpo4.inpcrd
+
+savepdb pbpu pbpu_finalLEAP.pdb
+savepdb pbpv pbpv_finalLEAP.pdb
+savepdb hpo4 hpo4_finalLEAP.pdb
+
