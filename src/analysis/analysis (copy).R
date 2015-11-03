@@ -1,3 +1,24 @@
+## Commands
+## Load script :: source("/home/jim/psych/adoldrug/partyuse1.R")
+
+# Clear all
+rm(list=ls())
+
+# Load bio3d Library
+library(bio3d)
+
+setup.ncore(8)
+
+# Location of PDB files
+id_pdb =   c("../MD_Simulations/pbpv_Pvic/pdb_files/pbpv_equil1.pdb")
+
+# Location of mdcrd files
+folderNames =   c("../MD_Simulations/pbpv_Pvic/resultsDir/")
+
+# Trajectory file names
+id_dcd =   c("mergedResult_reduced.dcd")
+
+# Loop through each trajectory
 
 # Create empty lists
 rdList = c()
@@ -65,9 +86,9 @@ for (i in 1:length(folderNames) ) {
     pc1Path <- paste(folderNames[i],"pc1_movement.pdb", sep="", collapse='')
     pc2Path <- paste(folderNames[i],"pc2_movement.pdb", sep="", collapse='')
     pc3Path <- paste(folderNames[i],"pc3_movement.pdb", sep="", collapse='')
-    p1 <- mktrj.pca(pc, pc=1, file=pc1Path)
-    p2 <- mktrj.pca(pc, pc=2, file=pc2Path)
-    p3 <- mktrj.pca(pc, pc=3, file=pc3Path)
+    mktrj.pca(pc, pc=1, file=pc1Path)
+    mktrj.pca(pc, pc=2, file=pc2Path)
+    mktrj.pca(pc, pc=3, file=pc3Path)
 
     # Run RMSD analysis
     print("Plotting RMSD analysis")
@@ -93,13 +114,8 @@ for (i in 1:length(folderNames) ) {
     pdf( plotFilepath, width=10, height=5 )
 	plot(rf, ylab="RMSF", xlab="Residue Position", typ="l")
     dev.off()
-
-	#Atomic Displacements:
-    write.ncdf(p1,  paste(folderNames[i],"trj_pc1.nc", sep="", collapse=''))
-	write.ncdf(p2,  paste(folderNames[i],"trj_pc2.nc", sep="", collapse=''))
-	write.ncdf(p3,  paste(folderNames[i],"trj_pc3.nc", sep="", collapse=''))
-
-
+	
+	
 
 	# Cross-Correlation Analysis
     print("Plotting Cross-Correlation Analysis")
@@ -112,8 +128,6 @@ for (i in 1:length(folderNames) ) {
 	# View the cross-correlations in pymol
     savePrefix <- paste(folderNames[i],"correlation", sep="", collapse='')
     view.dccm( cij, pdb, launch=FALSE, radius=0.1, step=0.2, omit=0.4 )
-
-	
 
     # Move the pymol files to the resultsDir of the case. Run by opening pymol in resultsDir and typing "run corr.py"
     file.rename("corr.py", paste(folderNames[i],"corr.py", sep="", collapse=''))

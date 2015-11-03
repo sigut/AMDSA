@@ -9,34 +9,16 @@ import os, os.path
 import sys
 import argparse
 import re
+import inspect
 
-# Argument parsing
-parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--idir')
-parser.add_argument('-p', '--protein')
-parser.add_argument('-q','--qsub')
-parser.add_argument('-n','--nomerge')
-args = parser.parse_args()
+the_list = ["src"]
+for folders in the_list:
+    cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
+    if cmd_subfolder not in sys.path:
+        sys.path.insert(0, cmd_subfolder)
 
-# Variables:
-home = os.getcwd() #Specify the root directory
-root = args.idir
-protein = args.protein
-qsub = args.qsub
-nomerge = args.nomerge
+from variables import *
 
-##qsub parameters
-nodes = "1"
-cores = "1"
-walltime = "4"
-
-#Analysis parameters:
-epsilon = "1.0"
-sieve_hier = "100"
-sieve_dbscan = "100"
-#minpoints = 100
-
-  
 class Analysis:
     def init(self):
         self.prmtop = None
@@ -44,13 +26,14 @@ class Analysis:
     def find_prmtop(self,root):
         for file in os.listdir("in_files/"):
            if file.endswith(".prmtop"):
-               if not file.endswith("_nowat.prmtop"):
-                   if not file.startswith("strip"):
-                       if not file.startswith("closest"):
-                           filename = file                            
-                           self.prmtop = filename
-                           print ' this is the prmtop file:'
-                           print self.prmtop
+               if file.startswith(""+protein+""):
+                   if not file.endswith("_nowat.prmtop"):
+                       if not file.startswith("strip"):
+                           if not file.startswith("closest"):
+                               filename = file                            
+                               self.prmtop = filename
+                               print ' this is the prmtop file:'
+                               print self.prmtop
        
     #Write the number of trajin lines
     def makeTrajin(self,root,protein):
@@ -64,6 +47,9 @@ class Analysis:
         for file in os.listdir("md_files"):
             if file.endswith(".mdcrd"):
                 if file.startswith(""+protein+"_equil"):
+                    name = file
+                    mdcrd_files.append(name)
+                elif file.startswith("equil"):
                     name = file
                     mdcrd_files.append(name)
         mdcrd_files = natural_sort(mdcrd_files)
@@ -93,7 +79,7 @@ class Analysis:
 #        f.write('trajout resultsDir/mergedResult_closest.dcd charmm nobox \n')
 #        f.write('go')
         f.close()
-   
+        
     def analyse(self,root):
         if not os.path.exists("data"):
             os.makedirs("data")
@@ -103,12 +89,14 @@ class Analysis:
         f = open("in_files/analysis.traj",'w')
         f.write("trajin resultsDir/mergedResult_strip.dcd 1 last 1 \n")
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
+        f.write("distance end_to_end :10@HD22 :147@HA3 out data/distance_10_147.dat \n")
+        f.write("distance end_to_end1 :10@HD22 :63@OD1 out data/distance_10_63.dat \n")
         if protein == "pbpu":
-            f.write("distance end_to_end1 :63@N :376@P out data/distance.dat \n")
+            f.write("distance end_to_end :63@N :376@P out data/distance.dat \n")
         if protein == "pbpv":
-            f.write("distance end_to_end1 :63@N :373@P out data/distance.dat \n")
-        f.write("cluster hieragglo epsilon "+epsilon+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.dat summary data/cluster_hier_summary_out.dat repout data/cluster/hier_centroid repfmt pdb \n")
-        f.write("cluster dbscan minpoints 100 epsilon "+epsilon+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.dat summary data/cluster_dbscan_summary_out.dat repout data/cluster/dbscan_centroid repfmt pdb \n")
+            f.write("distance end_to_end :63@N :373@P out data/distance.dat \n")
+        f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.dat summary data/cluster_hier_summary_out.dat repout data/cluster/hier_centroid repfmt pdb \n")
+        f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.dat summary data/cluster_dbscan_summary_out.dat repout data/cluster/dbscan_centroid repfmt pdb \n")
         f.close()
            
     # If specified the calculation is submitted to the hpc queue
@@ -126,24 +114,7 @@ class Analysis:
                 os.system("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj")
         else:
             print "--- submitting the cpptraj analysis to the hpc queue"
-#            os.system("rm -rf cpptraj_submit.sh.*")         #Remove old output and error files
-#            name = "cpptraj_submit.sh"
-#            f = open("cpptraj_submit.sh",'w')
-#            f.write("#!/bin/sh\n")            
-#            f.write("#\n")
-#            f.write("# job name\n")
-#            f.write("#PBS -N "+name+"\n")
-#            f.write("# request cores\n")
-#            f.write("#PBS -l nodes="+nodes+":ppn="+cores+"\n")
-#            f.write("#clock time\n")
-#            f.write("#PBS -l walltime="+walltime+" \n")
-#            f.write("cd $PBS_O_WORKDIR\n")
-#            if nomerge == None:
-#                f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj \n")
-#            f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
-#            f.close()        
-#            os.system("qsub cpptraj_submit.sh")
-        
+       
 
 def main():
     os.chdir(""+root+"")

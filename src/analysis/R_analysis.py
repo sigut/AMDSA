@@ -13,42 +13,29 @@ Created on Fri Sep 11 15:42:56 2015
 # Usage: python R_analysis.py -i <inputdir> -p <protein>
 ####-----------------------------------------------#####
 import os, os.path
-import sys,inspect
 import argparse
-import re
+import inspect
+import sys
 
-# Argument parsing
-parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--idir')
-parser.add_argument('-p', '--protein')
-parser.add_argument('-q','--qsub')
-parser.add_argument('-n','--nomerge')
-args = parser.parse_args()
+the_list = ["src"]
+for folders in the_list:
+    cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
+    if cmd_subfolder not in sys.path:
+        sys.path.insert(0, cmd_subfolder)
+
+from variables import *
 
 
 # Variables:
-home = os.getcwd() #Specify the root directory
-root = args.idir
-protein = args.protein
-
-absdir = os.path.abspath(""+root+"")
-
 dcdname = "mergedResult_strip.dcd"
 directory = "./src/analysis/"
-
-#qsub parameters
-nodes = "1"
-cores = "1"
-walltime = "4"
-
-
 
 class R():
 #    def init(self):
 #        self = None
 
     def write_R(self,root,protein):
-        f = open(""+directory+"R_script.R",'w')
+        f = open(""+absdir_home+"/src/analysis/R_script.R",'w')
         f.write("## Commands \n")
         f.write("\n")
         f.write(" \n")
@@ -76,27 +63,26 @@ class R():
         f.close()
         
         #Merge the two R files to create the file analysis.R 
-        filenames = [""+directory+"R_script.R", ""+directory+"analysis_body.R",]
-        with open(""+root+"in_files/analysis.R", 'w') as outfile:
+        filenames = [""+absdir_home+"/src/analysis/R_script.R", ""+absdir_home+"/src/analysis/analysis_body.R",]
+        with open(""+absdir+"/in_files/analysis.R", 'w') as outfile:
             for fname in filenames:
                 with open(fname) as infile:
                     outfile.write(infile.read())
     
     def write_R_sh(self,root):   
         name = "R_analysis.sh"
-        f = open(""+root+""+name+"",'w')
+        f = open(""+absdir+"/"+name+"",'w')
         f.write("#!/bin/sh\n")            
         f.write("#\n")
         f.write("# job name\n")
         f.write("#PBS -N "+name+"\n")
         f.write("# request cores\n")
-        f.write("#PBS -l nodes="+nodes+":ppn="+cores+"\n")
+        f.write("#PBS -l nodes="+nodesAnalysis+":ppn="+coresAnalysis+"\n")
         f.write("#clock time\n")
-        f.write("#PBS -l walltime="+walltime+" \n")
+        f.write("#PBS -l walltime="+walltimeAnalysis+" \n")
         f.write("cd $PBS_O_WORKDIR\n")
         f.write("# Load mpi \n")
         f.write("module load mpi/gcc-4.7.2-openmpi-1.6.3 \n")
-        f.write("module load python \n")
         f.write(" \n")
         f.write("# Run R script  \n")
         f.write("R < analysis.R --no-save \n")

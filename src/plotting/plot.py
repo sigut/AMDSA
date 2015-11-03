@@ -3,6 +3,8 @@
 
 import math,os,sys,getopt, string
 import argparse
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib.ticker import MaxNLocator # added 
 from matplotlib.backends.backend_pdf import PdfPages
 
@@ -10,29 +12,19 @@ def isLower(ch):
     return string.find(string.lowercase, ch) != -1
 import matplotlib.pyplot as plt
 import numpy as np
+import inspect
 
-# Argument parsing
-parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--idir')
-parser.add_argument('-p', '--protein')
-parser.add_argument('-q','--qsub')
-parser.add_argument('-n','--nomerge')
-args = parser.parse_args()
+the_list = ["src"]
+for folders in the_list:
+    cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
+    if cmd_subfolder not in sys.path:
+        sys.path.insert(0, cmd_subfolder)
 
-# Variables:
-home = os.getcwd() #Specify the root directory
-root = args.idir
-protein = args.protein
-qsub = args.qsub
-nomerge = args.nomerge
-
+from variables import *
 
 #Define the files to plot:
-files = ["rmsd","distance"]
+files = ["rmsd","distance_10_147","distance_10_63"]
 cluster_files = ["cluster_hier_out","cluster_dbscan_out"]
-
-#For hpc load module python/2.7.3
-os.system("module load python/2.7.3")
 
 #Create plots folder if it doesn't exist
 if not os.path.exists(""+root+"plots"):
@@ -44,8 +36,6 @@ class Plot():
         self.y = 0
 
     def read_datafile(self,root,files):
-        self.x = 0
-        self.y = 0
         data = open("data/"+files+".dat", "r")
         lines = data.readlines()[1:]
         data.close()
@@ -98,7 +88,7 @@ class Plot():
             y_s[i] = []
             y_s[i] = self.y[x_s[i]]
         
-        colors = ['b','g','r','k','m','y','c','DarkBlue','LightGreen','DarkOrange','0.75','0.5','0.25']
+        colors = ['b','g','r','k','m','y','c','DarkBlue','LightGreen','DarkOrange','0.75','0.5','0.25','0.25','0.25','0.25','0.25','0.25','0.25','0.25','0.25','0.25','0.25','0.25','0.25','0.25','0.25','0.25']
         plt.figure(figsize=(12, 6))
         ax = plt.gca()
         size = 2.0
@@ -119,25 +109,22 @@ def main():
     makePlot = Plot(root,files)
     
     for i in files: #loop through the files (rmsd, distance...) and make the data-analysis and plot.
-        makePlot.read_datafile(root,""+str(i)+"")
-        print "read datafile "+str(i)+""
-        makePlot.plot_datafile(root,""+str(i)+"")
-        print "plotting datafile "+str(i)+""
-    
-    
+        if os.path.exists("data/"+str(i)+".dat") == True:
+            makePlot.read_datafile(root,""+str(i)+"")
+            print "read datafile "+str(i)+""
+            makePlot.plot_datafile(root,""+str(i)+"")
+            print "plotting datafile "+str(i)+""
+        else: 
+            print "Warning --- "+str(i)+".dat does not exist. Cannot make plot"
+        
     for j in cluster_files: # Loop through the different cluster_*_out files to make the colour cluster rmsd plot
-        print os.system("pwd")
-#        print ""+str(j)+""
-        print os.listdir("data/")
-#        print os.path.isfile("data/"+str(j)+"")            
-#        if os.path.exists("/data/"+str(j)+""):
-#            
-#            makePlot.read_datafile(root,"rmsd")  #Read the rmsd file
-#            print "read datafile "+str(j)+""
-#            makePlot.cluster_label(root,""+str(j)+"")
-#            print "plotting datafile "+str(j)+""
-#        if os.path.exists("/data/"+str(j)+"") == 1:
-#            print ""+str(j)+" does not exist"
+        if os.path.exists("data/"+str(j)+".dat") == True:
+            makePlot.read_datafile(root,"rmsd")  #Read the rmsd file
+            print "read datafile "+str(j)+""
+            makePlot.cluster_label(root,""+str(j)+"")
+            print "plotting datafile "+str(j)+""
+        else: 
+            print "Warning --- "+str(j)+".dat does not exist. Cannot make rmsd-cluster colored plot"
                 
     os.chdir(""+home+"")     
     
