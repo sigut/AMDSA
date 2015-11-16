@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Mon Nov 16 21:17:34 2015
+
+@author: sigurd
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Fri Oct  2 14:08:09 2015
 
 @author: sigurd
@@ -27,16 +34,16 @@ parser.add_argument('-n','--nomerge',
 args = parser.parse_args()
 
 #Command-line Variables:
-root  = args.idir
-protein = args.protein
-qsub = args.qsub
-nomerge = args.nomerge
+self.root  = args.idir
+self.protein = args.protein
+self.qsub = args.qsub
+self.nomerge = args.nomerge
 # Directory Variables:
-home = os.getcwd() #Specify the root directory
-absdir = os.path.abspath(""+root+"")
-absdir_home = os.path.abspath(""+home+"")
-name = os.path.basename(os.path.normpath(""+absdir+""))
-directory = "./src/analysis/"
+self.home = os.getcwd() #Specify the root directory
+self.absdir = os.path.abspath(""+self.root+"")
+self.absdir_home = os.path.abspath(""+self.home+"")
+self.name = os.path.basename(os.path.normpath(""+self.absdir+""))
+self.directory = "./src/analysis/"
 
 config = ConfigParser.ConfigParser()
 config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','config.cfg'))
@@ -45,7 +52,8 @@ config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','confi
 #################            Config variables        ##########################
 ###############################################################################
 
-
+class Config:
+    def __init__(self):
 ####### #System ################################
 #ion         = config.get('System', 'ion')
 method      = config.get('System','method')

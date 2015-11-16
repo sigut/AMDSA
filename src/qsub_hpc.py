@@ -22,7 +22,7 @@ for folders in the_list:
         sys.path.insert(0, cmd_subfolder)
         
 from variables import *
-import cpptraj_analysis, R_analysis
+import cpptraj_analysis, R_analysis, plot
 
 
 class qsub():
@@ -61,11 +61,11 @@ class qsub():
         if nomerge == None:
             f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj \n")
             f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
-            f.write("R < in_files/analysis.R --no-save \n")            
+            #f.write("R < in_files/analysis.R --no-save \n")            
             f.write("python "+home+"/src/plotting/plot.py -i ./ -p "+protein+" \n")
         else:
             f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
-            f.write("R < in_files/analysis.R --no-save \n")            
+            #f.write("R < in_files/analysis.R --no-save \n")            
             f.write("python "+home+"/src/plotting/plot.py -i ./ -p "+protein+" \n")
         f.close()        
         os.system("qsub cpptraj_submit.sh")

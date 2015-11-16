@@ -19,12 +19,12 @@ from variables import *
 
 global closest        
 closest = []
-threshold = 2.5
+threshold = 3.5
 
 class CalcIonPosition():
     def __init__(self):
         self.pdbFile = ""+absdir_home+"/src/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
-        self.ligandpdbFile = ""+absdir_home+"/src/setup/TemplateFiles/ion/HPO4.pdb"
+        self.ligandpdbFile = ""+absdir_home+"/src/setup/TemplateFiles/ion/"+ionName+".pdb"
         self.x,self.y,self.z = [],[],[]
         self.x_bind,self.y_bind,self.z_bind = [],[],[]
         self.x_ion,self.y_ion,self.z_ion = [],[],[]
@@ -33,7 +33,7 @@ class CalcIonPosition():
         self.atomname   = []
         self.residuename= []
         self.residuenumber= []
-        self.threshold = 3
+        self.threshold = 3.5
         self.distance = []
 #        self.coordinates = str("0" "0" "0")        
     def ReadProteinCoordinates(self):
@@ -105,9 +105,16 @@ class CalcIonPosition():
         self.Binding_site = np.array([np.average(self.x_bind),np.average(self.y_bind),np.average(self.z_bind)])
     
     #subtract the coordinates of the phosphate anion (it is not in origo)
+
     def IonPos(self):
+        if ionName == "HPO4":
+            endline = 6
+        if ionName == "H2PO4":
+            endline = 7 
+        if ionName == "H3PO4":
+            endline = 7 
         f = open(self.ligandpdbFile,'r')
-        pdb = f.readlines()[0:6]
+        pdb = f.readlines()[0:endline]
         f.close()
         for line in pdb:
             coor_ion = line.split()

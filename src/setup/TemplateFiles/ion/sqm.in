@@ -1,0 +1,6 @@
+Run semi-empirical minimization
+ &qmmm
+    qm_theory='AM1', grms_tol=0.0002,
+  tight_p_conv=1, scfconv=1.d-10,   qmcharge=0,
+ /
+

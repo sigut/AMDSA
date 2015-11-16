@@ -13,11 +13,11 @@ setup.ncore(8)
 
 # Location of PDB files 
 
-id_pdb =   c("/home/sigurd/Dropbox/Programming/pbpu/pbpu_1/pdb_files/pbpu_equil1.pdb") 
+id_pdb =   c("/home/sigurd/Dropbox/AMDSA/pbpu/pbpu_1/pdb_files/pbpu_equil1.pdb") 
 
 # Location of mdcrd files 
 
-folderNames =   c("/home/sigurd/Dropbox/Programming/pbpu/pbpu_1/resultsDir/") 
+folderNames =   c("/home/sigurd/Dropbox/AMDSA/pbpu/pbpu_1/resultsDir/") 
 
 # Trajectory file names 
 

@@ -11,7 +11,7 @@ import argparse
 import re
 import inspect
 
-the_list = ["src"]
+the_list = ["src","src/analysis"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
@@ -65,7 +65,7 @@ class Analysis:
         f.write('image origin center \n')
         f.write('\n')
         f.write('# Remove all water molecules \n')
-        f.write('strip :WAT,Cl-,Na+ outprefix in_files/strip \n')
+        f.write('strip :WAT outprefix in_files/strip \n')
         f.write('\n')
         f.write('# Create output \n')
         f.write('trajout resultsDir/mergedResult_strip.dcd charmm nobox \n')
@@ -87,14 +87,17 @@ class Analysis:
             os.makedirs("data/cluster")
             
         f = open("in_files/analysis.traj",'w')
-        f.write("trajin resultsDir/mergedResult_strip.dcd 1 last 1 \n")
+        f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
         f.write("distance end_to_end :10@HD22 :147@HA3 out data/distance_10_147.dat \n")
         f.write("distance end_to_end1 :10@HD22 :63@OD1 out data/distance_10_63.dat \n")
-        if protein == "pbpu":
-            f.write("distance end_to_end :63@N :376@P out data/distance.dat \n")
-        if protein == "pbpv":
-            f.write("distance end_to_end :63@N :373@P out data/distance.dat \n")
+        f.write("distance end_to_end2 :115@SG :160@SG out data/distance_disulfur1.dat \n")
+        f.write("distance end_to_end3 :301@SG :364@SG out data/distance_disulfur2.dat \n")
+        if insertAnion == "on":       
+            if protein == "pbpu":
+                f.write("distance end_to_endpbpuP :63@N :376@P out data/distance.dat \n")
+            if protein == "pbpv":
+                f.write("distance end_to_endpbpvP :63@N :373@P out data/distance.dat \n")
         f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.dat summary data/cluster_hier_summary_out.dat repout data/cluster/hier_centroid repfmt pdb \n")
         f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.dat summary data/cluster_dbscan_summary_out.dat repout data/cluster/dbscan_centroid repfmt pdb \n")
         f.close()

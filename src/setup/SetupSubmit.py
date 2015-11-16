@@ -27,6 +27,7 @@ class Create_Submit():
             self.CALCULATOR = "pmemd.cuda"
         if compiler == "sander":
             self.CALCULATOR = "mpirun sander.MPI"
+        
         self.list = ["hpc","memento"]
 
         
@@ -46,7 +47,7 @@ if [[ -e md_files/min1.rst ]]; then
     echo '-- min1.rst file exists, skipping minimization 1'
 else
     echo '-- Running Minimization 1'
-    """+self.CALCULATOR+""" -O -i in_files/min1.in -o logs/min1.out -p in_files/"""+protein+""".prmtop -c in_files/"""+protein+""".inpcrd -r md_files/min1.rst -ref in_files/"""+protein+""".inpcrd
+    """+self.CALCULATOR+""" -O -i in_files/min1.in -o logs/min1.out -p in_files/"""+protein+""".prmtop -c in_files/"""+protein+""".inpcrd -r md_files/min1.rst -ref in_files/"""+protein+""".inpcrd -x md_files/min1.mdcrd
     
     # Create pdb file for the minimized structure
     ambpdb -p in_files/"""+protein+""".prmtop < md_files/min1.rst > pdb_files/"""+protein+"""_min1.pdb
@@ -60,7 +61,7 @@ if [[ -e md_files/min2.rst ]]; then
     echo '-- min2.rst file exists, skipping minimization 2'
 else
     echo '-- Running Minimization 2'
-    """+self.CALCULATOR+""" -O -i in_files/min2.in -o logs/min2.out -p in_files/"""+protein+""".prmtop -c md_files/min1.rst -r md_files/min2.rst -ref md_files/min1.rst
+    """+self.CALCULATOR+""" -O -i in_files/min2.in -o logs/min2.out -p in_files/"""+protein+""".prmtop -c md_files/min1.rst -r md_files/min2.rst -ref md_files/min1.rst -x md_files/min2.mdcrd
     
     # Create pdb file for the minimized structure
     ambpdb -p in_files/"""+protein+""".prmtop < md_files/min2.rst > pdb_files/"""+protein+"""_min2.pdb
@@ -74,7 +75,7 @@ if [[ -e md_files/min3.rst ]]; then
     echo '-- min3.rst file exists, skipping minimization 3'
 else
     echo '-- Running Minimization 3'
-    """+self.CALCULATOR+""" -O -i in_files/min3.in -o logs/min3.out -p in_files/"""+protein+""".prmtop -c md_files/min2.rst -r md_files/min3.rst -ref md_files/min2.rst
+    """+self.CALCULATOR+""" -O -i in_files/min3.in -o logs/min3.out -p in_files/"""+protein+""".prmtop -c md_files/min2.rst -r md_files/min3.rst -ref md_files/min2.rst -x md_files/min3.mdcrd
     
     # Create pdb file for the minimized structure
     ambpdb -p in_files/"""+protein+""".prmtop < md_files/min3.rst > pdb_files/"""+protein+"""_min3.pdb
@@ -170,7 +171,7 @@ done
         f.close()
           
     def amd_submit(self,protein,method):
-        for i in list:
+        for queue in self.list:
             f = open(""+absdir+"/aMD_submit_"+queue+".sh",'w')                
             buffer = Queue(queue,name, cores, ptile )        
             buffer = buffer + """
@@ -215,8 +216,8 @@ do
 done
 
 """
-        f.write(buffer)
-        f.close()
+            f.write(buffer)
+            f.close()
         
         
     
