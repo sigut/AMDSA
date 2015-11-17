@@ -27,83 +27,52 @@ for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
         sys.path.insert(0, cmd_subfolder)
-
+#import src
 from variables import *
 import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos
 
-#class Check_folder():
-#    def __init__(self):
-#        self.prmtop_list = []
-#        
-#    def find_prmtop(self,root):
-#        for file in os.listdir(""+root+"/in_files/"):
-#           if file.endswith(".prmtop"):
-#               self.prmtop_list.append(file)
-#        print self.prmtop_list
-#        return self.prmtop_list
-#    
-#    
-#    def ask_user(self):
-##        def ask_ok(prompt, retries=4, complaint='Yes or no, please!'):
-#        
-#        print 'These files already exist in the in_files folder'
-#        print self.prmtop_list
-#        while True:
-##            try:
-#            answer = str(raw_input("Do you wish to replace them? "))
-#            if answer in ('y', 'ye', 'yes'):
-#                print("Overwriting existing files!")
-#                return True
-#                return answer
-##                break
-#            if answer in ('n', 'no', 'nop', 'nope'):
-#                return False
-#                return answer
-##                break
-##             if retries < 0:
-##            raise IOError('refusenik user')
-##        print complaint
-##        ok = raw_input(prompt)
-##        if ok in ('y', 'ye', 'yes'):
-##            return True
-##        if ok in ('n', 'no', 'nop', 'nope'):
-##            return False
-        
-def main():
-#    check = Check_folder()
-#    check.find_prmtop(root)
-#    check.ask_user()
+class CreateFolders():
+#    def __init__():
+#        from variables import *
+    def create_folder(self,root):
+            # Make necessary folders
+            if not os.path.exists(""+root+""):
+                os.mkdir(""+root+"")    
+            if not os.path.exists(""+root+"/in_files"):
+                os.mkdir(""+root+"/in_files")
+            if not os.path.exists(""+root+"/md_files"):
+                os.mkdir(""+root+"/md_files")
+            if not os.path.exists(""+root+"/logs"):
+                os.mkdir(""+root+"/logs")
+            if not os.path.exists(""+root+"/resultsDir"):
+                os.mkdir(""+root+"/resultsDir")
+            if not os.path.exists(""+root+"/pdb_files"):
+                os.mkdir(""+root+"/pdb_files")
     
-#    if answer == "y":
-            
-        if not os.path.exists(""+root+""):
-            os.mkdir(""+root+"")    
-        
-        os.chdir(""+root+"")
-        # Make necessary folders
-        if not os.path.exists("in_files"):
-            os.mkdir("in_files")
-        if not os.path.exists("md_files"):
-            os.mkdir("md_files")
-        if not os.path.exists("logs"):
-            os.mkdir("logs")
-        if not os.path.exists("resultsDir"):
-            os.mkdir("resultsDir")
-        if not os.path.exists("pdb_files"):
-            os.mkdir("pdb_files")
-              
-        os.chdir(""+home+"") #Return home because the other script automatically enter the folder
-        
-        # Define the constructor and the method
-        if iamd == "3": # iamd is specified in the config file. If specified it will be taken care of in the setupInfiles module
-            Setup = SetupInfiles.main()
-            MakeSubmissionFile = SetupSubmit.main()
-#        else:
-        if insertAnion == "on":
-            Calc = CalcIonPos.main()
-        Runleap = SetupLeap.main()
+    def check_folder(self,root):
+        if os.path.isdir(""+str(root)+"") == True:
+            print "trying to create the folder "+root+""
+            var = raw_input("This will overwrite any previous parameter files in the "+root+" folder. Confirm with any key press. Press 'n' to discontinue ")
+            if var == 'n':
+                raise Exception('You opted not to overwrite in the '+root+' folder')
+            if var == 'y':    
+                CreateFolders.create_folder(self,root)
+        else:
+            print "Creating new folder"
+            CreateFolders.create_folder(self,root)
+def main():       
+       
+ 
+    if aMD == "on": # iamd is specified in the config file. If specified it will be taken care of in the setupInfiles module
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
-#    else:
-#        print 'Aborting'
+        
+    else:
+        CheckFolder = CreateFolders()
+        CheckFolder.check_folder(root)
+        if insertAnion == "on":
+            Calc = CalcIonPos.main()
+        Runleap = SetupLeap.main() #Create the parameter topology files
+        Setup = SetupInfiles.main() # Setup the in files for the simulation
+        MakeSubmissionFile = SetupSubmit.main() # Make the submission file for the simulation
 if __name__ == '__main__': main()

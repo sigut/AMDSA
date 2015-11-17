@@ -20,6 +20,7 @@ from variables import *
 global closest        
 closest = []
 threshold = 3.5
+tries = 20
 
 class CalcIonPosition():
     def __init__(self):
@@ -33,7 +34,7 @@ class CalcIonPosition():
         self.atomname   = []
         self.residuename= []
         self.residuenumber= []
-        self.threshold = 3.5
+        self.threshold = threshold
         self.distance = []
 #        self.coordinates = str("0" "0" "0")        
     def ReadProteinCoordinates(self):
@@ -53,6 +54,7 @@ class CalcIonPosition():
                 self.y.append(float(coor[6]))
                 self.z.append(float(coor[7]))
         # Append x,y,z coordinates for residue number (8,9,10,32,33,63,142,146,147,148)
+        # If row 4 equals residue (8,9,10,32,33,63,142,146,147,148) , then append the coordinates
             if int(coor[4]) == int(8):
                 self.x_bind.append(float(coor[5]))
                 self.y_bind.append(float(coor[6]))
@@ -102,10 +104,8 @@ class CalcIonPosition():
         self.ProteinCoordinates = np.array([self.x,self.y,self.z])
         
         # Coordinates of the binding site
-        self.Binding_site = np.array([np.average(self.x_bind),np.average(self.y_bind),np.average(self.z_bind)])
-    
-    #subtract the coordinates of the phosphate anion (it is not in origo)
-
+        self.Binding_center = np.array([np.average(self.x_bind),np.average(self.y_bind),np.average(self.z_bind)])
+   
     def IonPos(self):
         if ionName == "HPO4":
             endline = 6
@@ -128,11 +128,11 @@ class CalcIonPosition():
         ionZ = np.average(self.z_ion)
         self.ion = [ionX,ionY,ionZ]
         
-        Binding_center = self.Binding_site - self.ion
+        Binding_site = self.Binding_center - self.ion
                 
-        self.ionPosX = Binding_center[0]
-        self.ionPosY = Binding_center[1]
-        self.ionPosZ = Binding_center[2]
+        self.ionPosX = Binding_site[0]
+        self.ionPosY = Binding_site[1]
+        self.ionPosZ = Binding_site[2]
         self.ionPos = [self.ionPosX,self.ionPosY,self.ionPosZ]
         return self.ionPos
     
@@ -202,9 +202,9 @@ def main():
     n = 0
     print "Starting Optimizing the Ligand Position"
     print ""    
-    print "########################################"    
+    print "###############################################"    
     print ""
-    for i in range(0,20):
+    for i in range(0,tries):
         n +=1   
         print "Iteration number:"+str(n)+""
         Calc.Distance()            
@@ -223,6 +223,9 @@ def main():
         print ""
         print "###############################################"
         print ""
+        if n == tries-1:
+             raise Exception('The ion cannot be positioned in the protein')
+
         
     Calc.Evaluate()
 

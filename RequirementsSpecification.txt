@@ -1,0 +1,24 @@
+Requirements specification of Automated Molecular Dynamics Setup and Analysis (AMDSA): 
+
+The purpose of this project is to create a Automated Molecular Dynamics Setup and Analysis (AMDSA) through object oriented programming in Python. The modules in python are separated into different modules: 
+	1) Setup of the molecular dynamics simulation in Amber/Namd using command-line arguments and config files. 
+		* Setup simulation in files 
+		* Calculate the optimal ligand posistion in python 
+		* Insert the optimal coordinates when building the system in tLEaP 
+		* Write submission .sh files for the different queues (memento or hpc) and for the different methods (aMD, QM, cMD) 
+	2) Submit of the molecular dynamics simulation on the hpc cluster 
+	3) Analysis of the trajectory 
+		* CPPTRAJ analysis (AMBER embedded software) 
+		* R analysis for principal component analysis (PCA) and other things 
+		* VMD and Pymol visualization programming 
+
+By the use of command line arguments and a configuration file, the AMDSA incorporates different programming languages for setting up the simulation files and submitting them to the hpc cluster. After simulations have been run for a arbitrary amount of time, the simulations can be analyses using the analysis part of the AMDSA module. 
+
+Each of the modules should be able to run individually for debugging and speed purposes.
+
+One of the most important things about the program is to have it available on a Git repository, where new commits can be pushed towards. From the HPC server the newest updates can be pulled. It will also be desirable to install the program as a module (if possible) on the server (and locally). 
+
+With this approach it will be possible to share my work with colleagues and possible future students who wants to try molecular dynamics. Also they can add work to the program, and I can implement it if desired. 
+
+
+Sigurd Friis Truelsen

@@ -19,6 +19,7 @@ import os
 import argparse
 import ConfigParser
 
+__all__ = ["bar", "spam", "eggs"]
 
 #Argument parsing
 parser = argparse.ArgumentParser()
@@ -33,20 +34,21 @@ parser.add_argument('-n','--nomerge',
                     
 args = parser.parse_args()
 
-#Command-line Variables:
-self.root  = args.idir
-self.protein = args.protein
-self.qsub = args.qsub
-self.nomerge = args.nomerge
-# Directory Variables:
-self.home = os.getcwd() #Specify the root directory
-self.absdir = os.path.abspath(""+self.root+"")
-self.absdir_home = os.path.abspath(""+self.home+"")
-self.name = os.path.basename(os.path.normpath(""+self.absdir+""))
-self.directory = "./src/analysis/"
-
-config = ConfigParser.ConfigParser()
-config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','config.cfg'))
+class CommandLine:
+    def __init__(self):
+        #Command-line Variables:
+        self.root  = args.idir
+        self.protein = args.protein
+        self.qsub = args.qsub
+        self.nomerge = args.nomerge
+        # Directory Variables:
+        self.home = os.getcwd() #Specify the root directory
+        self.absdir = os.path.abspath(""+self.root+"")
+        self.absdir_home = os.path.abspath(""+self.home+"")
+        self.name = os.path.basename(os.path.normpath(""+self.absdir+""))
+        self.directory = "./src/analysis/"
+        
+        
 
 ###############################################################################
 #################            Config variables        ##########################
@@ -54,56 +56,58 @@ config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','confi
 
 class Config:
     def __init__(self):
+        
+        config = ConfigParser.ConfigParser()
+        config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','config.cfg'))
 ####### #System ################################
-#ion         = config.get('System', 'ion')
-method      = config.get('System','method')
-compiler    = config.get('System','compiler')
-
+        self.method      = config.get('System','method')
+        self.compiler    = config.get('System','compiler')
+        
 ####### Submitvariables #######################
-md_steps    = config.get('Submit','md_steps')
-nodes       = config.get('Submit','nodes')
-cores       = config.get('Submit','cores')
-ptile       = config.get('Submit','ptile')
-gpus        = config.get('Submit','gpus')
-walltime    = config.get('Submit','walltime')
-#queue       = config.get('Submit','queue')
-
+        self.md_steps    = config.get('Submit','md_steps')
+        self.nodes       = config.get('Submit','nodes')
+        self.cores       = config.get('Submit','cores')
+        self.ptile       = config.get('Submit','ptile')
+        self.gpus        = config.get('Submit','gpus')
+        self.walltime    = config.get('Submit','walltime')
+        #queue       = config.get('Submit','queue')
+        
 ####### Leap parameters #######################
-forcefield      =   config.get('Leap','forcefield')
-waterboxsize    =   config.get('Leap','waterboxsize')
-solvate         =   config.get('Leap','solvation')
-structure       =   config.get('Leap','structure')
-insertAnion     =   config.get('Leap','insertAnion')
-ionName         =   config.get('Leap','ionName')
-
+        self.forcefield      =   config.get('Leap','forcefield')
+        self.waterboxsize    =   config.get('Leap','waterboxsize')
+        self.solvate         =   config.get('Leap','solvation')
+        self.structure       =   config.get('Leap','structure')
+        self.insertAnion     =   config.get('Leap','insertAnion')
+        self.ionName         =   config.get('Leap','ionName')
+        
 ####### System parameters #####################
-# Regular parameters
-ntc         = config.get('in_files','ntc')
-ntf         = config.get('in_files','ntf')  
-timestep    = config.get('in_files','timestep')
-implicit    = config.get('in_files','implicit')
-igb         = config.get('in_files','igb')
-iamd        = config.get('in_files','iamd')
-#QM parameters 
-QM          = config.get('QM','QM') #If QM is set to "None" the rest of the specification will not be included
-qmcharge    = config.get('QM','qmcharge')
-qm_theory   = config.get('QM','qm_theory')
-qmshake     = config.get('QM','qmshake')
-qm_ewald    = config.get('QM','qm_ewald')
-qm_pme      = config.get('QM','qm_pme')
-
+        # Regular parameters
+        self.ntc         = config.get('in_files','ntc')
+        self.ntf         = config.get('in_files','ntf')  
+        self.timestep    = config.get('in_files','timestep')
+        self.implicit    = config.get('in_files','implicit')
+        self.igb         = config.get('in_files','igb')
+        self.iamd        = config.get('in_files','iamd')
+        #QM parameters 
+        self.QM          = config.get('QM','QM') #If QM is set to "None" the rest of the specification will not be included
+        self.qmcharge    = config.get('QM','qmcharge')
+        self.qm_theory   = config.get('QM','qm_theory')
+        self.qmshake     = config.get('QM','qmshake')
+        self.qm_ewald    = config.get('QM','qm_ewald')
+        self.qm_pme      = config.get('QM','qm_pme')
+        
 ######## Analysis ##############################
-#Cluster Analysis:
-
-#nomerge             = config.get('Analysis','trajectoryMerge')
-dcdname             = config.get('Analysis','dcdname')
-nodesAnalysis       =   config.get('Analysis','nodes')
-coresAnalysis       =   config.get('Analysis','cores')
-walltimeAnalysis    =   config.get('Analysis','walltime')
-epsilon_hier        =   config.get('Analysis','epsilon_hier')
-epsilon_dbscan      =   config.get('Analysis','epsilon_dbscan') 
-sieve_hier          =   config.get('Analysis','sieve_hier')
-sieve_dbscan        =   config.get('Analysis','sieve_dbscan')
+        #Cluster Analysis:
+        
+        #nomerge             = config.get('Analysis','trajectoryMerge')
+        self.dcdname             =   config.get('Analysis','dcdname')
+        self.nodesAnalysis       =   config.get('Analysis','nodes')
+        self.coresAnalysis       =   config.get('Analysis','cores')
+        self.walltimeAnalysis    =   config.get('Analysis','walltime')
+        self.epsilon_hier        =   config.get('Analysis','epsilon_hier')
+        self.epsilon_dbscan      =   config.get('Analysis','epsilon_dbscan') 
+        self.sieve_hier          =   config.get('Analysis','sieve_hier')
+        self.sieve_dbscan        =   config.get('Analysis','sieve_dbscan')
 
 ###############################################################################
 ###############################################################################

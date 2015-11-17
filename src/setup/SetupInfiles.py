@@ -258,27 +258,6 @@ class SetupInfiles:
         f.write(" / \n")
         f.close()
                 
-#    def aMD(self):
-#        #Relax the system (NPT, 300K, 5ns)
-#        f = open("in_files/equil.in",'w')
-#        f.write("equil NPT 5 ns \n")
-#        f.write(" &cntrl                    \n")
-#        f.write("  imin=0,irest=1,ntx=5,    \n")
-#        if timestep == "0.002":
-#            f.write("  nstlim=2500000,dt=0.002, \n") # Equilibrate for 2500000*0.002 ps = 5000 ps = 5 ns
-#        if timestep == "0.001":
-#            f.write("  nstlim=5000000,dt=0.001, \n") # Equilibrate for 5000000*0.001 ps = 5000 ps = 5 ns
-#        f.write("  ntc="+ntc+",ntf="+ntf+",ig=-1,       \n")
-#        f.write("  cut=10.0, ntb=2, ntp=1, taup=2.0,    \n")
-#        f.write("  ntpr=1000, ntwx=1000,    \n")
-#        f.write("  ntt=3, gamma_ln=2.0,     \n")
-#        f.write("  temp0=300.0,             \n")
-#        if QM == "on":        
-#            f.write("  ifqnt = 1, \n")
-#        f.write(" /                         \n")
-#        if QM == "on":
-#            f.write(""+self.buffer+"")
-#        f.close()
 
 class SetupAMD:
     
@@ -381,10 +360,10 @@ def amd():
 def main():
     os.chdir(""+root+"")
            
-    if iamd == "3":
-         aMD = SetupAMD()
-         aMD.FindParameters()
-         aMD.aMD_in()
+    if aMD == "on":
+         aMDsetup = SetupAMD()
+         aMDsetup.FindParameters()
+         aMDsetup.aMD_in()
     else:
         setup = SetupInfiles()
 #        setup.init()
