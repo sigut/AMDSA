@@ -11,12 +11,12 @@ filesToTreat = {
 #		"charge": -1
 #	}
 	
-#	"H3PO4": {
-#		"name": "H3PO4",
-#		"charge": 0
-#	}
-	"OPOH3": {
-		"name": "OPOH3",
+	"H3PO4d": {
+		"name": "H3PO4d",
+		"charge": 0
+	},
+	"H3PO4s": {
+		"name": "H3PO4s",
 		"charge": 0
 	}
 }
