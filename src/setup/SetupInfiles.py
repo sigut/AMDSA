@@ -86,6 +86,7 @@ class SetupInfiles:
         else: 
             f.write("  ntb = 2, ntp = 1 , taup   = 1.0,           \n")    # Constant Pressure
             f.write("  cut=10.0,        \n")    # Specify the nonbonded cutoff in Angstroms       
+            f.write("  iwrap  = 1,     \n")      # setting Iwrap =1 is good for ascii written outputs
         f.write("  ntrx   = 1,     \n")
         f.write("  ntxo   = 1,     \n")     # Format of restrt file --> ASCII
         f.write("  ntpr   = 100, ntwx   = 100, ntwr   = 100,  \n")      # Write mdout for every ntpr steps, Write restrt file for every ntwr steps
@@ -99,7 +100,6 @@ class SetupInfiles:
         if timestep == "0.001":
             f.write("  nstlim = 500000, \n")      # Number of MD-steps to be performed
             f.write("  dt     = 0.001, \n")      # Time step in ps
-        f.write("  iwrap  = 1,     \n")      # setting Iwrap =1 is good for ascii written outputs
         f.write("  t      = 0.0,   \n")      # The time of start
         f.write("  temp0  = 300.0, \n")      # Refernce temperature
         f.write("  tempi  = 200.0, \n")      # Initial temperature
@@ -123,8 +123,7 @@ class SetupInfiles:
         if implicit == "on":
              f.write(""+self.implicit+"\n")
         else: 
-            f.write("  ntb=1,           \n")    # Constant volume (for explicit simulations) Periodic boundary conditions of non-bonded interactions: 
-            f.write("  cut=10.0,        \n")    # Specify the nonbonded cutoff in Angstroms
+           f.write("  ntb=1, cut=10.0, iwrap = 0,   \n")    # Specify the nonbonded cutoff in Angstroms
         f.write("  drms=0.1          \n")   
         f.write("  maxcyc=2000,      \n")
         f.write("  ncyc=1500,        \n")
@@ -133,9 +132,8 @@ class SetupInfiles:
         f.write("  ntpr=100,         \n")
         f.write("  ntwr=100,         \n")
         f.write("  ntwx=100,         \n")    # Write restrt file for every ntwr steps
-        f.write("  iwrap=0,          \n")
         f.write("  ntf=1,            \n")
-        f.write("  ntb=1,            \n")
+        f.write("  ntc=1,            \n")
         f.write("  cut=10.0,         \n")
         f.write("  nsnb=20,          \n")
         f.write("  restraintmask=\'!:WAT\',\n")# String that specifies the restrained atoms when ntr = 1 
@@ -156,10 +154,9 @@ class SetupInfiles:
         if implicit == "on":
             f.write(""+self.implicit+"\n")
         else: 
-            f.write("  ntb=1,           \n")    # Constant volume (for explicit simulations) Periodic boundary conditions of non-bonded interactions: 
-            f.write("  cut=10.0,        \n")    # Specify the nonbonded cutoff in Angstroms
-        f.write("  ntpr=500, ntwr=500, ntwx=500, iwrap=1,          \n")
-        f.write("  ntc="+ntc+", ntf="+ntf+", ntb=1, cut=10.0, nsnb=20,          \n")
+            f.write("  ntb=1, cut=10.0, iwrap=1,   \n")    # Specify the nonbonded cutoff in Angstroms
+        f.write("  ntpr=500, ntwr=500, ntwx=500,           \n")
+        f.write("  ntc="+ntc+", ntf="+ntf+", nsnb=20,          \n")
         if timestep == "0.002":
             f.write("  nstlim=250000,dt=0.002,  \n") # heat for 500000*0.002 ps = 1000 ps
         if timestep == "0.001": 
@@ -192,7 +189,7 @@ class SetupInfiles:
         if implicit == "on":
             f.write(""+self.implicit+"\n")
         else:
-            f.write("  cut=10.0, ntb=2, ntp=1, taup=1.0, \n")
+            f.write("  cut=10.0, ntb=2, ntp=1, taup=1.0, iwrap=1, \n")
         if timestep == "0.002":
             f.write("  nstlim=250000,dt=0.002,           \n")
         if timestep == "0.001":
@@ -200,7 +197,7 @@ class SetupInfiles:
         f.write("  ntc="+ntc+",ntf="+ntf+",              \n")        
         f.write("  ntpr=500, ntwx=500,                   \n")
         f.write("  ntt=3, gamma_ln=2.0,                  \n")
-        f.write("  temp0=300.0,iwrap=1,                  \n")
+        f.write("  temp0=300.0,                  \n")
         f.write("  ntr=1, restraintmask=':1-"+resi_protein+"',         \n")
         f.write("  restraint_wt=5.0,                    \n")
         f.write(" /                                      \n")
@@ -245,13 +242,13 @@ class SetupInfiles:
         else:
             f.write("  cut=10.0, ntb=1, ntp=0,  \n")
         if timestep == "0.002":
-            f.write("  nstlim=100000,dt=0.002, \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
+            f.write("  nstlim=100000,dt=0.002, ,iwrap=1 \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
         if timestep == "0.001":
             f.write("  nstlim=200000,dt=0.001, \n")     # Production run for 200000*0.001 ps = 2000 ps = 2 ns (repeated in submit.sh)
         f.write("  ntc="+ntc+",ntf="+ntf+",ig=-1,       \n")
         f.write("  ntpr=1000, ntwx=1000,    \n")
         f.write("  ntt=3, gamma_ln=2.0,     \n")
-        f.write("  temp0=300.0,ioutfm=1,iwrap=1 \n")
+        f.write("  temp0=300.0,ioutfm=1, \n")
         f.write("  /                        \n")
         if QM == "on":
             f.write(""+self.QMMM+"")
@@ -331,7 +328,7 @@ class SetupAMD:
         if implicit == "on":
             f.write(""+self.implicit+"\n")
         else:
-            f.write("  cut=10.0, ntb=1, ntp=0,  \n")
+            f.write("  cut=10.0, ntb=1, ntp=0, iwrap=1,  \n")
         if timestep == "0.002":
             f.write("  nstlim=1000000,dt=0.002, \n") # Production for 1000000*0.002 ps = 2000 ps = 2 ns
         if timestep == "0.001":
@@ -339,7 +336,7 @@ class SetupAMD:
         f.write("  ntc="+ntc+",ntf="+ntf+",ig=-1,       \n")
         f.write("  ntpr=1000, ntwx=1000,    \n")
         f.write("  ntt=3, gamma_ln=2.0,     \n")
-        f.write("  temp0=300.0,ioutfm=1,iwrap=1 \n")
+        f.write("  temp0=300.0,ioutfm=1 \n")
         f.write("  iamd = "+iamd+", \n")
         f.write("  ethreshd="+str(round(self.EthreshD,2))+", alphad="+str(round(self.alphaD,2))+",   \n")
         f.write("  ethreshp="+str(round(self.EthreshP,2))+", alphap="+str(round(self.alphaP,2))+"     ,\n")
