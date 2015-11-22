@@ -1,5 +1,5 @@
 *.pyc
 *~
-pbpu/
-pbpv/
+pbpu_test/
+pbpv_test/
 test/
