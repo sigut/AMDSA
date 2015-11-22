@@ -36,7 +36,7 @@ home = os.getcwd() #Specify the root directory
 absdir = os.path.abspath(""+root+"")
 absdir_home = os.path.abspath(""+home+"")
 name = os.path.basename(os.path.normpath(""+absdir+""))
-directory = "./src/analysis/"
+directory = "./lib/analysis/"
 
 config = ConfigParser.ConfigParser()
 config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','config.cfg'))

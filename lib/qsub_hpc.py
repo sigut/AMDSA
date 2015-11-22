@@ -15,7 +15,7 @@ if cmd_folder not in sys.path:
     sys.path.insert(0, cmd_folder)
     
 # use this if you want to include modules from a subfolder
-the_list = ["src","src/analysis","src/plotting"]
+the_list = ["lib","lib/analysis","lib/plotting"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
@@ -62,11 +62,11 @@ class qsub():
             f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj \n")
             f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
             #f.write("R < in_files/analysis.R --no-save \n")            
-            f.write("python "+home+"/src/plotting/plot.py -i ./ -p "+protein+" \n")
+            f.write("python "+home+"/lib/plotting/plot.py -i ./ -p "+protein+" \n")
         else:
             f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
             #f.write("R < in_files/analysis.R --no-save \n")            
-            f.write("python "+home+"/src/plotting/plot.py -i ./ -p "+protein+" \n")
+            f.write("python "+home+"/lib/plotting/plot.py -i ./ -p "+protein+" \n")
         f.close()        
         os.system("qsub cpptraj_submit.sh")
             

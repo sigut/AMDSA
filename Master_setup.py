@@ -15,19 +15,19 @@ Created on Mon Sep 14 17:09:03 2015
 # Usage: python R_analysis.py -i <inputdir> -p <protein>
 ####-----------------------------------------------#####
 
-# Variables are loaded from the file src/variables.py. Any new variable must be entered in this file. The variables.py also calls the config.py file that specifies more rigid/fixed simulation variables for the setup and submit environment.
+# Variables are loaded from the file lib/variables.py. Any new variable must be entered in this file. The variables.py also calls the config.py file that specifies more rigid/fixed simulation variables for the setup and submit environment.
 
 import sys,inspect
 import os
 
 # The two following functions adds subfolders to the python-path and allows import of the modules into this program
 # use this if you want to include modules from a subfolder
-the_list = ["src","src/setup"]
+the_list = ["lib","lib/setup"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
         sys.path.insert(0, cmd_subfolder)
-#import src
+#import lib
 from variables import *
 import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos
 

@@ -9,7 +9,7 @@ import numpy as np
 from operator import itemgetter
 import os,sys,inspect
 
-the_list = ["src","src/setup"]
+the_list = ["lib","lib/setup"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
@@ -24,8 +24,8 @@ tries = 20
 
 class CalcIonPosition():
     def __init__(self):
-        self.pdbFile = ""+absdir_home+"/src/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
-        self.ligandpdbFile = ""+absdir_home+"/src/setup/TemplateFiles/ion/"+ionName+".pdb"
+        self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
+        self.ligandpdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".pdb"
         self.x,self.y,self.z = [],[],[]
         self.x_bind,self.y_bind,self.z_bind = [],[],[]
         self.x_ion,self.y_ion,self.z_ion = [],[],[]

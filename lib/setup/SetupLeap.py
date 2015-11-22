@@ -11,7 +11,7 @@ import numpy as np
 import sys,inspect
 import math
 
-the_list = ["src","src/setup"]
+the_list = ["lib","lib/setup"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
@@ -23,8 +23,8 @@ from CalcIonPos import CalcIonPosition
 
 class SetupLeap(CalcIonPosition):
     def init(self,CalcIonPosition): 
-        self.inputCrystalStructure = ""+absdir_home+"/src/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
-        self.inputAnion = ""+absdir_home+"/src/setup/TemplateFiles/ion/"+ionName+".mol2"
+        self.inputCrystalStructure = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
+        self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
         self.WaterBoxSize = ""+waterboxsize+""
 #        self.coordinates = str("")
         

@@ -10,7 +10,7 @@ Created on Mon Sep 28 13:40:12 2015
 
 import os, sys,inspect
 
-the_list = ["src","src/setup"]
+the_list = ["lib","lib/setup"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
@@ -223,7 +223,7 @@ done
     
 
 def main():
-#    os.chdir(""+absdir_home+"/src/setup/TemplateFiles/")
+#    os.chdir(""+absdir_home+"/lib/setup/TemplateFiles/")
     # Define the constructor
     CreateSubmit = Create_Submit()
     CreateSubmit.init(compiler)

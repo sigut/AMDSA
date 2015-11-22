@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import inspect
 
-the_list = ["src","src/plotting"]
+the_list = ["lib","lib/plotting"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
@@ -45,7 +45,7 @@ home = os.getcwd() #Specify the root directory
 absdir = os.path.abspath(""+root+"")
 absdir_home = os.path.abspath(""+home+"")
 name = os.path.basename(os.path.normpath(""+absdir+""))
-directory = "./src/analysis/"
+directory = "./lib/analysis/"
 
 #Define the files to plot:
 files = ["rmsd","distance_10_147","distance_10_63","distance_disulfur1","distance_disulfur2"]

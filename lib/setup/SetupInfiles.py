@@ -13,7 +13,7 @@ Created on Mon Sep 27 17:12:58 2015
 
 import os, sys,inspect
 
-the_list = ["src","src/setup"]
+the_list = ["lib","lib/setup"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:

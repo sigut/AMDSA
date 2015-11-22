@@ -6,7 +6,7 @@ Created on Fri Sep 11 15:42:56 2015
 """
 
 # This script creates the .R and .sh submission files for bio3d PCA of a given simulation.
-# It can be called from its folder ./src/analysis or through the Master.py script.
+# It can be called from its folder ./lib/analysis or through the Master.py script.
 # If qsub is specified, the analysis is done by the hpc system along with the other analysis methods such as cpptraj.
 
 ####-----------------------------------------------#####
@@ -17,7 +17,7 @@ import argparse
 import inspect
 import sys
 
-the_list = ["src"]
+the_list = ["lib"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
@@ -28,14 +28,14 @@ from variables import *
 
 # Variables:
 dcdname = "mergedResult_strip.dcd"
-directory = "./src/analysis/"
+directory = "./lib/analysis/"
 
 class R():
 #    def init(self):
 #        self = None
 
     def write_R(self,root,protein):
-        f = open(""+absdir_home+"/src/analysis/R_script.R",'w')
+        f = open(""+absdir_home+"/lib/analysis/R_script.R",'w')
         f.write("## Commands \n")
         f.write("\n")
         f.write(" \n")
@@ -63,7 +63,7 @@ class R():
         f.close()
         
         #Merge the two R files to create the file analysis.R 
-        filenames = [""+absdir_home+"/src/analysis/R_script.R", ""+absdir_home+"/src/analysis/analysis_body.R",]
+        filenames = [""+absdir_home+"/lib/analysis/R_script.R", ""+absdir_home+"/lib/analysis/analysis_body.R",]
         with open(""+absdir+"/in_files/analysis.R", 'w') as outfile:
             for fname in filenames:
                 with open(fname) as infile:

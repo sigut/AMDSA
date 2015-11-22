@@ -11,7 +11,7 @@ import argparse
 import re
 import inspect
 
-the_list = ["src","src/analysis"]
+the_list = ["lib","lib/analysis"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:

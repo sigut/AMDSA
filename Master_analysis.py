@@ -18,11 +18,12 @@ import os
 import argparse
 
 # use this if you want to include modules from a subfolder
-the_list = ["src","src/analysis","src/plotting"]
+the_list = ["lib","lib/setup"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
         sys.path.insert(0, cmd_subfolder)
+
     
 import qsub_hpc             # If qsub is specified the ccptraj, R and plot scripts will be submitted to the hpc-queue. 
 import cpptraj_analysis     # This script runs the cpptraj module for merging mdcrd files and making the analysis on the combined dcd file. The analysis includes rmsd, distance and clustering
