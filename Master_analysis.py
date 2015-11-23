@@ -18,7 +18,7 @@ import os
 import argparse
 
 # use this if you want to include modules from a subfolder
-the_list = ["lib","lib/setup"]
+the_list = ["lib","lib/analysis","lib/plotting"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:

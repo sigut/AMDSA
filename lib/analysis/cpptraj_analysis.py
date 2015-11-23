@@ -55,6 +55,8 @@ class Analysis:
         mdcrd_files = natural_sort(mdcrd_files)
         
         f = open("in_files/trajin.traj",'w')
+        f.write("trajin md_files/heat1.mdcrd 1 last 1 \n")
+        f.write("trajin md_files/heat2.mdcrd 1 last 1 \n")
         for names in mdcrd_files:
             f.write("trajin md_files/"+names+" 1 last 1 \n")
             f.write(' \n')
@@ -95,9 +97,9 @@ class Analysis:
         f.write("distance end_to_end3 :301@SG :364@SG out data/distance_disulfur2.dat \n")
         if insertAnion == "on":       
             if protein == "pbpu":
-                f.write("distance end_to_endpbpuP :63@N :376@P out data/distance.dat \n")
+                f.write("distance end_to_endpbpuP :93@CG2 :376@P out data/distance.dat \n")
             if protein == "pbpv":
-                f.write("distance end_to_endpbpvP :63@N :373@P out data/distance.dat \n")
+                f.write("distance end_to_endpbpvP :93@CG2 :373@P out data/distance.dat \n")
         f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.dat summary data/cluster_hier_summary_out.dat repout data/cluster/hier_centroid repfmt pdb \n")
         f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.dat summary data/cluster_dbscan_summary_out.dat repout data/cluster/dbscan_centroid repfmt pdb \n")
         f.close()

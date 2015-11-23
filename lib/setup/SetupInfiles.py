@@ -23,9 +23,10 @@ from variables import *
 
 if protein == "pbpu":
     resi_protein = "376"
+    P_protein = "5325"
 if protein == "pbpv":
     resi_protein = "373"
-    
+    P_protein = "5290"
    
 class SetupInfiles:
     
@@ -39,7 +40,8 @@ class SetupInfiles:
   qmshake="""+qmshake+""",
   qm_ewald="""+qm_ewald+""",
   qm_pme="""+qm_pme+"""
-/ """        
+/ 
+"""        
          self.implicit = """  igb = """+igb+""",  ntb = 0, cut = 16,   """
         
 #The “proper” default for ntb is chosen (ntb=0 when igb > 0, ntb=2 when ntp > 0, and ntb=1 otherwise).        #
@@ -50,7 +52,7 @@ class SetupInfiles:
         f.write(" Minimize water \n")
         f.write("System minimization:\n")
         f.write("&cntrl\n")
-        f.write("  imin=1, ntmin=1, nmropt=0,          \n")    # Perform energy minimization, Steepest decent method, Do not performe nmr type analysis
+        f.write("  imin=1, ntmin=1          \n")    # Perform energy minimization, Steepest decent method, Do not performe nmr type analysis
         if implicit == "on":
             f.write(""+self.implicit+"\n")
         else: 
@@ -80,7 +82,7 @@ class SetupInfiles:
         f = open("in_files/min2.in",'w')
         f.write("LET WATER MOVE \n")
         f.write("&cntrl \n")
-        f.write("  ntx    = 1, irest  = 0, nmropt = 0,     \n")      # inpcrd file is read without initial velocity information, Do not restart simulation - run new simulation, Do not performe nmr type analysis
+        f.write("  ntx    = 1, irest  = 0,    \n")      # inpcrd file is read without initial velocity information, Do not restart simulation - run new simulation, Do not performe nmr type analysis
         if implicit == "on":
             f.write(""+self.implicit+"\n")
         else: 
@@ -119,7 +121,7 @@ class SetupInfiles:
         f = open("in_files/min3.in",'w')
         f.write(" System minimization:\n")
         f.write("&cntrl               \n")
-        f.write("  imin=1, ntmin=1, nmropt=0           \n")   
+        f.write("  imin=1, ntmin=1,          \n")   
         if implicit == "on":
              f.write(""+self.implicit+"\n")
         else: 
@@ -148,24 +150,26 @@ class SetupInfiles:
     def setup_heat(self):
         # Heat the system, restraining the protein (NVT 0 to 300K)
         f = open("in_files/heat1.in",'w') 
-        f.write(" Heating System NVT 0.5 ns                        \n")
-        f.write("&cntrl                                            \n")
-        f.write("  ntx=1, irest=0,  nmropt=1,                      \n")
+        f.write(" Heating System NVT 0.5 ns             \n")
+        f.write("&cntrl                                 \n")
+        f.write("  ntx=1, irest=0,                      \n")
         if implicit == "on":
-            f.write(""+self.implicit+"\n")
+            f.write(""+self.implicit+"                  \n")
         else: 
-            f.write("  ntb=1, cut=10.0, iwrap=1,   \n")    # Specify the nonbonded cutoff in Angstroms
-        f.write("  ntpr=500, ntwr=500, ntwx=500,           \n")
-        f.write("  ntc="+ntc+", ntf="+ntf+", nsnb=20,          \n")
+            f.write("  ntb=1, cut=10.0, iwrap=1,         \n")    # Specify the nonbonded cutoff in Angstroms
+        f.write("  ntpr=500, ntwr=500, ntwx=500,         \n")
+        f.write("  ntc="+ntc+", ntf="+ntf+", nsnb=20,    \n")
         if timestep == "0.002":
-            f.write("  nstlim=250000,dt=0.002,  \n") # heat for 500000*0.002 ps = 1000 ps
+            f.write("  nstlim=250000,dt=0.002,           \n") # heat for 500000*0.002 ps = 1000 ps
         if timestep == "0.001": 
-            f.write("  nstlim=500000,dt=0.001,  \n") # Heat for 1000000*0.001 ps = 1000 ps         
-        f.write("  nscm=500, ntt=1,                                  \n") # Constant temperature using the weak-coupling algorithm
-        f.write("  temp0=0.0, tempi=0.0, tautp=0.5                   \n")
-        f.write("  ntr=1,                                          \n")
-        f.write("  restraintmask=':1-"+resi_protein+"',  \n")
-        f.write("  restraint_wt=10.0,                                \n")
+            f.write("  nstlim=500000,dt=0.001,          \n") # Heat for 1000000*0.001 ps = 1000 ps         
+        f.write("  nscm=500, ntt=1,                     \n") # Constant temperature using the weak-coupling algorithm
+        f.write("  temp0=0.0, tempi=0.0, tautp=0.5      \n")
+        f.write("  ntr=1,                               \n")
+        f.write("  restraintmask=':1-"+resi_protein+"', \n")
+        f.write("  restraint_wt=10.0,                   \n")
+        if DISANG == "on":
+            f.write("  nmropt = 1,                      \n")
         f.write("&end                 \n")
         # Type defines quantity that is begin varied
         if timestep == "0.002":
@@ -177,8 +181,9 @@ class SetupInfiles:
         f.write("  &wt type='END' \n")
         if QM == "on":
             f.write(""+self.QMMM+"")
-
-        f.write(" / \n")
+        f.write("/ \n")
+        if DISANG == "on":
+            f.write("DISANG=distFile.RST                      \n")    
         f.close()
         
         f = open("in_files/heat2.in",'w')
@@ -200,10 +205,13 @@ class SetupInfiles:
         f.write("  temp0=300.0,                  \n")
         f.write("  ntr=1, restraintmask=':1-"+resi_protein+"',         \n")
         f.write("  restraint_wt=5.0,                    \n")
-        f.write(" /                                      \n")
+        if DISANG == "on":
+            f.write("  nmropt = 1,                      \n")
         if QM == "on":
             f.write(""+self.QMMM+"")
-        f.write(" / \n")
+        f.write("/ \n")
+        if DISANG == "on":
+            f.write("DISANG=distFile.RST                      \n")
         f.close()
     
      
@@ -225,10 +233,13 @@ class SetupInfiles:
         f.write("  ntpr=1000, ntwx=1000,                \n")
         f.write("  ntt=3, gamma_ln=2.0,                 \n")
         f.write("  temp0 = 300.0,                       \n")
-        f.write(" /                         \n")
+        if DISANG == "on":
+            f.write("  nmropt = 1,                      \n")
         if QM == "on":
             f.write(""+self.QMMM+"")
-        f.write(" / \n")
+        f.write("/ \n")
+        if DISANG == "on":
+            f.write("DISANG=in_files/distFile.RST       \n")
         f.close()
         
     def cMD(self):
@@ -249,13 +260,19 @@ class SetupInfiles:
         f.write("  ntpr=1000, ntwx=1000,    \n")
         f.write("  ntt=3, gamma_ln=2.0,     \n")
         f.write("  temp0=300.0,ioutfm=1, \n")
-        f.write("  /                        \n")
+        if DISANG == "on":
+            f.write("  nmropt = 1,                      \n")
         if QM == "on":
             f.write(""+self.QMMM+"")
-        f.write(" / \n")
+        f.write("/ \n")
+        if DISANG == "on":
+            f.write("DISANG=distFile.RST                      \n")
         f.close()
                 
-
+    def DISANG(self):
+        f = open("in_files/distFile.RST",'w')
+        f.write("  &rst  iat= 1327,"+P_protein+", r1=1, r2=2.5, r3=15, r4=20, rk2=0, rk3=50, &end ")
+        f.close()
 class SetupAMD:
     
     def __init__(self):
@@ -269,7 +286,8 @@ class SetupAMD:
   qmshake="""+qmshake+""",
   qm_ewald="""+qm_ewald+""",
   qm_pme="""+qm_pme+"""
-/ """     
+/ 
+"""     
         self.implicit = """  igb = """+igb+""", ntb = 0, cut = 16, """
     def FindParameters(self):
         linenumber = 0
@@ -340,10 +358,14 @@ class SetupAMD:
         f.write("  iamd = "+iamd+", \n")
         f.write("  ethreshd="+str(round(self.EthreshD,2))+", alphad="+str(round(self.alphaD,2))+",   \n")
         f.write("  ethreshp="+str(round(self.EthreshP,2))+", alphap="+str(round(self.alphaP,2))+"     ,\n")
+        if DISANG == "on":
+            f.write("  nmropt = 1,                      \n")
         if QM == "on":        
             f.write(""+self.QMMM+"")
         f.write("&end\n")
-        f.write(" / \n")
+        f.write("/ \n")
+        if DISANG == "on":
+            f.write("DISANG=distFile.RST                      \n")
         f.close()
 
 def amd():
@@ -356,21 +378,23 @@ def amd():
     
 def main():
     os.chdir(""+root+"")
-           
-    if aMD == "on":
-         aMDsetup = SetupAMD()
+    aMDsetup = SetupAMD()    
+    setup = SetupInfiles()           
+    
+    if aMD == "on":       
          aMDsetup.FindParameters()
          aMDsetup.aMD_in()
+         if DISANG == "on":
+            setup.DISANG()             
     else:
-        setup = SetupInfiles()
 #        setup.init()
         setup.setup_min()
         setup.setup_heat()
         setup.equil()
         if ""+method+"" == "cMD":
             setup.cMD()
-#        if ""+method+"" == "aMD":
-#            setup.aMD()            
+        if DISANG == "on":
+            setup.DISANG() 
         print "finished writing in_files"
         print "Next step is to submit the simulation"
 

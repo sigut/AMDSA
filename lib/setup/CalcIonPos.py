@@ -19,7 +19,7 @@ from variables import *
 
 global closest        
 closest = []
-threshold = 3.5
+threshold = 2.5
 tries = 20
 
 class CalcIonPosition():

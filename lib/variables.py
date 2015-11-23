@@ -77,6 +77,7 @@ implicit    = config.get('in_files','implicit')
 igb         = config.get('in_files','igb')
 aMD         = config.get('in_files','aMD')
 iamd        = config.get('in_files','iamd')
+DISANG      = config.get('in_files','DISANG')
 #QM parameters 
 QM          = config.get('QM','QM') #If QM is set to "None" the rest of the specification will not be included
 qmcharge    = config.get('QM','qmcharge')
