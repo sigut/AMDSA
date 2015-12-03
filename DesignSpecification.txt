@@ -1,15 +1,15 @@
-Design specification of CalcIonPos.py (Major project)
+Design specification of CalcIonPos.py (Major project of PoP)
 
 Motivation:
-When setting up the molecular dynamics simulations and combining different molecules and systems, it is very important to be careful where they are positioned relative to each other. The specific problem to be solved in this case is the positioning of a phosphate anion relative to the protein receptor it interacts with. Optimizing the phosphate position comes with two great benefits: i) By avoiding steric overlaps between the atoms, the simulations have a higher change of converging. ii) Placing the anion at a specific position (in the binding site) can significantly reduce the required simulation time, allowing simulations to complete the folding we want to observe.
+When setting up the molecular dynamics simulations and combining different molecules and systems, it is very important to be careful where they are positioned relative to each other. The specific problem to be solved in this case is the positioning of a phosphate anion relative to the protein receptor. Optimizing the phosphate position comes with two great benefits: i) By avoiding steric overlaps between the atoms, the simulations have a higher change of converging. ii) Placing the anion at a specific position (in the binding site) can significantly reduce the required simulation time, allowing simulations to complete the folding we want to observe.
 
 Design:
-The optimization of the phosphate position is to be calculated from a protein data bank file (pdb-file) containing the coordinates of all protein atoms. The binding residues are expected to be about 10 amino acids. The initial anion position can be placed in the center of these residues (by calculating the 3D center). The anion may overlap or be very close to some specific atoms of the protein, and its position thus needs to be optimized. This is done with the following procedure:
+The optimization of the phosphate position is to be calculated from a protein data bank file (pdb-file) containing the coordinates of all protein atoms. The binding residues are expected to have contributions from about 10 amino acids. The initial anion position can be placed in the center of these residues (by calculating the 3D center). The anion may overlap or be very close to some specific atoms of the protein, and its position thus needs to be optimized. This is done with the following procedure:
 
 	1. Calculate center of binding residues and place ion here.
 	2. Calculate distance to nearest atoms 
-		If distance is below threshold value proceed with step 3
-	3. Define a direction vector between the phosphate and the nearest atom
+		If the distance is below threshold value proceed with step 3
+	3. Define a vector between the phosphate and the nearest atom
 	4. Move the phosphate in the direction given by the vector in 3.
 	5. Repeat 2-4 until defined threshold has been exceeded or the number of iterations exceeds a defined range. In the latter case give error message.
 

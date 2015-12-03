@@ -51,7 +51,7 @@ class CreateFolders():
     
     def check_folder(self,root):
         if os.path.isdir(""+str(root)+"") == True:
-            print "trying to create the folder "+root+""
+            print "Trying to create the folder "+root+""
             var = raw_input("This will overwrite any previous parameter files in the "+root+" folder. Confirm with any key press. Press 'n' to discontinue ")
             if var == 'n':
                 raise Exception('You opted not to overwrite in the '+root+' folder')
