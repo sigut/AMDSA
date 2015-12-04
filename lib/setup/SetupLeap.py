@@ -58,8 +58,9 @@ class SetupLeap(CalcIonPosition):
         f.write("loadamberparams frcmod.ionsjc_spce \n")
         f.write(" \n")
         f.write(""+protein+" = loadpdb "+absdir+"/in_files/"+protein+"_sequence.pdb \n")
-        f.write("bond "+protein+".115.SG "+protein+".160.SG \n")
-        f.write("bond "+protein+".301.SG "+protein+".364.SG \n")
+        if protein == "pbpu" or protein == "pbpv":
+            f.write("bond "+protein+".115.SG "+protein+".160.SG \n")
+            f.write("bond "+protein+".301.SG "+protein+".364.SG \n")
         if insertAnion =="on":
             f.write("anion = loadmol2 "+self.inputAnion+" \n")
             f.write("translate anion {"+coordinates+"} \n")

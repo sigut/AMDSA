@@ -73,6 +73,7 @@ def main():
         if insertAnion == "on":
             Calc = CalcIonPos.main()
         Runleap = SetupLeap.main() #Create the parameter topology files
-        Setup = SetupInfiles.main() # Setup the in files for the simulation
-        MakeSubmissionFile = SetupSubmit.main() # Make the submission file for the simulation
+        Setup = SetupInfiles.main()
+        MakeSubmissionFile = SetupSubmit.main()
+
 if __name__ == '__main__': main()

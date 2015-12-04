@@ -19,12 +19,15 @@ for folders in the_list:
 from variables import *
 
 class Create_Submit():
+
     def init(self,compiler):
         
         if compiler == "pmemd":
             self.CALCULATOR = "mpirun pmemd.MPI"
         if compiler == "pmemd.cuda":
             self.CALCULATOR = "pmemd.cuda"
+        if compiler == "pmemd.cuda.MPI":
+            self.CALCULATOR = "mpirun pmemd.cuda.MPI"
         if compiler == "sander":
             self.CALCULATOR = "mpirun sander.MPI"
         
@@ -227,7 +230,7 @@ def main():
     # Define the constructor
     CreateSubmit = Create_Submit()
     CreateSubmit.init(compiler)
-    if iamd == "3":
+    if iamd == "on":
         CreateSubmit.amd_submit(protein,method)
     else:
         CreateSubmit.makeSubmitFile(protein,method)

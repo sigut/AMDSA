@@ -27,7 +27,9 @@ if protein == "pbpu":
 if protein == "pbpv":
     resi_protein = "373"
     P_protein = "5290"
-   
+if protein == "1IXH":
+    resi_protein = "321"
+
 class SetupInfiles:
     
     def __init__(self):
