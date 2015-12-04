@@ -57,6 +57,7 @@ nodes       = config.get('Submit','nodes')
 cores       = config.get('Submit','cores')
 ptile       = config.get('Submit','ptile')
 gpus        = config.get('Submit','gpus')
+gpu_cores   = config.get('Submit','gpu_cores')
 walltime    = config.get('Submit','walltime')
 #queue       = config.get('Submit','queue')
 
@@ -134,12 +135,12 @@ echo $AMBERHOME
     """
         return buffer
     if queue == "hpc":
-        if compiler == "pmemd.cuda":
+        if compiler == "pmemd.cuda" or "pmemd.cuda.MPI":
             buffer = """
 #!/bin/sh
 #
 #PBS -N """+root+"""
-#PBS -l nodes=1:ppn=1:gpus="""+gpus+"""
+#PBS -l nodes=1:ppn="""+gpu_cores+""":gpus="""+gpus+"""
 #PBS -l walltime="""+walltime+"""
 
 cd $PBS_O_WORKDIR
