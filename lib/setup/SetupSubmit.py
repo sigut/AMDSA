@@ -27,7 +27,7 @@ class Create_Submit():
         if compiler == "pmemd.cuda":
             self.CALCULATOR = "pmemd.cuda"
         if compiler == "pmemd.cuda.MPI":
-            self.CALCULATOR = "mpirun pmemd.cuda.MPI"
+            self.CALCULATOR = "mpirun -np 2 pmemd.cuda"
         if compiler == "sander":
             self.CALCULATOR = "mpirun sander.MPI"
         

@@ -135,7 +135,7 @@ echo $AMBERHOME
     """
         return buffer
     if queue == "hpc":
-        if compiler == "pmemd.cuda" or "pmemd.cuda.MPI":
+        if compiler == "pmemd.cuda":
             buffer = """
 #!/bin/sh
 #
@@ -155,6 +155,30 @@ echo $CUDA_VISIBLE_DEVICES
 
 # load the required modules
 module load cuda/5.5
+export CUDA_HOME=/opt/cuda/5.5
+            """
+            
+        if compiler == "pmemd.cuda.MPI":
+            buffer = """
+#!/bin/sh
+#
+#PBS -N """+root+"""
+#PBS -l nodes=1:ppn="""+gpu_cores+""":gpus="""+gpus+"""
+#PBS -l walltime="""+walltime+"""
+
+cd $PBS_O_WORKDIR
+
+# The CUDA device reserved for you by the batch system
+CUDADEV=`cat $PBS_GPUFILE | rev | cut -d"-" -f1 | rev | tr -cd [:digit:]`
+echo "CUDA Devices"
+echo $CUDADEV
+export CUDA_VISIBLE_DEVICES=$CUDADEV
+echo "CUDA Visible Devices"
+echo $CUDA_VISIBLE_DEVICES
+
+# load the required modules
+module load cuda/5.5
+module load mpi/gcc
 export CUDA_HOME=/opt/cuda/5.5
             """
         if compiler == "sander" or compiler == "pmemd":
