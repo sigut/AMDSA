@@ -31,6 +31,7 @@ for folders in the_list:
 from variables import *
 import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos
 
+
 class CreateFolders():
 #    def __init__():
 #        from variables import *

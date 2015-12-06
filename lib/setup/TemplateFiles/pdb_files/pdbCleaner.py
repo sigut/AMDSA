@@ -11,7 +11,7 @@ gaffResidues = [" PI"]
 
 # Setup to run
 cases = {
-	"1IXH": {
+	"2ABH": {
 		"dontinclude": dontinclude,
 		"cyxresidues": cyxresidues,
 		"gaff": gaffResidues	

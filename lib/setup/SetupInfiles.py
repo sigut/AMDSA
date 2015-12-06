@@ -21,15 +21,6 @@ for folders in the_list:
 
 from variables import *
 
-if protein == "pbpu":
-    resi_protein = "376"
-    P_protein = "5325"
-if protein == "pbpv":
-    resi_protein = "373"
-    P_protein = "5290"
-if protein == "1IXH":
-    resi_protein = "321"
-
 class SetupInfiles:
     
     def __init__(self):
@@ -314,10 +305,7 @@ class SetupAMD:
                     DIHED = float(DihedralEnergy[8])
                     break    #Break out of loop to avoid overwriting the EPTOT and DIHED parameters
                 
-        if protein == "pbpu":
-            NumberOfResidues = 375
-        if protein == "pbpv":
-            NumberOfResidues = 372
+
             
         EnergyAtom = 0.16
         EnergyResi = 4

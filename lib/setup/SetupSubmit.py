@@ -230,7 +230,7 @@ def main():
     # Define the constructor
     CreateSubmit = Create_Submit()
     CreateSubmit.init(compiler)
-    if iamd == "on":
+    if aMD == "on":
         CreateSubmit.amd_submit(protein,method)
     else:
         CreateSubmit.makeSubmitFile(protein,method)

@@ -38,6 +38,22 @@ absdir_home = os.path.abspath(""+home+"")
 name = os.path.basename(os.path.normpath(""+absdir+""))
 directory = "./lib/analysis/"
 
+#How many residues including the phosphate?
+if protein == "pbpu": 
+    resi_protein = "376"
+    NumberOfResidues = 375
+    P_protein = "5325"
+if protein == "pbpv":
+    resi_protein = "373"
+    NumberOfResidues = 372
+    P_protein = "5290"
+if protein == "1IXH":
+    resi_protein = "322"
+    NumberOfResidues = 321
+if protein == "2ABH":
+    resi_protein = "322"
+    NumberOfResidues = 321   
+
 config = ConfigParser.ConfigParser()
 config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','config.cfg'))
 

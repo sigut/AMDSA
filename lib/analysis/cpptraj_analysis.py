@@ -52,6 +52,9 @@ class Analysis:
                 elif file.startswith("equil"):
                     name = file
                     mdcrd_files.append(name)
+                elif file.startswith("prod"):
+                    name = file
+                    mdcrd_files.append(name)
         mdcrd_files = natural_sort(mdcrd_files)
         
         f = open("in_files/trajin.traj",'w')
@@ -63,8 +66,8 @@ class Analysis:
     #Cpptraj for stripping all the water
         f.write('\n')
         f.write('# Center \n')
-        f.write('center origin :1 \n')
-        f.write('image origin center \n')
+        f.write('center :1-321 origin \n')
+        f.write('image origin center familiar \n')
         f.write('\n')
         f.write('# Remove all water molecules \n')
         f.write('strip :WAT outprefix in_files/strip \n')
