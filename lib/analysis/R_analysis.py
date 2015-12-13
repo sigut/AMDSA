@@ -51,7 +51,7 @@ class R():
         f.write("\n")
         f.write("# Location of PDB files \n")    
         f.write("\n")
-        f.write("id_pdb =   c(\""+absdir+"/pdb_files/"+protein+"_equil1.pdb\") \n")    
+        f.write("id_pdb =   c(\""+absdir+"/in_files/"+protein+"_sequence.pdb\") \n")    
         f.write("\n")
         f.write("# Location of mdcrd files \n")    
         f.write("\n")
