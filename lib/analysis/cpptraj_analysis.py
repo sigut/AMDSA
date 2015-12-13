@@ -94,10 +94,14 @@ class Analysis:
         f = open("in_files/analysis.traj",'w')
         f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
-        f.write("distance end_to_end :10@HD22 :147@HA3 out data/distance_10_147.dat \n")
-        f.write("distance end_to_end1 :10@HD22 :63@OD1 out data/distance_10_63.dat \n")
-        f.write("distance end_to_end2 :115@SG :160@SG out data/distance_disulfur1.dat \n")
-        f.write("distance end_to_end3 :301@SG :364@SG out data/distance_disulfur2.dat \n")
+        f.write("atomicfluct out data/backbone_RMSF.apf @C,CA,N \n")
+        if protein == "pbpu" or protein == "pbpv":
+            f.write("distance end_to_end :10@HD22 :147@HA3 out data/distance_10_147.dat \n")
+            f.write("distance end_to_end1 :10@HD22 :63@OD1 out data/distance_10_63.dat \n")
+            f.write("distance end_to_end2 :115@SG :160@SG out data/distance_disulfur1.dat \n")
+            f.write("distance end_to_end3 :301@SG :364@SG out data/distance_disulfur2.dat \n")
+        if protein == "2ABH" or protein == "1IXH":
+            f.write("distance end_to_end :226@CG :297@CG out data/distance_226_297.dat \n")
         if insertAnion == "on":       
             if protein == "pbpu":
                 f.write("distance end_to_endpbpuP :93@CG2 :376@P out data/distance.dat \n")

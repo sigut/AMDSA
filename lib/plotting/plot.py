@@ -48,7 +48,7 @@ name = os.path.basename(os.path.normpath(""+absdir+""))
 directory = "./lib/analysis/"
 
 #Define the files to plot:
-files = ["rmsd","distance_10_147","distance_10_63","distance_disulfur1","distance_disulfur2"]
+files = ["rmsd","distance_226_297.dat", "distance_10_147","distance_10_63","distance_disulfur1","distance_disulfur2"]
 cluster_files = ["cluster_hier_out","cluster_dbscan_out"]
 
 #Create plots folder if it doesn't exist

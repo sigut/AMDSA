@@ -107,7 +107,7 @@ qm_pme      = config.get('QM','qm_pme')
 #Cluster Analysis:
 
 #nomerge             = config.get('Analysis','trajectoryMerge')
-dcdname             = config.get('Analysis','dcdname')
+dcdname             =   config.get('Analysis','dcdname')
 nodesAnalysis       =   config.get('Analysis','nodes')
 coresAnalysis       =   config.get('Analysis','cores')
 walltimeAnalysis    =   config.get('Analysis','walltime')
@@ -115,6 +115,7 @@ epsilon_hier        =   config.get('Analysis','epsilon_hier')
 epsilon_dbscan      =   config.get('Analysis','epsilon_dbscan') 
 sieve_hier          =   config.get('Analysis','sieve_hier')
 sieve_dbscan        =   config.get('Analysis','sieve_dbscan')
+R_Analysis          =   config.get('Analysis','R_analysis')
 
 ###############################################################################
 ###############################################################################

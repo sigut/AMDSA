@@ -61,12 +61,14 @@ class qsub():
         if nomerge == None:
             f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj \n")
             f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
-            #f.write("R < in_files/analysis.R --no-save \n")            
+            if R_Analysis == "on":
+                f.write("R < in_files/analysis.R --no-save \n")            
             f.write("python "+home+"/lib/plotting/plot.py -i ./ -p "+protein+" \n")
         else:
             f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
-            #f.write("R < in_files/analysis.R --no-save \n")            
             f.write("python "+home+"/lib/plotting/plot.py -i ./ -p "+protein+" \n")
+            if R_Analysis == "on":
+                f.write("R < in_files/analysis.R --no-save \n")            
         f.close()        
         os.system("qsub cpptraj_submit.sh")
             

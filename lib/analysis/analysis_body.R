@@ -96,8 +96,8 @@ for (i in 1:length(folderNames) ) {
 
 	#Atomic Displacements:
     write.ncdf(p1,  paste(folderNames[i],"trj_pc1.nc", sep="", collapse=''))
-	write.ncdf(p2,  paste(folderNames[i],"trj_pc2.nc", sep="", collapse=''))
-	write.ncdf(p3,  paste(folderNames[i],"trj_pc3.nc", sep="", collapse=''))
+    write.ncdf(p2,  paste(folderNames[i],"trj_pc2.nc", sep="", collapse=''))
+    write.ncdf(p3,  paste(folderNames[i],"trj_pc3.nc", sep="", collapse=''))
 
 
 

@@ -5,13 +5,24 @@ import os
 # It also saves given "gaff" residues in separate pdb files.
 
 # Easy variables
+
+import argparse
+
+#Argument parsing
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', '--protein',
+                    help = 'Specify the Protein by typing in the file name, for instance: ClosedProtein.pdb',
+                    default = "OpenProtein.pdb")
+args = parser.parse_args()
+protein = args.protein
+
 dontinclude = ["EDO", "SO4"," PI"]
 cyxresidues = ["1114","1159","1300","1363"]
 gaffResidues = [" PI"]
 
 # Setup to run
 cases = {
-	"2ABH": {
+	""+protein+"": {
 		"dontinclude": dontinclude,
 		"cyxresidues": cyxresidues,
 		"gaff": gaffResidues	
@@ -32,7 +43,7 @@ for pdbfile,dictionary in cases.items():
 		gaffFiles[ gaffResidue ] = open( pdbfile + "_" + gaffResidue.replace(" ","") + ".pdb" , "w")
 	
 	# Open the pdb file
-	with open(pdbfile + ".pdb","r") as fi:
+	with open(pdbfile +".pdb","r") as fi:
 
 		# The readout file
 		with open(pdbfile + "_cleaned.pdb","w") as fo:
