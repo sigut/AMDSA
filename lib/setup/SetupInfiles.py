@@ -36,7 +36,7 @@ class SetupInfiles:
 / 
 """        
          self.implicit = """  igb = """+igb+""",  ntb = 0, cut = 16,
-         extdiel ="""+epsilon+""" """
+         extdiel ="""+epsilon+""", """
         
 #The “proper” default for ntb is chosen (ntb=0 when igb > 0, ntb=2 when ntp > 0, and ntb=1 otherwise).        #
     def setup_min(self):
@@ -63,9 +63,10 @@ class SetupInfiles:
         f.write("  iwrap=0,         \n")    # No wrapping of restart files (see p. 287)
         f.write("  ntf=1,           \n")    # Force evaluation: Complete interaction
         f.write("  nsnb=20,         \n")    # Frequency of nonbonded list updates
-        f.write("  ntr=1,            \n")    # lag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
-        f.write("  restraintmask=\'!:WAT\',\n")# String that specifies the restrained atoms when ntr = 1 
-        f.write("  restraint_wt = 10.0,\n")  # Weight of the positional restraints
+        if not implicit == "on":
+            f.write("  ntr=1,            \n")    # lag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
+            f.write("  restraintmask=\'!:WAT\',\n")# String that specifies the restrained atoms when ntr = 1 
+            f.write("  restraint_wt = 10.0,\n")  # Weight of the positional restraints
         if QM == "on":
             f.write(""+self.QMMM+"")
         f.write("&end\n")
@@ -102,9 +103,10 @@ class SetupInfiles:
         f.write("  tautp  = 0.5,   \n")      # Time constant in ps for heat bath coupling
         f.write("  ntt    = 1,     \n")      # Constant temperature using the weak-coupling algorithm
         f.write("  tol    = 0.00001,\n")     #
-        f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
-        f.write("  restraintmask=\'!:WAT\',\n") # String that specifies the restrained atoms when ntr = 1
-        f.write("  restraint_wt = 10.0,  \n")# Weight of the positional restraints
+        if not implicit == "on":
+            f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
+            f.write("  restraintmask=\'!:WAT\',\n") # String that specifies the restrained atoms when ntr = 1
+            f.write("  restraint_wt = 10.0,  \n")# Weight of the positional restraints
         if QM == "on":
             f.write(""+self.QMMM+"")
         f.write("&end \n             ")
@@ -132,8 +134,10 @@ class SetupInfiles:
         f.write("  ntc=1,            \n")
         f.write("  cut=10.0,         \n")
         f.write("  nsnb=20,          \n")
-        f.write("  restraintmask=\'!:WAT\',\n")# String that specifies the restrained atoms when ntr = 1 
-        f.write("  restraint_wt = 10.0,\n")  # Weight of the positional restraints
+        if not implicit == "on":
+            f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
+            f.write("  restraintmask=\'!:WAT\',\n")# String that specifies the restrained atoms when ntr = 1 
+            f.write("  restraint_wt = 10.0,\n")  # Weight of the positional restraints
         if QM == "on":
             f.write(""+self.QMMM+"")
         f.write("&end                 \n")
@@ -159,9 +163,10 @@ class SetupInfiles:
             f.write("  nstlim=500000,dt=0.001,          \n") # Heat for 1000000*0.001 ps = 1000 ps         
         f.write("  nscm=500, ntt=1,                     \n") # Constant temperature using the weak-coupling algorithm
         f.write("  temp0=0.0, tempi=0.0, tautp=0.5      \n")
-        f.write("  ntr=1,                               \n")
-        f.write("  restraintmask=':1-"+resi_protein+"', \n")
-        f.write("  restraint_wt=10.0,                   \n")
+        if not implicit == "on":
+            f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
+            f.write("  restraintmask=\'!:WAT\', \n")
+            f.write("  restraint_wt=10.0,                   \n")
         if DISANG == "on":
             f.write("  nmropt = 1,                      \n")
         f.write("&end                 \n")
@@ -197,8 +202,10 @@ class SetupInfiles:
         f.write("  ntpr=500, ntwx=500,                   \n")
         f.write("  ntt=3, gamma_ln=2.0,                  \n")
         f.write("  temp0=300.0,                  \n")
-        f.write("  ntr=1, restraintmask=':1-"+resi_protein+"',         \n")
-        f.write("  restraint_wt=5.0,                    \n")
+        if not implicit == "on":
+            f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
+            f.write("  restraintmask=\'!:WAT\', \n")
+            f.write("  restraint_wt=5.0,                    \n")
         if DISANG == "on":
             f.write("  nmropt = 1,                      \n")
         if QM == "on":

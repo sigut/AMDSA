@@ -56,6 +56,9 @@ if protein == "2ABH":
 if protein == "1OIB":
     resi_protein = "322"
     NumberOfResidues = 321
+if protein == "AzobenzeneTrans":
+    resi_protein = "1"
+    NumberOfResidues = 1
 
 config = ConfigParser.ConfigParser()
 config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','config.cfg'))
