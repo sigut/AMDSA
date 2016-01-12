@@ -35,7 +35,8 @@ class SetupInfiles:
   qm_pme="""+qm_pme+"""
 / 
 """        
-         self.implicit = """  igb = """+igb+""",  ntb = 0, cut = 16,   """
+         self.implicit = """  igb = """+igb+""",  ntb = 0, cut = 16,
+         extdiel ="""+epsilon+""" """
         
 #The “proper” default for ntb is chosen (ntb=0 when igb > 0, ntb=2 when ntp > 0, and ntb=1 otherwise).        #
     def setup_min(self):

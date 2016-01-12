@@ -53,6 +53,9 @@ if protein == "1IXH":
 if protein == "2ABH":
     resi_protein = "322"
     NumberOfResidues = 321   
+if protein == "1OIB":
+    resi_protein = "322"
+    NumberOfResidues = 321
 
 config = ConfigParser.ConfigParser()
 config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','config.cfg'))
@@ -92,6 +95,8 @@ ntf         = config.get('in_files','ntf')
 timestep    = config.get('in_files','timestep')
 implicit    = config.get('in_files','implicit')
 igb         = config.get('in_files','igb')
+epsilon     = config.get('in_files','epsilon')
+#gamma       = config.get('in_files','gamma')
 aMD         = config.get('in_files','aMD')
 iamd        = config.get('in_files','iamd')
 DISANG      = config.get('in_files','DISANG')

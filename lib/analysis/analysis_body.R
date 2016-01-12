@@ -12,7 +12,7 @@ for (i in 1:length(folderNames) ) {
     # Information for user
     print("Doing analysis on: ")
     print(folderNames[i])
-    trajectoryFilepath <- paste(folderNames[i],id_dcd[i], sep="", collapse='', big=TRUE)
+    trajectoryFilepath <- paste(folderNames[i],id_dcd[i], sep="", collapse='', big="TRUE")
 
 	print("======================================================================")
 	print("======================================================================")

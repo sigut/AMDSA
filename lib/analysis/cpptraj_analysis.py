@@ -20,7 +20,7 @@ for folders in the_list:
 from variables import *
 
 class Analysis:
-    def init(self):
+    def __init__(self):
         self.prmtop = None
         
     def find_prmtop(self,root):
@@ -84,7 +84,8 @@ class Analysis:
 #        f.write('trajout resultsDir/mergedResult_closest.dcd charmm nobox \n')
 #        f.write('go')
         f.close()
-        
+    
+   
     def analyse(self,root):
         if not os.path.exists("data"):
             os.makedirs("data")
