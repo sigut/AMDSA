@@ -54,6 +54,7 @@ class CalcIonPosition():
             if line[0:4] == "ATOM":
                 break
             n+=1
+        
         for line in pdb[n:]:
             coor = line.split()
             if line[0:3] == "TER": # Stop reading if the pdb contains a new molecule
@@ -68,23 +69,27 @@ class CalcIonPosition():
                 self.atomnumber.append(int(coor[1]))
                 self.atomname.append(str(coor[2]))
                 self.residuename.append(str(coor[3]))
-                if isinstance(coor[4],int) == True: # Generalizing for different pdb-files
+                if isinstance(int(coor[4]),int) == True: # Generalizing for different pdb-files
+                    print "working -----------------------------------------------"
+                    print coor[4]
                     self.residuenumber.append(int(coor[4]))
                     self.x.append(float(coor[5]))
                     self.y.append(float(coor[6]))
                     self.z.append(float(coor[7]))
-                else :                              # Generalizing for different pdb-files
+                if isinstance(coor[5],int) == True: # Generalizing for different pdb-files
                     self.residuenumber.append(int(coor[5]))
                     self.x.append(float(coor[6]))
                     self.y.append(float(coor[7]))
                     self.z.append(float(coor[8]))
-            if isinstance(coor[4],int) == True:     # Generalizing for different pdb-files
+            
+            if isinstance(int(coor[4]),int) == True:     # Generalizing for different pdb-files
                 for i in self.list: # Append the coordinates of the binding residues.
                     if int(coor[4]) == int(i):
                         self.x_bind.append(float(coor[5]))
                         self.y_bind.append(float(coor[6]))
                         self.z_bind.append(float(coor[7]))
-            else:                                   # Generalizing for different pdb-files
+                
+            if isinstance(coor[5],int) == True: # Generalizing for different pdb-files
                 for i in self.list: # Append the coordinates of the binding residues.
                     if int(coor[5]) == int(i):
                         self.x_bind.append(float(coor[6]))
@@ -205,7 +210,7 @@ def main():
     print ""
     for i in range(0,tries):
         n +=1   
-        print "Iteration number:"+str(n)+""
+        print "Iteration number: "+str(n)+""
         Calc.Distance()            
         print ""
         print "this is the distance to the closest atom"        

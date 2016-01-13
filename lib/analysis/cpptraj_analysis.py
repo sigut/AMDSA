@@ -103,6 +103,7 @@ class Analysis:
             f.write("distance end_to_end3 :301@SG :364@SG out data/distance_disulfur2.dat \n")
         if protein == "2ABH" or protein == "1IXH":
             f.write("distance end_to_end :226@CG :297@CG out data/distance_226_297.dat \n")
+            f.write("distance end_to_endP :10@CB :322@P out data/distance_10_P.dat \n")
         if insertAnion == "on":       
             if protein == "pbpu":
                 f.write("distance end_to_endpbpuP :93@CG2 :376@P out data/distance.dat \n")
