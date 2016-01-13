@@ -24,8 +24,8 @@ for folders in the_list:
 from variables import *
 
 closest = []
-threshold = 3.0
-tries = 40
+threshold = 3.2
+tries = 100
 increment = 0.5
 
 class CalcIonPosition():
@@ -41,14 +41,24 @@ class CalcIonPosition():
         self.residuename= []
         self.residuenumber= []
         self.threshold = threshold + 0.5
-        self.list = [8,9,10,32,33,63,142,146,147,148]
+        if protein in ("pbpu", "pbpv"):   
+            self.list = [8,9,10,32,33,63,142,146,147,148]
+        if protein in ("1IXH", "2ABH"): 
+            self.list = [10,11,38,56,135,137,139,140,141]
     def ReadProteinCoordinates(self): # Read the coordinates of the protein pdb file
         f = open(self.pdbFile,'r')
         pdb = f.readlines()[0:]
         f.close()
-        for line in pdb[0:]:
+        n = 0
+        for line in pdb[0:]: # Start coordinate handling when the atoms start
+            if line[0:4] == "ATOM":
+                break
+            n+=1
+        for line in pdb[n:]:
             coor = line.split()
             if line[0:3] == "TER": # Stop reading if the pdb contains a new molecule
+                break
+            if line [0:3] == "END": #Breakout if file ends
                 break
             if str(coor[3]) == "WAT": # Stop reading if the pdb contain water
                 break
@@ -58,17 +68,28 @@ class CalcIonPosition():
                 self.atomnumber.append(int(coor[1]))
                 self.atomname.append(str(coor[2]))
                 self.residuename.append(str(coor[3]))
-                self.residuenumber.append(int(coor[4]))
-                self.x.append(float(coor[5]))
-                self.y.append(float(coor[6]))
-                self.z.append(float(coor[7]))
-                        
-            # If row 4 equals residue (8,9,10,32,33,63,142,146,147,148) , then append the coordinates           
-            for i in self.list: # Append the coordinates of the binding residues.
-                if int(coor[4]) == int(i):
-                    self.x_bind.append(float(coor[5]))
-                    self.y_bind.append(float(coor[6]))
-                    self.z_bind.append(float(coor[7]))
+                if isinstance(coor[4],int) == True: # Generalizing for different pdb-files
+                    self.residuenumber.append(int(coor[4]))
+                    self.x.append(float(coor[5]))
+                    self.y.append(float(coor[6]))
+                    self.z.append(float(coor[7]))
+                else :                              # Generalizing for different pdb-files
+                    self.residuenumber.append(int(coor[5]))
+                    self.x.append(float(coor[6]))
+                    self.y.append(float(coor[7]))
+                    self.z.append(float(coor[8]))
+            if isinstance(coor[4],int) == True:     # Generalizing for different pdb-files
+                for i in self.list: # Append the coordinates of the binding residues.
+                    if int(coor[4]) == int(i):
+                        self.x_bind.append(float(coor[5]))
+                        self.y_bind.append(float(coor[6]))
+                        self.z_bind.append(float(coor[7]))
+            else:                                   # Generalizing for different pdb-files
+                for i in self.list: # Append the coordinates of the binding residues.
+                    if int(coor[5]) == int(i):
+                        self.x_bind.append(float(coor[6]))
+                        self.y_bind.append(float(coor[7]))
+                        self.z_bind.append(float(coor[8]))
 
         # Coordinates of the center of the entire protein
         self.residues = zip(self.atomnumber, self.atomname, self.residuename,self.residuenumber)
