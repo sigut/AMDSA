@@ -69,30 +69,35 @@ class CalcIonPosition():
                 self.atomnumber.append(int(coor[1]))
                 self.atomname.append(str(coor[2]))
                 self.residuename.append(str(coor[3]))
-                if isinstance(int(coor[4]),int) == True: # Generalizing for different pdb-files
-                    self.residuenumber.append(int(coor[4]))
-                    self.x.append(float(coor[5]))
-                    self.y.append(float(coor[6]))
-                    self.z.append(float(coor[7]))
-                if isinstance(coor[5],int) == True: # Generalizing for different pdb-files
+                
+                # Write all protein coordinates to file
+                try: # Try to read column 5. If it is a string, then append from other columns
+                    if isinstance(int(coor[4]),int) == True : # Read column 5 from pdb file
+                        self.residuenumber.append(int(coor[4]))
+                        self.x.append(float(coor[5]))
+                        self.y.append(float(coor[6]))
+                        self.z.append(float(coor[7]))               
+                except ValueError: # if the value is a string, it will yield an ValueError
                     self.residuenumber.append(int(coor[5]))
                     self.x.append(float(coor[6]))
                     self.y.append(float(coor[7]))
-                    self.z.append(float(coor[8]))
+                    self.z.append(float(coor[8]))                    
             
-            if isinstance(int(coor[4]),int) == True:     # Generalizing for different pdb-files
-                for i in self.list: # Append the coordinates of the binding residues.
-                    if int(coor[4]) == int(i):
-                        self.x_bind.append(float(coor[5]))
-                        self.y_bind.append(float(coor[6]))
-                        self.z_bind.append(float(coor[7]))
-                
-            if isinstance(coor[5],int) == True: # Generalizing for different pdb-files
+            # Write only chosen residues to X_bind lists
+            try:# Try to read column 5. If it is a string, then append from other columns
+                if isinstance(int(coor[4]),int) == True :
+                    for i in self.list: # Append the coordinates of the binding residues.
+                        if int(coor[4]) == int(i):
+                            self.x_bind.append(float(coor[5]))
+                            self.y_bind.append(float(coor[6]))
+                            self.z_bind.append(float(coor[7]))
+            except ValueError:
                 for i in self.list: # Append the coordinates of the binding residues.
                     if int(coor[5]) == int(i):
                         self.x_bind.append(float(coor[6]))
                         self.y_bind.append(float(coor[7]))
                         self.z_bind.append(float(coor[8]))
+        
 
         # Coordinates of the center of the entire protein
         self.residues = zip(self.atomnumber, self.atomname, self.residuename,self.residuenumber)
