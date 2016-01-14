@@ -70,8 +70,6 @@ class CalcIonPosition():
                 self.atomname.append(str(coor[2]))
                 self.residuename.append(str(coor[3]))
                 if isinstance(int(coor[4]),int) == True: # Generalizing for different pdb-files
-                    print "working -----------------------------------------------"
-                    print coor[4]
                     self.residuenumber.append(int(coor[4]))
                     self.x.append(float(coor[5]))
                     self.y.append(float(coor[6]))
