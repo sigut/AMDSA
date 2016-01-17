@@ -91,6 +91,11 @@ structure       =   config.get('Leap','structure')
 insertAnion     =   config.get('Leap','insertAnion')
 ionName         =   config.get('Leap','ionName')
 
+####### Mutations ##############################
+MakeMutations   =   config.get('Mutations','MakeMutations')
+Mutation1       =   config.get('Mutations','Mutation1')
+Mutation2       =   config.get('Mutations','Mutation2')
+
 ####### System parameters #####################
 # Regular parameters
 ntc         = config.get('in_files','ntc')

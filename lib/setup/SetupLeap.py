@@ -9,7 +9,7 @@ Created on Thu Sep 10 15:16:12 2015
 import os
 import numpy as np
 import sys,inspect
-import math
+
 
 the_list = ["lib","lib/setup"]
 for folders in the_list:

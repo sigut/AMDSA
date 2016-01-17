@@ -1,4 +1,4 @@
-config.cfg
+*.cfg
 *.pyc
 *~
 pbpu_test/

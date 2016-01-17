@@ -71,6 +71,8 @@ def main():
     else:
         CheckFolder = CreateFolders()
         CheckFolder.check_folder(root)
+        if MakeMutations == "on":
+            Mutation = Mutations.main()
         if insertAnion == "on":
             Calc = CalcIonPos.main()
         Runleap = SetupLeap.main() #Create the parameter topology files
