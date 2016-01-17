@@ -23,13 +23,14 @@ from CalcIonPos import CalcIonPosition
 
 class SetupLeap(CalcIonPosition):
     def init(self,CalcIonPosition): 
-        self.inputCrystalStructure = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
+        if MakeMutations == "on":
+            self.pdbFile = ""+absdir+"/in_files/"+protein+"_mutation.pdb"
+        else:
+            self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
+
         self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
         self.WaterBoxSize = ""+waterboxsize+""
-#        self.coordinates = str("")
-        
-        
-                
+
         
     def leap_sequence(self,protein):
         name = "LEaP_sequence.ff"
@@ -38,7 +39,7 @@ class SetupLeap(CalcIonPosition):
         f.write("source leaprc.gaff \n")
         f.write("loadamberparams frcmod.ionsjc_spce \n")
         f.write(" \n")
-        f.write(""+protein+" = loadpdb "+self.inputCrystalStructure+" \n")
+        f.write(""+protein+" = loadpdb "+self.pdbFile+" \n")
         f.write("savepdb "+protein+" "+absdir+"/in_files/"+protein+"_sequence.pdb \n")
         f.write("quit \n")
         f.close()

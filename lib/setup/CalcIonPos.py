@@ -30,8 +30,13 @@ increment = 0.5
 
 class CalcIonPosition():
     def __init__(self): 
-        self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
+        if MakeMutations == "on":
+            self.pdbFile = ""+absdir+"/in_files/"+protein+"_mutation.pdb"
+        else:
+            self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
+            
         self.ligandpdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".pdb"
+        
         self.x,self.y,self.z = [],[],[]
         self.x_bind,self.y_bind,self.z_bind = [],[],[]
         self.x_ion,self.y_ion,self.z_ion = [],[],[]
@@ -45,6 +50,7 @@ class CalcIonPosition():
             self.list = [8,9,10,32,33,63,142,146,147,148]
         if protein in ("1IXH", "2ABH"): 
             self.list = [10,11,38,56,135,137,139,140,141]
+            
     def ReadProteinCoordinates(self): # Read the coordinates of the protein pdb file
         f = open(self.pdbFile,'r')
         pdb = f.readlines()[0:]

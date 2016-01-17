@@ -19,6 +19,7 @@ Created on Mon Sep 14 17:09:03 2015
 
 import sys,inspect
 import os
+import shutil
 
 # The two following functions adds subfolders to the python-path and allows import of the modules into this program
 # use this if you want to include modules from a subfolder
@@ -29,7 +30,7 @@ for folders in the_list:
         sys.path.insert(0, cmd_subfolder)
 #import lib
 from variables import *
-import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos
+import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos, Mutations
 
 
 class CreateFolders():
@@ -49,7 +50,8 @@ class CreateFolders():
                 os.mkdir(""+root+"/resultsDir")
             if not os.path.exists(""+root+"/pdb_files"):
                 os.mkdir(""+root+"/pdb_files")
-    
+            
+           
     def check_folder(self,root):
         if os.path.isdir(""+str(root)+"") == True:
             print "Trying to create the folder "+root+""
@@ -61,6 +63,7 @@ class CreateFolders():
         else:
             print "Creating new folder"
             CreateFolders.create_folder(self,root)
+            
 def main():       
        
  
@@ -71,8 +74,9 @@ def main():
     else:
         CheckFolder = CreateFolders()
         CheckFolder.check_folder(root)
+#        CheckFolder.copy_files(root)
         if MakeMutations == "on":
-            Mutation = Mutations.main()
+            RunMutations = Mutations.main()
         if insertAnion == "on":
             Calc = CalcIonPos.main()
         Runleap = SetupLeap.main() #Create the parameter topology files
