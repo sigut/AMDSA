@@ -51,8 +51,12 @@ root    = args.idir
 qsub    = args.qsub
 nomerge = args.nomerge
 
+
+
 #Enter the cases of the main folder and execute the script writing
 def main():
+    if not os.path.exists(""+root+"/resultsDir"):
+        os.mkdir(""+root+"/resultsDir")
     if qsub == None:
         makeAnalysis = cpptraj_analysis.main()
         print 'starting the plotting'

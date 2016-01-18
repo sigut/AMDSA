@@ -61,9 +61,11 @@ class MakeMutations():
                         if int(coor[4]) == int(Mutation1):
                             self.Mutationlines1.append(k+n)
                             self.MutationNames1.append(coor[3])
+                            self.Mutationlines.append(k+n)
                         if int(coor[4]) == int(Mutation2):
                             self.Mutationlines2.append(k+n)
                             self.MutationNames2.append(coor[3])
+                            self.Mutationlines.append(k+n)
                                 
                 except ValueError:
 #                    for i in self.list: # Append the coordinates of the binding residues.

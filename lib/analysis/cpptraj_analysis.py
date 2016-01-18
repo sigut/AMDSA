@@ -94,6 +94,11 @@ class Analysis:
             
         f = open("in_files/analysis.traj",'w')
         f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
+#        if protein == "DiaminoAzobenzeneCis" or protein == "DiaminoAzobenzeneTrans":
+#            f.write("trajin resultsDir/mergedResult_strip.dcd 1 last 1 \n")
+#            f.write("rms first out data/rmsd.dat @S, S1 time 1 \n")
+#            f.write("distance end_to_end :1@S :1@S1 out data/distance_S_S1.dat \n")
+#        else: 
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
         f.write("atomicfluct out data/backbone_RMSF.apf @C,CA,N \n")
         if protein == "pbpu" or protein == "pbpv":
@@ -110,7 +115,9 @@ class Analysis:
             if protein == "pbpv":
                 f.write("distance end_to_endpbpvP :93@CG2 :373@P out data/distance.dat \n")
         f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.dat summary data/cluster_hier_summary_out.dat repout data/cluster/hier_centroid repfmt pdb \n")
-        f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.dat summary data/cluster_dbscan_summary_out.dat repout data/cluster/dbscan_centroid repfmt pdb \n")
+        f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.dat summary data/cluster_dbscan_summary_out.dat repout data/cluster/dbscan_centroid repfmt pdb \n")     
+        if MakeMutations == "on":
+            f.write("distance end_to_end :"+Mutation1+"@SG :"+Mutation2+"@SG out data/distance_"+Mutation1+"_"+Mutation2+" \n")
         f.close()
            
     # If specified the calculation is submitted to the hpc queue
