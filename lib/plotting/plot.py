@@ -150,10 +150,10 @@ def main():
             print "Warning --- "+str(i)+" does not exist. Cannot make plot"
         
     for j in cluster_files: # Loop through the different cluster_*_out files to make the colour cluster rmsd plot
-        if os.path.exists("data/"+str(j)+".dat") == True:
+        if os.path.exists("data/"+str(j)+"") == True:
             makePlot.read_datafile(root,"rmsd.dat")  #Read the rmsd file
             print "read datafile "+str(j)+".dat"
-            makePlot.cluster_label(root,""+str(j)+".dat")
+            makePlot.cluster_label(root,""+str(j)+"")
             print "plotting datafile "+str(j)+".dat"
         else: 
             print "Warning --- "+str(j)+".dat does not exist. Cannot make rmsd-cluster colored plot"
