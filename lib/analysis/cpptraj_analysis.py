@@ -100,7 +100,7 @@ class Analysis:
 #            f.write("distance end_to_end :1@S :1@S1 out data/distance_S_S1.dat \n")
 #        else: 
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
-        f.write("atomicfluct out data/backbone_RMSF.apf @C,CA,N \n")
+        #f.write("atomicfluct out data/backbone_RMSF.apf @C,CA,N \n")
         if protein == "pbpu" or protein == "pbpv":
             f.write("distance end_to_end :10@HD22 :147@HA3 out data/distance_10_147.dat \n")
             f.write("distance end_to_end1 :10@HD22 :63@OD1 out data/distance_10_63.dat \n")
@@ -111,13 +111,15 @@ class Analysis:
             f.write("distance end_to_endP :10@CB :322@P out data/distance_10_P.dat \n")
         if insertAnion == "on":       
             if protein == "pbpu":
-                f.write("distance end_to_endpbpuP :93@CG2 :376@P out data/distance.dat \n")
+                f.write("distance end_to_endpbpuP :93@CG2 :376@P out data/distanceP.dat \n")
             if protein == "pbpv":
-                f.write("distance end_to_endpbpvP :93@CG2 :373@P out data/distance.dat \n")
+                f.write("distance end_to_endpbpvP :93@CG2 :373@P out data/distanceP.dat \n")
+            if protein == "1IXH" or protein == "2ABH":
+                f.write("distance end_to_endP :93@CG2 :322@P out data/distanceP.dat \n")
         f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.dat summary data/cluster_hier_summary_out.dat repout data/cluster/hier_centroid repfmt pdb \n")
         f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.dat summary data/cluster_dbscan_summary_out.dat repout data/cluster/dbscan_centroid repfmt pdb \n")     
         if MakeMutations == "on":
-            f.write("distance end_to_end :"+Mutation1+"@SG :"+Mutation2+"@SG out data/distance_"+Mutation1+"_"+Mutation2+" \n")
+            f.write("distance end_to_endSG :"+Mutation1+"@SG :"+Mutation2+"@SG out data/distance_"+Mutation1+"_"+Mutation2+" \n")
         f.close()
            
     # If specified the calculation is submitted to the hpc queue
