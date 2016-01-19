@@ -151,7 +151,7 @@ def main():
         
     for j in cluster_files: # Loop through the different cluster_*_out files to make the colour cluster rmsd plot
         if os.path.exists("data/"+str(j)+"") == True:
-            makePlot.read_datafile(root,"rmsd")  #Read the rmsd file
+            makePlot.read_datafile(root,"rmsd.dat")  #Read the rmsd file
             print "read datafile "+str(j)+""
             makePlot.cluster_label(root,""+str(j)+"")
             print "plotting datafile "+str(j)+""
