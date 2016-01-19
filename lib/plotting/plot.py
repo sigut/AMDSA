@@ -50,7 +50,7 @@ directory = "./lib/analysis/"
 #Define the files to plot:
 
 #files = ["rmsd","distance_226_297", "distance_10_147","distance_10_63","distance_disulfur1","distance_disulfur2"]
-cluster_files = ["cluster_hier_out.dat","cluster_dbscan_out.dat"]
+cluster_files = ["cluster_hier_out","cluster_dbscan_out"]
 files = []
 
 for file in os.listdir(""+absdir+"/data/"):
@@ -94,7 +94,7 @@ class Plot():
         plt.clf()
         
     def cluster_label(self,root,cluster_files): #Plot for making rmsd colored according to the cluster
-        data = open("data/"+cluster_files+"", "r")
+        data = open("data/"+cluster_files+".dat", "r")
         lines = data.readlines()[1:]
         data.close()
         y_c = []
