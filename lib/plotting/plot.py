@@ -50,7 +50,7 @@ directory = "./lib/analysis/"
 #Define the files to plot:
 
 #files = ["rmsd","distance_226_297", "distance_10_147","distance_10_63","distance_disulfur1","distance_disulfur2"]
-cluster_files = ["cluster_hier_out","cluster_dbscan_out"]
+cluster_files = ["cluster_hier_out.dat","cluster_dbscan_out.dat"]
 files = []
 
 for file in os.listdir(""+absdir+"/data/"):
@@ -68,7 +68,7 @@ class Plot():
         self.y = 0
 
     def read_datafile(self,root,files):
-        data = open("data/"+files+".dat", "r")
+        data = open("data/"+files+"", "r")
         lines = data.readlines()[1:]
         data.close()
         x = []
@@ -94,7 +94,7 @@ class Plot():
         plt.clf()
         
     def cluster_label(self,root,cluster_files): #Plot for making rmsd colored according to the cluster
-        data = open("data/"+cluster_files+".dat", "r")
+        data = open("data/"+cluster_files+"", "r")
         lines = data.readlines()[1:]
         data.close()
         y_c = []
@@ -141,22 +141,22 @@ def main():
     makePlot = Plot(root,files)
     
     for i in files: #loop through the files (rmsd, distance...) and make the data-analysis and plot.
-        if os.path.exists("data/"+str(i)+".dat") == True:
+        if os.path.exists("data/"+str(i)+"") == True:
             makePlot.read_datafile(root,""+str(i)+"")
             print "read datafile "+str(i)+""
             makePlot.plot_datafile(root,""+str(i)+"")
             print "plotting datafile "+str(i)+""
         else: 
-            print "Warning --- "+str(i)+".dat does not exist. Cannot make plot"
+            print "Warning --- "+str(i)+" does not exist. Cannot make plot"
         
     for j in cluster_files: # Loop through the different cluster_*_out files to make the colour cluster rmsd plot
-        if os.path.exists("data/"+str(j)+".dat") == True:
+        if os.path.exists("data/"+str(j)+"") == True:
             makePlot.read_datafile(root,"rmsd")  #Read the rmsd file
             print "read datafile "+str(j)+""
             makePlot.cluster_label(root,""+str(j)+"")
             print "plotting datafile "+str(j)+""
         else: 
-            print "Warning --- "+str(j)+".dat does not exist. Cannot make rmsd-cluster colored plot"
+            print "Warning --- "+str(j)+" does not exist. Cannot make rmsd-cluster colored plot"
                 
     os.chdir(""+home+"")     
     
