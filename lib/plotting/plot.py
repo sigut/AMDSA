@@ -153,7 +153,7 @@ def main():
         if os.path.exists("data/"+str(j)+"") == True:
             makePlot.read_datafile(root,"rmsd.dat")  #Read the rmsd file
             print "read datafile "+str(j)+""
-            makePlot.cluster_label(root,""+str(j)+"")
+            makePlot.cluster_label(root,""+str(j)+".dat")
             print "plotting datafile "+str(j)+""
         else: 
             print "Warning --- "+str(j)+" does not exist. Cannot make rmsd-cluster colored plot"
