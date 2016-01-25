@@ -137,6 +137,8 @@ class Plot():
         
 def main():
 #    Enter the root directory
+    if not os.path.exists(""+root+"/plots"):
+        os.mkdir(""+root+"/plots")
     os.chdir(""+root+"")         
     makePlot = Plot(root,files)
     

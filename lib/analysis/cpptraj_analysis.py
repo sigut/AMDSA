@@ -140,7 +140,10 @@ class Analysis:
        
 
 def main():
+    if not os.path.exists(""+root+"/data"):
+        os.mkdir(""+root+"/data")    
     os.chdir(""+root+"")
+    
     # Define the constructor
     makeAnalysis = Analysis()
     #Define the methods of the constructor    

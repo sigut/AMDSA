@@ -57,6 +57,8 @@ nomerge = args.nomerge
 def main():
     if not os.path.exists(""+root+"/resultsDir"):
         os.mkdir(""+root+"/resultsDir")
+    if not os.path.exists(""+root+"/data"):
+        os.mkdir(""+root+"/data")
     if qsub == None:
         makeAnalysis = cpptraj_analysis.main()
         print 'starting the plotting'
