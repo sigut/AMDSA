@@ -29,6 +29,7 @@ class SetupLeap(CalcIonPosition):
             self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
 
         self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
+        self.frcmod = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
         self.WaterBoxSize = ""+waterboxsize+""
 
         
@@ -55,7 +56,7 @@ class SetupLeap(CalcIonPosition):
         name = "LEaP_setup.ff"
         f = open(""+name+"",'w')
         f.write("source "+forcefield+" \n")
-        f.write("source leaprc.gaff \n")
+#        f.write("source leaprc.gaff \n")
         f.write("loadamberparams frcmod.ionsjc_spce \n")
         f.write(" \n")
         f.write(""+protein+" = loadpdb "+absdir+"/in_files/"+protein+"_sequence.pdb \n")
@@ -63,6 +64,7 @@ class SetupLeap(CalcIonPosition):
             f.write("bond "+protein+".115.SG "+protein+".160.SG \n")
             f.write("bond "+protein+".301.SG "+protein+".364.SG \n")
         if insertAnion =="on":
+            f.wirte("load AmberParams "+self.frcmod+"")            
             f.write("anion = loadmol2 "+self.inputAnion+" \n")
             f.write("translate anion {"+coordinates+"} \n")
             f.write(""+protein+" = combine{"+protein+" anion} \n")
