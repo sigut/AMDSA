@@ -30,6 +30,7 @@ class SetupLeap(CalcIonPosition):
 
         self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
         self.frcmod = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
+        self.frcmod2 = ""+absdir_home+"/lib/setup/TemplateFiles/ion/frcmod.correspondence"
         self.WaterBoxSize = ""+waterboxsize+""
 
         
@@ -64,8 +65,16 @@ class SetupLeap(CalcIonPosition):
             f.write("bond "+protein+".115.SG "+protein+".160.SG \n")
             f.write("bond "+protein+".301.SG "+protein+".364.SG \n")
         if insertAnion =="on":
+           # f.write("verbosity 2\n")
+            f.write("addAtomTypes { \n")
+            f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
+            f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
+            f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
+            f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
+            f.write(" } \n")
             f.write("loadAmberParams "+self.frcmod+" \n")            
-            f.write("anion = loadmol2 "+self.inputAnion+" \n")
+            f.write("loadAmberParams "+self.frcmod2+" \n")
+            f.write("anion = loadmol3 "+self.inputAnion+" \n")
             f.write("translate anion {"+coordinates+"} \n")
             f.write(""+protein+" = combine{"+protein+" anion} \n")
             f.write(" \n")
