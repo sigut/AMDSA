@@ -64,7 +64,7 @@ class SetupLeap(CalcIonPosition):
             f.write("bond "+protein+".115.SG "+protein+".160.SG \n")
             f.write("bond "+protein+".301.SG "+protein+".364.SG \n")
         if insertAnion =="on":
-            f.wirte("load AmberParams "+self.frcmod+"")            
+            f.write("loadAmberParams "+self.frcmod+" \n")            
             f.write("anion = loadmol2 "+self.inputAnion+" \n")
             f.write("translate anion {"+coordinates+"} \n")
             f.write(""+protein+" = combine{"+protein+" anion} \n")
