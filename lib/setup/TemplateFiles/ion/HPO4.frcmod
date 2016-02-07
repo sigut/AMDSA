@@ -21,7 +21,7 @@ HO-OH-P -O2   1    2.50000000e-01        0.0       3.   adapted from parm10.dat 
 IMPROPER         V(kcal.mol-1.rad-1) Phase(deg.) Period Source
 
 NONBON     R*(ang)   Eps(kcal.mol-1)       Source
-HO         0.0000    0.00000000            taken from parm10.dat
+HO         0.2000    0.0300                taken from GLYCAM_06h.dat (M.B. Tessier 2011, use by permission only)
 O2         1.6612    0.21000000            taken from parm10.dat
 OH         1.7210    0.21040000            taken from parm10.dat
 P          2.1000    0.20000000            taken from parm10.dat

@@ -27,7 +27,7 @@ class SetupInfiles:
          self.QMMM = """  ifqnt = 1,
 /
 &qmmm
-  qmmask=':"""+resi_protein+"""',
+  qmmask="""+qmmask+""",
   qmcharge="""+qmcharge+""",
   qm_theory="""+qm_theory+""",
   qmshake="""+qmshake+""",
@@ -281,7 +281,7 @@ class SetupAMD:
         self.QMMM = """  ifqnt = 1,
 /
 &qmmm
-  qmmask=':"""+resi_protein+"""',
+  qmmask="""+qmmask+""",
   qmcharge="""+qmcharge+""",
   qm_theory="""+qm_theory+""",
   qmshake="""+qmshake+""",

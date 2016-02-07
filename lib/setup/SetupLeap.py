@@ -22,11 +22,12 @@ from CalcIonPos import CalcIonPosition
 
 
 class SetupLeap(CalcIonPosition):
-    def init(self,CalcIonPosition): 
-        if MakeMutations == "on":
-            self.pdbFile = ""+absdir+"/in_files/"+protein+"_mutation.pdb"
-        else:
-            self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
+    def __init__(self): 
+        if insertProtein == "on":
+            if MakeMutations == "on":
+                self.pdbFile = ""+absdir+"/in_files/"+protein+"_mutation.pdb"
+            else:
+                self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
 
         self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
         self.frcmod = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
@@ -49,7 +50,7 @@ class SetupLeap(CalcIonPosition):
         os.system("tleap -f "+name+"")
         
         
-    def leap_CYX(self,protein,CalcIonPosition):
+    def leapProtein(self,protein):
         if insertAnion == "on":
             f = open(""+absdir+"/in_files/coordinates.dat",'r')
             coordinates = f.readlines()[0]
@@ -87,50 +88,71 @@ class SetupLeap(CalcIonPosition):
             f.write(" \n")
         if implicit == "on":
             f.write("saveamberparm "+protein+" "+absdir+"/in_files/"+protein+".prmtop "+absdir+"/in_files/"+protein+".inpcrd \n")
+            f.write("savepdb "+protein+" "+absdir+"/in_files/"+protein+"_finalLEAP_nowater.pdb \n")
+            f.write("\n")
             if insertAnion =="on":        
                 f.write("saveamberparm "+ionName+" "+absdir+"/in_files/"+ionName+"_nowat.prmtop "+absdir+"/in_files/"+ionName+"_nowat.inpcrd \n")
-            f.write(" \n")
-            f.write("savepdb "+protein+" "+absdir+"/in_files/"+protein+"_finalLEAP_nowater.pdb \n")
-            if insertAnion =="on":
                 f.write("savepdb "+ionName+" "+absdir+"/in_files/"+ionName+"_finalLEAP_nowater.pdb \n")
-            f.write("\n")
+            f.write(" \n")
         else:
             f.write("saveamberparm "+protein+" "+absdir+"/in_files/"+protein+"_nowat.prmtop "+absdir+"/in_files/"+protein+"_nowat.inpcrd \n")
+            f.write("savepdb "+protein+" "+absdir+"/in_files/"+protein+"_finalLEAP_nowater.pdb \n")
             if insertAnion =="on":        
                 f.write("saveamberparm "+ionName+" "+absdir+"/in_files/"+ionName+"_nowat.prmtop "+absdir+"/in_files/"+ionName+"_nowat.inpcrd \n")
-            f.write(" \n")
-            f.write("savepdb "+protein+" "+absdir+"/in_files/"+protein+"_finalLEAP_nowater.pdb \n")
-            if insertAnion =="on":
                 f.write("savepdb "+ionName+" "+absdir+"/in_files/"+ionName+"_finalLEAP_nowater.pdb \n")
-            f.write("\n")
+            f.write(" \n")
             #Solvate the protein
             f.write(""+solvate+" "+protein+" TIP3PBOX "+self.WaterBoxSize+" \n")
             if insertAnion =="on":
                 f.write(""+solvate+" "+ionName+" TIP3PBOX "+self.WaterBoxSize+" \n")
+                f.write("saveamberparm "+ionName+" "+absdir+"/in_files/"+ionName+".prmtop "+absdir+"/in_files/"+ionName+".inpcrd \n")
+                f.write("savepdb "+ionName+" "+absdir+"/in_files/"+ionName+"_finalLEAP.pdb \n")
             f.write(" \n")
             f.write("saveamberparm "+protein+" "+absdir+"/in_files/"+protein+".prmtop "+absdir+"/in_files/"+protein+".inpcrd \n")
-            if insertAnion =="on":
-                f.write("saveamberparm "+ionName+" "+absdir+"/in_files/"+ionName+".prmtop "+absdir+"/in_files/"+ionName+".inpcrd \n")
-            f.write(" \n")
             f.write("savepdb "+protein+" "+absdir+"/in_files/"+protein+"_finalLEAP.pdb \n")
-            if insertAnion =="on":  
-                f.write("savepdb "+ionName+" "+absdir+"/in_files/"+ionName+"_finalLEAP.pdb \n")
         f.write("quit \n")
         f.close()
         # Run the tleap to create the protein        
         os.system("tleap -f "+name+"")
-            
+    
+    def leapAnion(self):
+        name = "LEaP_setupAnion.ff"
+        f = open(""+name+"",'w')
+        f.write("source "+forcefield+" \n")
+#        f.write("source leaprc.gaff \n")
+        f.write("loadamberparams frcmod.ionsjc_spce \n")
+        f.write(" \n")
+        f.write("addAtomTypes { \n")
+        f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
+        f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
+        f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
+        f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
+        f.write(" } \n")
+        f.write("loadAmberParams "+self.frcmod+" \n")            
+        f.write("loadAmberParams "+self.frcmod2+" \n")
+        f.write(""+ionName+" = loadmol3 "+self.inputAnion+" \n")
+        f.write("addions "+ionName+" Na+ 0 \n")
+        f.write("addions "+ionName+" Cl- 0 \n")
+        f.write("saveamberparm "+ionName+" "+absdir+"/in_files/"+ionName+"_nowat.prmtop "+absdir+"/in_files/"+ionName+"_nowat.inpcrd \n")
+        f.write("savepdb "+ionName+" "+absdir+"/in_files/"+ionName+"_finalLEAP_nowater.pdb \n")
+        #solvation
+        f.write(""+solvate+" "+ionName+" TIP3PBOX "+self.WaterBoxSize+" \n")
+        f.write("saveamberparm "+ionName+" "+absdir+"/in_files/"+ionName+".prmtop "+absdir+"/in_files/"+ionName+".inpcrd \n")
+        f.write("savepdb "+ionName+" "+absdir+"/in_files/"+ionName+"_finalLEAP.pdb \n")
+        f.write("quit  \n")
+        f.close()
+        os.system("tleap -f "+name+"")
+        
        
         
 def main():
     os.chdir(""+root+"")
     run_leap = SetupLeap()
-    run_leap.init(CalcIonPosition)
-    #    run_leap.init(ion)
-#    if insertAnion == "on":
-#        CalcIonPos.main()
     
-    run_leap.leap_sequence(protein)
-    run_leap.leap_CYX(protein,CalcIonPosition)
+    if insertProtein == "on":
+        run_leap.leap_sequence(protein)
+        run_leap.leapProtein(protein)
+    if insertProtein == "off":
+        run_leap.leapAnion()
     os.chdir(""+home+"")
 if __name__ == '__main__': main()

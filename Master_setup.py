@@ -77,7 +77,7 @@ def main():
 #        CheckFolder.copy_files(root)
         if MakeMutations == "on":
             RunMutations = Mutations.main()
-        if insertAnion == "on":
+        if insertAnion == "on" and insertProtein == "on":
             Calc = CalcIonPos.main()
         Runleap = SetupLeap.main() #Create the parameter topology files
         Setup = SetupInfiles.main()

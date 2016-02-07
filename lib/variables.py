@@ -84,6 +84,7 @@ walltime    = config.get('Submit','walltime')
 #queue       = config.get('Submit','queue')
 
 ####### Leap parameters #######################
+insertProtein   =   config.get('Leap','insertProtein')
 forcefield      =   config.get('Leap','forcefield')
 waterboxsize    =   config.get('Leap','waterboxsize')
 solvate         =   config.get('Leap','solvation')
@@ -111,6 +112,7 @@ DISANG      = config.get('in_files','DISANG')
 #QM parameters 
 QM          = config.get('QM','QM') #If QM is set to "None" the rest of the specification will not be included
 qmcharge    = config.get('QM','qmcharge')
+qmmask      = config.get('QM','qmmask')
 qm_theory   = config.get('QM','qm_theory')
 qmshake     = config.get('QM','qmshake')
 qm_ewald    = config.get('QM','qm_ewald')
