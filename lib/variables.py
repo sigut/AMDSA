@@ -91,6 +91,8 @@ solvate         =   config.get('Leap','solvation')
 structure       =   config.get('Leap','structure')
 insertAnion     =   config.get('Leap','insertAnion')
 ionName         =   config.get('Leap','ionName')
+insertAzobenzene=   config.get('Leap','insertAzobenzene')
+azoName         =   config.get('Leap','azoName')
 
 ####### Mutations ##############################
 MakeMutations   =   config.get('Mutations','MakeMutations')

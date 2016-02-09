@@ -28,10 +28,15 @@ class SetupLeap(CalcIonPosition):
                 self.pdbFile = ""+absdir+"/in_files/"+protein+"_mutation.pdb"
             else:
                 self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
-
-        self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
-        self.frcmod = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
-        self.frcmod2 = ""+absdir_home+"/lib/setup/TemplateFiles/ion/frcmod.correspondence"
+        
+        if insertAnion == "on":
+            self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
+            self.frcmodAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
+#            self.frcmod2 = ""+absdir_home+"/lib/setup/TemplateFiles/ion/frcmod.correspondence"
+        
+        if insertAzobenzene == "on":
+            self.inputAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/Azobenzene/"+azoName+"/"+azoName+".mol2"
+            self.frcmodAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/Azobenzene/"+azoName+"/"+azoName+".frcmod"
         self.WaterBoxSize = ""+waterboxsize+""
 
         
@@ -128,8 +133,7 @@ class SetupLeap(CalcIonPosition):
         f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
         f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
         f.write(" } \n")
-        f.write("loadAmberParams "+self.frcmod+" \n")            
-        f.write("loadAmberParams "+self.frcmod2+" \n")
+        f.write("loadAmberParams "+self.frcmodAnion+" \n")            
         f.write(""+ionName+" = loadmol3 "+self.inputAnion+" \n")
         f.write("addions "+ionName+" Na+ 0 \n")
         f.write("addions "+ionName+" Cl- 0 \n")
@@ -143,6 +147,37 @@ class SetupLeap(CalcIonPosition):
         f.close()
         os.system("tleap -f "+name+"")
         
+    def leapAzobenzene(self):
+        name = "LEaP_setupAzobenzene.ff"
+        f = open(""+name+"",'w')
+        f.write("source "+forcefield+" \n")
+        f.write("loadamberparams frcmod.ionsjc_spce \n")
+        f.write("addAtomTypes { \n")
+        f.write("{ \"C\"   \"C\"   \"sp2\" } \n" )
+        f.write("{ \"CA\"  \"C\"   \"sp2\" } \n" )
+        f.write("{ \"CT\"  \"C\"   \"sp3\" } \n" )
+        f.write("{ \"H\"   \"H\"   \"sp3\" } \n" )
+        f.write("{ \"H1\"  \"H\"   \"sp3\" } \n" )
+        f.write("{ \"HA\"  \"H\"   \"sp3\" } \n" )
+        f.write("{ \"HS\"  \"H\"   \"sp3\" } \n" )
+        f.write("{ \"N\"   \"N\"   \"sp2\" } \n" )
+        f.write("{ \"NC\"  \"N\"   \"sp2\" } \n" )
+        f.write("{ \"O\"   \"O\"   \"sp2\" } \n" )
+        f.write("{ \"SH\"  \"S\"   \"sp3\" } \n" )
+        f.write("} \n")
+        f.write("loadAmberParams "+self.frcmodAzobenzene+" \n")            
+        f.write(""+azoName+" = loadmol3 "+self.inputAzobenzene+" \n")
+        f.write("addions "+azoName+" Na+ 0 \n")
+        f.write("addions "+azoName+" Cl- 0 \n")
+        f.write("saveamberparm "+azoName+" "+absdir+"/in_files/"+azoName+"_nowat.prmtop "+absdir+"/in_files/"+azoName+"_nowat.inpcrd \n")
+        f.write("savepdb "+azoName+" "+absdir+"/in_files/"+azoName+"_finalLEAP_nowater.pdb \n")
+        #solvation
+        f.write(""+solvate+" "+azoName+" TIP3PBOX "+self.WaterBoxSize+" \n")
+        f.write("saveamberparm "+azoName+" "+absdir+"/in_files/"+azoName+".prmtop "+absdir+"/in_files/"+azoName+".inpcrd \n")
+        f.write("savepdb "+azoName+" "+absdir+"/in_files/"+azoName+"_finalLEAP.pdb \n")
+        f.write("quit  \n")
+        f.close()
+        os.system("tleap -f "+name+"")
        
         
 def main():
@@ -152,7 +187,12 @@ def main():
     if insertProtein == "on":
         run_leap.leap_sequence(protein)
         run_leap.leapProtein(protein)
+    
     if insertProtein == "off":
-        run_leap.leapAnion()
+        if insertAnion == "on":
+            run_leap.leapAnion()
+        if insertAzobenzene == "on":
+            run_leap.leapAzobenzene()
+        
     os.chdir(""+home+"")
 if __name__ == '__main__': main()
