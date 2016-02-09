@@ -18,11 +18,13 @@ C -N      490.0             1.335          taken from parm10.dat
 C -O      570.0             1.229          taken from parm10.dat
 CA-CA     470.0             1.400          adapted from parm10.dat 469.0
 CA-HA     365.0             1.080          adapted from parm10.dat 367.0
+CA-N      370.0             1.422          adapted from frcmod.user 372.3
 CA-NC     485.0             1.339          adapted from parm10.dat 483.0
 CT-H1     340.0             1.090          taken from parm10.dat
 CT-SH     235.0             1.810          adapted from parm10.dat 237.0
 H -N      435.0             1.010          adapted from parm10.dat 434.0
 HS-SH     275.0             1.336          adapted from parm10.dat 274.0
+NC-NC     720.0             1.264          adapted from frcmod.user 721.6
 
 ANGLE  K(kcal.mol-1.rad-2)  Theta0(deg)    Source
 CT-C -N        70.0         116.60         taken from parm10.dat
@@ -30,10 +32,16 @@ CT-C -O        80.0         120.40         taken from parm10.dat
 N -C -O        80.0         122.90         taken from parm10.dat
 CA-CA-CA       65.0         120.00         adapted from parm10.dat 63.0
 CA-CA-HA       50.0         120.00         taken from parm10.dat
+CA-CA-N        70.0         119.89         adapted from frcmod.user 67.97
+CA-CA-NC       70.0         119.72         adapted from frcmod.user 70.14
 C -CT-H1       50.0         109.50         taken from parm10.dat
+C -CT-SH       60.0         114.02         adapted from frcmod.user 61.11
 H1-CT-H1       35.0         109.50         taken from parm10.dat
 H1-CT-SH       50.0         109.50         taken from parm10.dat
+C -N -CA       65.0         123.71         adapted from frcmod.user 64.29
 C -N -H        50.0         120.00         taken from parm10.dat
+CA-N -H        45.0         115.94         adapted from frcmod.user 47.36
+CA-NC-NC       70.0         115.12         adapted from frcmod.user 69.69
 CT-SH-HS       45.0          96.00         adapted from parm10.dat 43.0
 
 DIHEDRAL    Path V(kcal.mol-1.rad-1) Phase(deg.) Period Source
@@ -55,13 +63,18 @@ CA-CA-CA-NC   1    3.62500000e+00      180.0       2.   adapted from parm10.dat 
 HA-CA-CA-HA   1    3.62500000e+00      180.0       2.   adapted from parm10.dat i.e X-CA-CA-X   14.5/4
 HA-CA-CA-N    1    3.62500000e+00      180.0       2.   adapted from parm10.dat i.e X-CA-CA-X   14.5/4
 HA-CA-CA-NC   1    3.62500000e+00      180.0       2.   adapted from parm10.dat i.e X-CA-CA-X   14.5/4
+CA-CA-N -C    4    1.80000000e+00      180.0       2.   taken from frcmod.user
+CA-CA-N -H    4    1.80000000e+00      180.0       2.   taken from frcmod.user
 CA-CA-NC-NC   1    4.80000000e+00      180.0       2.   adapted from parm10.dat i.e X-CA-NC-X   9.6/2
 C -CT-SH-HS   1    2.50000000e-01        0.0       3.   adapted from parm10.dat i.e X-CT-SH-X   0.75/3
 H1-CT-SH-HS   1    2.50000000e-01        0.0       3.   adapted from parm10.dat i.e X-CT-SH-X   0.75/3
+CA-NC-NC-CA   1    3.00000000e+00      180.0      -2.   taken from frcmod.user
 
 IMPROPER         V(kcal.mol-1.rad-1) Phase(deg.) Period Source
 CT-N -C -O         1.05000000e+01      180.0       2.   adapted from parm10.dat i.e X-X-C-O
 CA-CA-CA-HA        1.10000000e+00      180.0       2.   adapted from parm10.dat i.e X-X-CA-HA
+CA-CA-CA-N         1.10000000e+00      180.0       2.   taken from frcmod.user
+CA-CA-CA-NC        1.10000000e+00      180.0       2.   taken from frcmod.user
 C -CA-N -H         1.00000000e+00      180.0       2.   adapted from parm10.dat i.e X-X-N-H
 
 NONBON     R*(ang)   Eps(kcal.mol-1)       Source
