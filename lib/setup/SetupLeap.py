@@ -30,7 +30,7 @@ class SetupLeap(CalcIonPosition):
                 self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
         
         if insertAnion == "on":
-            self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
+            self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+"_"+frcmod+".mol2"
             self.frcmodRED = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".frcmod"
             self.frcmodGAFF = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".dat"
         
@@ -82,7 +82,7 @@ class SetupLeap(CalcIonPosition):
                 f.write("loadAmberParams "+self.frcmodRED+" \n")            
             if frcmod == "gaff":
                 f.write("loadAmberParams "+self.frcmodGAFF+" \n")
-            f.write("anion = loadmol3 "+self.inputAnion+" \n")
+            f.write("anion = loadmol2 "+self.inputAnion+" \n")
             f.write("translate anion {"+coordinates+"} \n")
             f.write(""+protein+" = combine{"+protein+" anion} \n")
             f.write(" \n")
