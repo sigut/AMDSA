@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--idir',
                     help = 'input directory of the simulation' )
 parser.add_argument('-p', '--protein',
-                    help = 'Protein specification, the current options are: pbpv, pbpu')
+                    help = 'Specification of the prmtop and inpcrd name')
 parser.add_argument('-q','--qsub',
                     help='if -q qsub is specified the setup or analysis will be submitted directly to the hpc-queue')
 parser.add_argument('-n','--nomerge',
@@ -91,6 +91,7 @@ solvate         =   config.get('Leap','solvation')
 structure       =   config.get('Leap','structure')
 insertAnion     =   config.get('Leap','insertAnion')
 ionName         =   config.get('Leap','ionName')
+frcmod          =   config.get('Leap','frcmod')
 insertAzobenzene=   config.get('Leap','insertAzobenzene')
 azoName         =   config.get('Leap','azoName')
 

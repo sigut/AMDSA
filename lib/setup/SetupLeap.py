@@ -31,12 +31,13 @@ class SetupLeap(CalcIonPosition):
         
         if insertAnion == "on":
             self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
-            self.frcmodAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
-#            self.frcmod2 = ""+absdir_home+"/lib/setup/TemplateFiles/ion/frcmod.correspondence"
+            self.frcmodRED = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".frcmod"
+            self.frcmodGAFF = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".dat"
         
         if insertAzobenzene == "on":
             self.inputAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/Azobenzene/"+azoName+"/"+azoName+".mol2"
             self.frcmodAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/Azobenzene/"+azoName+"/"+azoName+".frcmod"
+            
         self.WaterBoxSize = ""+waterboxsize+""
 
         
@@ -71,15 +72,16 @@ class SetupLeap(CalcIonPosition):
             f.write("bond "+protein+".115.SG "+protein+".160.SG \n")
             f.write("bond "+protein+".301.SG "+protein+".364.SG \n")
         if insertAnion =="on":
-           # f.write("verbosity 2\n")
-            f.write("addAtomTypes { \n")
-            f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
-            f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
-            f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
-            f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
-            f.write(" } \n")
-            f.write("loadAmberParams "+self.frcmod+" \n")            
-            f.write("loadAmberParams "+self.frcmod2+" \n")
+            if frcmod == "RED":        
+                f.write("addAtomTypes { \n")
+                f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
+                f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
+                f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
+                f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
+                f.write(" } \n")
+                f.write("loadAmberParams "+self.frcmodRED+" \n")            
+            if frcmod == "gaff":
+                f.write("loadAmberParams "+self.frcmodGAFF+" \n")
             f.write("anion = loadmol3 "+self.inputAnion+" \n")
             f.write("translate anion {"+coordinates+"} \n")
             f.write(""+protein+" = combine{"+protein+" anion} \n")
@@ -127,13 +129,16 @@ class SetupLeap(CalcIonPosition):
 #        f.write("source leaprc.gaff \n")
         f.write("loadamberparams frcmod.ionsjc_spce \n")
         f.write(" \n")
-        f.write("addAtomTypes { \n")
-        f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
-        f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
-        f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
-        f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
-        f.write(" } \n")
-        f.write("loadAmberParams "+self.frcmodAnion+" \n")            
+        if frcmod == "RED":        
+            f.write("addAtomTypes { \n")
+            f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
+            f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
+            f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
+            f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
+            f.write(" } \n")
+            f.write("loadAmberParams "+self.frcmodAnion+" \n")            
+        if frcmod == "gaff":
+            f.write("source "+self.frcmodGAFF+" \n")
         f.write(""+ionName+" = loadmol3 "+self.inputAnion+" \n")
         f.write("addions "+ionName+" Na+ 0 \n")
         f.write("addions "+ionName+" Cl- 0 \n")
