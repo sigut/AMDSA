@@ -61,7 +61,9 @@ class Analysis:
         if includeHeat == "on":
             f.write("trajin md_files/heat1.mdcrd 1 last 1 \n")
             f.write("trajin md_files/heat2.mdcrd 1 last 1 \n")
-        for names in mdcrd_files:
+        if includeEquil == "on":
+            f.write("trajin md_files/equil0.mdcrd 1 last 1 \n")
+        for names in mdcrd_files[1:]:
             f.write("trajin md_files/"+names+" 1 last 1 \n")
             f.write(' \n')
     #Cpptraj for stripping all the water
@@ -96,11 +98,6 @@ class Analysis:
             
         f = open("in_files/analysis.traj",'w')
         f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
-#        if protein == "DiaminoAzobenzeneCis" or protein == "DiaminoAzobenzeneTrans":
-#            f.write("trajin resultsDir/mergedResult_strip.dcd 1 last 1 \n")
-#            f.write("rms first out data/rmsd.dat @S, S1 time 1 \n")
-#            f.write("distance end_to_end :1@S :1@S1 out data/distance_S_S1.dat \n")
-#        else: 
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
         #f.write("atomicfluct out data/backbone_RMSF.apf @C,CA,N \n")
         if protein == "pbpu" or protein == "pbpv":
@@ -108,21 +105,28 @@ class Analysis:
             f.write("distance end_to_end1 :10@HD22 :63@OD1 out data/distance_10_63.dat \n")
             f.write("distance end_to_end2 :115@SG :160@SG out data/distance_disulfur1.dat \n")
             f.write("distance end_to_end3 :301@SG :364@SG out data/distance_disulfur2.dat \n")
+            
         if protein == "2ABH" or protein == "1IXH":
             f.write("distance end_to_end :226@CG :297@CG out data/distance_226_297.dat \n")
             f.write("distance end_to_endP :10@CB :322@P out data/distance_10_P.dat \n")
-        if insertAnion == "on":       
-            if protein == "pbpu":
-                f.write("distance end_to_endpbpuP :93@CG2 :376@P out data/distanceP.dat \n")
-            if protein == "pbpv":
-                f.write("distance end_to_endpbpvP :93@CG2 :373@P out data/distanceP.dat \n")
-            if protein == "1IXH" or protein == "2ABH":
-                f.write("distance end_to_endP :93@CG2 :322@P out data/distanceP.dat \n")
-        f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb \n")
-        f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.txt summary data/cluster_dbscan_summary_out.txt repout data/cluster/dbscan_centroid repfmt pdb \n")     
+            
+
+#        if protein == "pbpu":
+#            f.write("distance end_to_endpbpuP :93@CG2 :376@P out data/distanceP.dat \n")
+#        if protein == "pbpv":
+#            f.write("distance end_to_endpbpvP :93@CG2 :373@P out data/distanceP.dat \n")
+#        if protein == "1IXH" or protein == "2ABH":
+#            f.write("distance end_to_endP :93@CG2 :322@P out data/distanceP.dat \n")
+        
+        if clusterAnalysis == "on":
+            f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb \n")
+            f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.txt summary data/cluster_dbscan_summary_out.txt repout data/cluster/dbscan_centroid repfmt pdb \n")     
+        
         if MakeMutations == "on":
             f.write("distance end_to_endSG :"+Mutation1+"@SG :"+Mutation2+"@SG out data/distance_"+Mutation1+"_"+Mutation2+".dat \n")
+            
         if protein == "cis" or "trans":
+            f.write('rms first out data/rmsd.dat @S,S1 time 1 \n')
             f.write("distance end_to_endSG :1@S :1@S1 out data/distance_S_S1.dat \n")
         
         f.close()

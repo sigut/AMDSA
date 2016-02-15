@@ -254,9 +254,9 @@ class SetupInfiles:
         else:
             f.write("  cut=10.0, ntb=1, ntp=0,  \n")
         if timestep == "0.002":
-            f.write("  nstlim=100000,dt=0.002, ,iwrap=1 \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
+            f.write("  nstlim=1000000,dt=0.002, ,iwrap=1 \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
         if timestep == "0.001":
-            f.write("  nstlim=200000,dt=0.001, \n")     # Production run for 200000*0.001 ps = 2000 ps = 2 ns (repeated in submit.sh)
+            f.write("  nstlim=2000000,dt=0.001, \n")     # Production run for 200000*0.001 ps = 2000 ps = 2 ns (repeated in submit.sh)
         f.write("  ntc="+ntc+",ntf="+ntf+",ig=-1,       \n")
         f.write("  ntpr=1000, ntwx=1000,    \n")
         f.write("  ntt=3, gamma_ln=2.0,     \n")
