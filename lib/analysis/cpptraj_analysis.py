@@ -124,11 +124,18 @@ class Analysis:
         
         if MakeMutations == "on":
             f.write("distance end_to_endSG :"+Mutation1+"@SG :"+Mutation2+"@SG out data/distance_"+Mutation1+"_"+Mutation2+".dat \n")
-            
-        if protein == "cis" or "trans":
-            f.write('rms first out data/rmsd.dat @S,S1 time 1 \n')
-            f.write("distance end_to_endSG :1@S :1@S1 out data/distance_S_S1.dat \n")
         
+        f.close()
+        
+    def analyse_azo(self):
+        if not os.path.exists("data"):
+            os.makedirs("data")
+        if not os.path.exists("data/cluster"):
+            os.makedirs("data/cluster")
+        f = open("in_files/analysis.traj",'w')
+        f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
+        f.write('rms first out data/rmsd.dat @S,S1 time 1 \n')
+        f.write("distance end_to_endSG :1@S :1@S1 out data/distance_S_S1.dat \n")        
         f.close()
            
     # If specified the calculation is submitted to the hpc queue
@@ -158,7 +165,10 @@ def main():
     #Define the methods of the constructor    
     makeAnalysis.find_prmtop(root)
     makeAnalysis.makeTrajin(root,protein)
-    makeAnalysis.analyse(root)
+    if protein == "cis" or "trans":
+        makeAnalysis.analyse_azo()
+    else:
+        makeAnalysis.analyse(root)
     makeAnalysis.run_analysis(root,qsub)
     os.chdir(""+home+"")
 if __name__ == '__main__': main()

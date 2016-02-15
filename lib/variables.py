@@ -127,9 +127,10 @@ qm_pme      = config.get('QM','qm_pme')
 
 ######## Analysis ##############################
 #Cluster Analysis:
-
+deleteOldData       =   config.get('Analysis','deleteOldData')
 dcdname             =   config.get('Analysis','dcdname')
 includeHeat         =   config.get('Analysis','includeHeat')
+includeEquil        =   config.get('Analysis','includeEquil')
 removeWaters        =   config.get('Analysis','removeWaters')
 clusterAnalysis     =   config.get('Analysis','clusterAnalysis')
 nodesAnalysis       =   config.get('Analysis','nodes')

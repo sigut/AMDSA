@@ -33,6 +33,10 @@ class CreateFolders():
             os.mkdir(""+absdir+"/data")
         if not os.path.exists(""+root+"/plots"):
             os.mkdir(""+absdir+"/plots")
+            
+    def deleteOldData(self,absdir):
+        os.system("rm -rf "+absdir+"/data/*")
+        os.system("rm -rf "+absdir+"/plots/*")
 
 
 
@@ -41,7 +45,10 @@ def main():
     Createfolder = CreateFolders(absdir)
 #    Createfolder.create_folder(absdir)
     Createfolder.__init__(absdir)
-              # This script plots the cpptraj created data-files
+             
+    if deleteOldData == "on":
+        Createfolder.deleteOldData(absdir)
+     # This script plots the cpptraj created data-files
     
     import qsub_hpc             # If qsub is specified the ccptraj, R and plot scripts will be submitted to the hpc-queue. 
     import cpptraj_analysis     # This script runs the cpptraj module for merging mdcrd files and making the analysis on the combined dcd file. The analysis includes rmsd, distance and clustering

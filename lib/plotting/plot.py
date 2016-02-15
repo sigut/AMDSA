@@ -52,31 +52,23 @@ directory = "./lib/analysis/"
 #Define the files to plot:
 
 #files = ["rmsd","distance_226_297", "distance_10_147","distance_10_63","distance_disulfur1","distance_disulfur2"]
-cluster_files = ["cluster_hier_out","cluster_dbscan_out"]
-files = []
+
 #hier_files = []
 
-for file in os.listdir(""+absdir+"/data/"):
-    if file.endswith(".dat"):
-#        base=os.path.basename(file)        
-        temp = os.path.splitext(file)[0]
-        print temp
-        files.append(temp)
-        print files
 
 
-#for file in os.listdir(""+absdir+"/data/"):
-#    if file.startswith("distance"):
-#        hier_files.append(file)
 
 #Create plots folder if it doesn't exist
 if not os.path.exists(""+root+"plots"):
     os.makedirs(""+root+"plots")
 
 class Plot():
-    def __init__(self,root,files):
+    def __init__(self,root):
         self.x = 0
         self.y = 0
+        
+#    def find_files(self,absdir):
+        
 
     def read_datafile(self,root,files):
         data = open("data/"+files+".dat", "r")
@@ -106,8 +98,8 @@ class Plot():
         
     def histplot(self,root,files):
         # best fit of data
-        (mu, sigma) = norm.fit(self.y)
-        print mu, sigma
+        (mu, sigma) = norm.fit(self.y)        
+        print "mu and sigma: "+str(mu)+", "+str(sigma)+""
         #Make the hist plot
         plt.figure(figsize=(12, 6))   
         binwidth = 0.1
@@ -117,8 +109,8 @@ class Plot():
         n, bins, patches = plt.hist(self.y, normed=1,color=color,bins=np.arange(min(self.y), max(self.y) + binwidth, binwidth))        #
         
         # add a 'best fit' line
-        y = mlab.normpdf( bins, mu, sigma)
-        l = plt.plot(bins, y, 'b--', linewidth=2)
+        fit = mlab.normpdf( bins, mu, sigma)
+        l = plt.plot(bins, fit, 'b--', linewidth=2)
 
 #        plt.hist(self.y,fit,normed=1,bins=np.arange(min(self.y), max(self.y) + binwidth, binwidth),color=color)
         plt.xlabel(u"Distance [Å]")
@@ -177,10 +169,21 @@ class Plot():
         
 def main():
 #    Enter the root directory
+    cluster_files = ["cluster_hier_out","cluster_dbscan_out"]
+    files = []
+    print absdir
+    for file in os.listdir(""+absdir+"/data/"):
+        if file.endswith(".dat"):
+            temp = os.path.splitext(file)[0]
+            print temp
+    files.append(temp)
+    print files
+    print "the files should be printed here"
+    
     if not os.path.exists(""+root+"/plots"):
         os.mkdir(""+root+"/plots")
     os.chdir(""+root+"")         
-    makePlot = Plot(root,files)
+    makePlot = Plot(root)
     print "entering the loop"
     print files
     
