@@ -79,12 +79,16 @@ def main():
 #Define the methods of the constructor    
     makeAnalysis.find_prmtop(root)
     makeAnalysis.makeTrajin(root,protein)
-    makeAnalysis.analyse(root)
-# Define the analysis constructor for "R" 
-    makeR_Analysis = R_analysis.R()
-#Define the methods of the constructor
-    makeR_Analysis.write_R(root,protein)
-    makeR_Analysis.write_R_sh(root)
+    if protein == "cis" or protein =="trans":
+        makeAnalysis.analyse_azo()
+    else:
+        makeAnalysis.analyse()
+# Define the analysis constructor for "R"
+    if R_Analysis == "on":
+        makeR_Analysis = R_analysis.R()
+        #Define the methods of the constructor
+        makeR_Analysis.write_R(root,protein)
+        makeR_Analysis.write_R_sh(root)
     
 #Define the qsub constructor   
     submit = qsub()
