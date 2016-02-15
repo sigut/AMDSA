@@ -11,6 +11,8 @@ from matplotlib.backends.backend_pdf import PdfPages
 def isLower(ch):
     return string.find(string.lowercase, ch) != -1
 import matplotlib.pyplot as plt
+from scipy.stats import norm
+import matplotlib.mlab as mlab
 import numpy as np
 import inspect
 
@@ -52,11 +54,20 @@ directory = "./lib/analysis/"
 #files = ["rmsd","distance_226_297", "distance_10_147","distance_10_63","distance_disulfur1","distance_disulfur2"]
 cluster_files = ["cluster_hier_out","cluster_dbscan_out"]
 files = []
+#hier_files = []
 
 for file in os.listdir(""+absdir+"/data/"):
     if file.endswith(".dat"):
-        files.append(file)
+#        base=os.path.basename(file)        
+        temp = os.path.splitext(file)[0]
+        print temp
+        files.append(temp)
+        print files
 
+
+#for file in os.listdir(""+absdir+"/data/"):
+#    if file.startswith("distance"):
+#        hier_files.append(file)
 
 #Create plots folder if it doesn't exist
 if not os.path.exists(""+root+"plots"):
@@ -68,7 +79,7 @@ class Plot():
         self.y = 0
 
     def read_datafile(self,root,files):
-        data = open("data/"+files+"", "r")
+        data = open("data/"+files+".dat", "r")
         lines = data.readlines()[1:]
         data.close()
         x = []
@@ -93,13 +104,39 @@ class Plot():
         plt.savefig("plots/"+files+".png")
         plt.clf()
         
+    def histplot(self,root,files):
+        # best fit of data
+        (mu, sigma) = norm.fit(self.y)
+        print mu, sigma
+        #Make the hist plot
+        plt.figure(figsize=(12, 6))   
+        binwidth = 0.1
+        color = "dodgerblue"
+        
+        # the histogram of the data
+        n, bins, patches = plt.hist(self.y, normed=1,color=color,bins=np.arange(min(self.y), max(self.y) + binwidth, binwidth))        #
+        
+        # add a 'best fit' line
+        y = mlab.normpdf( bins, mu, sigma)
+        l = plt.plot(bins, y, 'b--', linewidth=2)
+
+#        plt.hist(self.y,fit,normed=1,bins=np.arange(min(self.y), max(self.y) + binwidth, binwidth),color=color)
+        plt.xlabel(u"Distance [Å]")
+        plt.ylabel(u"Probability")
+        title = "$\mathrm{Histogram\ of: \ "+files+"}$"
+        title = title.replace('_', '\_')
+        plt.title(r""+title+"$\ \ \mu=%.3f,\ \sigma=%.3f$" %(mu, sigma))
+        plt.savefig("plots/"+files+"_hist.png")
+        plt.clf()
+        
+        
     def cluster_label(self,root,cluster_files): #Plot for making rmsd colored according to the cluster
-        data = open("data/"+cluster_files+".dat", "r")
+        data = open("data/"+cluster_files+".txt", "r")
         lines = data.readlines()[1:]
         data.close()
         y_c = []
         for line in lines:
-            p = line.split()
+            p = line.   split()
             y_c.append(float(p[1]))
             yv = np.array(y_c)
         clusters = max(yv)
@@ -135,30 +172,39 @@ class Plot():
         plt.savefig("plots/"+cluster_files+".png")
         plt.clf()
         
+
+        
+        
 def main():
 #    Enter the root directory
     if not os.path.exists(""+root+"/plots"):
         os.mkdir(""+root+"/plots")
     os.chdir(""+root+"")         
     makePlot = Plot(root,files)
+    print "entering the loop"
+    print files
     
     for i in files: #loop through the files (rmsd, distance...) and make the data-analysis and plot.
-        if os.path.exists("data/"+str(i)+"") == True:
+        if os.path.exists("data/"+str(i)+".dat") == True:
             makePlot.read_datafile(root,""+str(i)+"")
             print "read datafile "+str(i)+""
             makePlot.plot_datafile(root,""+str(i)+"")
+            
+#        if file.startswith("distance"):
+            print "Making hist plot"
+            makePlot.histplot(root,""+str(i)+"")
             print "plotting datafile "+str(i)+""
         else: 
             print "Warning --- "+str(i)+" does not exist. Cannot make plot"
         
-    for j in cluster_files: # Loop through the different cluster_*_out files to make the colour cluster rmsd plot
-        if os.path.exists("data/"+str(j)+".dat") == True:
-            makePlot.read_datafile(root,"rmsd.dat")  #Read the rmsd file
-            print "read datafile "+str(j)+".dat"
-            makePlot.cluster_label(root,""+str(j)+"")
-            print "plotting datafile "+str(j)+".dat"
-        else: 
-            print "Warning --- "+str(j)+".dat does not exist. Cannot make rmsd-cluster colored plot"
+#    for j in cluster_files: # Loop through the different cluster_*_out files to make the colour cluster rmsd plot
+#        if os.path.exists("data/"+str(j)+".dat") == True:
+#            makePlot.read_datafile(root,"rmsd.dat")  #Read the rmsd file
+#            print "read datafile "+str(j)+".dat"
+#            makePlot.cluster_label(root,""+str(j)+"")
+#            print "plotting datafile "+str(j)+".dat"
+#        else: 
+#            print "Warning --- "+str(j)+".dat does not exist. Cannot make rmsd-cluster colored plot"
                 
     os.chdir(""+home+"")     
     

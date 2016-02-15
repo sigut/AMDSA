@@ -19,6 +19,7 @@ for folders in the_list:
 
 from variables import *
 from CalcIonPos import CalcIonPosition
+import Crosslinker
 
 
 class SetupLeap(CalcIonPosition):
@@ -39,7 +40,8 @@ class SetupLeap(CalcIonPosition):
             self.frcmodAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/Azobenzene/"+azoName+"/"+azoName+".frcmod"
             
         self.WaterBoxSize = ""+waterboxsize+""
-
+        # If Crosslink == on
+        # protein/pdbFile is found in 
         
     def leap_sequence(self,protein):
         name = "LEaP_sequence.ff"
@@ -64,10 +66,14 @@ class SetupLeap(CalcIonPosition):
         name = "LEaP_setup.ff"
         f = open(""+name+"",'w')
         f.write("source "+forcefield+" \n")
-#        f.write("source leaprc.gaff \n")
+        f.write("source leaprc.gaff \n")
         f.write("loadamberparams frcmod.ionsjc_spce \n")
         f.write(" \n")
-        f.write(""+protein+" = loadpdb "+absdir+"/in_files/"+protein+"_sequence.pdb \n")
+        if crosslink == "on":
+            f.write(""+protein+" = loadpdb "+absdir+"/in_files/"+protein+"_crosslink.pdb \n")
+            f.write("loadAmberParams "+absdir_home+"/lib/setup/TemplateFiles/Azobenzene/"+configuration+"/Azobenzene.frcmod \n")
+        else:
+            f.write(""+protein+" = loadpdb "+absdir+"/in_files/"+protein+"_sequence.pdb \n")
         if protein == "pbpu" or protein == "pbpv":
             f.write("bond "+protein+".115.SG "+protein+".160.SG \n")
             f.write("bond "+protein+".301.SG "+protein+".364.SG \n")
@@ -188,10 +194,14 @@ class SetupLeap(CalcIonPosition):
 def main():
     os.chdir(""+root+"")
     run_leap = SetupLeap()
-    
+        
     if insertProtein == "on":
-        run_leap.leap_sequence(protein)
-        run_leap.leapProtein(protein)
+        if crosslink == "on":
+            Crosslink = Crosslinker.main() # Run the script that crosslinks the azobenzene to the protein.
+            run_leap.leapProtein(protein)  
+        else:
+            run_leap.leap_sequence(protein)
+            run_leap.leapProtein(protein)
     
     if insertProtein == "off":
         if insertAnion == "on":

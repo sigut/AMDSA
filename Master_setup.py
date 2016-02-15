@@ -30,7 +30,7 @@ for folders in the_list:
         sys.path.insert(0, cmd_subfolder)
 #import lib
 from variables import *
-import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos, Mutations
+import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos, Mutations, Crosslinker
 
 
 class CreateFolders():
@@ -50,6 +50,8 @@ class CreateFolders():
                 os.mkdir(""+root+"/resultsDir")
             if not os.path.exists(""+root+"/pdb_files"):
                 os.mkdir(""+root+"/pdb_files")
+            if not os.path.exists(""+root+"/data"):
+                os.mkdir(""+root+"/data")
             
            
     def check_folder(self,root):

@@ -85,6 +85,10 @@ walltime    = config.get('Submit','walltime')
 
 ####### Leap parameters #######################
 insertProtein   =   config.get('Leap','insertProtein')
+crosslink       =   config.get('Leap','crosslink')
+link1           =   config.get('Leap','link1')
+link2           =   config.get('Leap','link2')
+configuration   =   config.get('Leap','configuration')
 forcefield      =   config.get('Leap','forcefield')
 waterboxsize    =   config.get('Leap','waterboxsize')
 solvate         =   config.get('Leap','solvation')
@@ -124,8 +128,9 @@ qm_pme      = config.get('QM','qm_pme')
 ######## Analysis ##############################
 #Cluster Analysis:
 
-#nomerge             = config.get('Analysis','trajectoryMerge')
 dcdname             =   config.get('Analysis','dcdname')
+includeHeat         =   config.get('Analysis','includeHeat')
+removeWaters        =   config.get('Analysis','removeWaters')
 nodesAnalysis       =   config.get('Analysis','nodes')
 coresAnalysis       =   config.get('Analysis','cores')
 walltimeAnalysis    =   config.get('Analysis','walltime')

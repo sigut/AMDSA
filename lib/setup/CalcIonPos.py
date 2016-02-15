@@ -178,7 +178,7 @@ class CalcIonPosition():
                                     self.ProteinCoordinates[1][self.Atomnumber[self.NearestAtom ]],
                                     self.ProteinCoordinates[2][self.Atomnumber[self.NearestAtom ]]])
         # Find a vector to move the ligand with
-        self.vector = np.array(self.ionPos-AtomCoordinates)/np.linalg.norm(self.ionPos-AtomCoordinates) 
+        self.vector = np.array(self.ionPos-AtomCoordinates)/np.linalg.norm(self.ionPos-AtomCoordinates)
         print ""
         print "Moving Ligand with direction:" 
         print self.vector

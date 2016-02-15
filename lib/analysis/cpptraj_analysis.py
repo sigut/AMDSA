@@ -58,22 +58,24 @@ class Analysis:
         mdcrd_files = natural_sort(mdcrd_files)
         
         f = open("in_files/trajin.traj",'w')
-        f.write("trajin md_files/heat1.mdcrd 1 last 1 \n")
-        f.write("trajin md_files/heat2.mdcrd 1 last 1 \n")
+        if includeHeat == "on":
+            f.write("trajin md_files/heat1.mdcrd 1 last 1 \n")
+            f.write("trajin md_files/heat2.mdcrd 1 last 1 \n")
         for names in mdcrd_files:
             f.write("trajin md_files/"+names+" 1 last 1 \n")
             f.write(' \n')
     #Cpptraj for stripping all the water
         f.write('\n')
         f.write('# Center \n')
-        f.write('center :1-321 origin \n')
+        f.write('center :1 origin \n')
         f.write('image origin center familiar \n')
         f.write('\n')
-        f.write('# Remove all water molecules \n')
-        f.write('strip :WAT outprefix in_files/strip \n')
+        if removeWaters == "on":
+            f.write('# Remove all water molecules \n')
+            f.write('strip :WAT outprefix in_files/strip \n')
         f.write('\n')
         f.write('# Create output \n')
-        f.write('trajout resultsDir/mergedResult_strip.dcd charmm nobox \n')
+        f.write("trajout resultsDir/"+dcdname+" charmm nobox \n")
         f.write('go')
     # Make cpptraj keep nearest water molecules  
 #        f.write('\n')
@@ -116,10 +118,13 @@ class Analysis:
                 f.write("distance end_to_endpbpvP :93@CG2 :373@P out data/distanceP.dat \n")
             if protein == "1IXH" or protein == "2ABH":
                 f.write("distance end_to_endP :93@CG2 :322@P out data/distanceP.dat \n")
-        f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.dat summary data/cluster_hier_summary_out.dat repout data/cluster/hier_centroid repfmt pdb \n")
-        f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.dat summary data/cluster_dbscan_summary_out.dat repout data/cluster/dbscan_centroid repfmt pdb \n")     
+        f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb \n")
+        f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.txt summary data/cluster_dbscan_summary_out.txt repout data/cluster/dbscan_centroid repfmt pdb \n")     
         if MakeMutations == "on":
             f.write("distance end_to_endSG :"+Mutation1+"@SG :"+Mutation2+"@SG out data/distance_"+Mutation1+"_"+Mutation2+".dat \n")
+        if protein == "cis" or "trans":
+            f.write("distance end_to_endSG :1@S :1@S1 out data/distance_S_S1.dat \n")
+        
         f.close()
            
     # If specified the calculation is submitted to the hpc queue
