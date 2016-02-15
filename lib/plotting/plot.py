@@ -176,7 +176,7 @@ def main():
         if file.endswith(".dat"):
             temp = os.path.splitext(file)[0]
             print temp
-    files.append(temp)
+            files.append(temp)
     print files
     print "the files should be printed here"
     
@@ -201,13 +201,13 @@ def main():
             print "Warning --- "+str(i)+" does not exist. Cannot make plot"
         
     for j in cluster_files: # Loop through the different cluster_*_out files to make the colour cluster rmsd plot
-        if os.path.exists("data/"+str(j)+".dat") == True:
-            makePlot.read_datafile(root,"rmsd.dat")  #Read the rmsd file
+        if os.path.exists("data/"+str(j)+".txt") == True:
+            makePlot.read_datafile(root,"rmsd")  #Read the rmsd file
             print "read datafile "+str(j)+".dat"
             makePlot.cluster_label(root,""+str(j)+"")
-            print "plotting datafile "+str(j)+".dat"
+            print "plotting datafile "+str(j)+".txt"
         else: 
-            print "Warning --- "+str(j)+".dat does not exist. Cannot make rmsd-cluster colored plot"
+            print "Warning --- "+str(j)+".txt does not exist. Cannot make rmsd-cluster colored plot"
                 
     os.chdir(""+home+"")     
     
