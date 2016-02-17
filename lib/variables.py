@@ -158,11 +158,11 @@ def Queue(queue,name, cores, ptile):
 #BSUB -u sigut@env.dtu.dk
 #BSUB -B
 #BSUB -N
-#BSUB -o """+name+"""_%J.out
-#BSUB -e """+name+"""_%J.err
+#BSUB -o """+name+""".o%J
+#BSUB -e """+name+""".e%J
 
 # Temporary fix on DTU HPC
-.  /etc/profile.d/machinetype.sh
+.  /etc/profile.d/b_machinetype.sh 
 
 # load the necessary modules
 module purge
