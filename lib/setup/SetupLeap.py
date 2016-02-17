@@ -144,7 +144,7 @@ class SetupLeap(CalcIonPosition):
             f.write(" } \n")
             f.write("loadAmberParams "+self.frcmodAnion+" \n")            
         if frcmod == "gaff":
-            f.write("source "+self.frcmodGAFF+" \n")
+            f.write("loadamberparams "+self.frcmodGAFF+" \n")
         f.write(""+ionName+" = loadmol3 "+self.inputAnion+" \n")
         f.write("addions "+ionName+" Na+ 0 \n")
         f.write("addions "+ionName+" Cl- 0 \n")
