@@ -57,12 +57,16 @@ def main():
     import MMPBSA_analysis
         
     if qsub == None:
+        
         if makeAnalysis == "on":
             CPPTRAJ = cpptraj_analysis.main()
+            
         if R_Analysis == "on":        
             RPlot = R_analysis.main()  
+            
         if MMPBSA == "on":
             mmpbsa = MMPBSA_analysis.main()
+            
         if makePlots == "on":
             Plot = plot.main()
         

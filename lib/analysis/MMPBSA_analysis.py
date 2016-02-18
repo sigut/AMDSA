@@ -86,7 +86,8 @@ class MMPBSA():
         f.close()
         #Submitting the script to the server
 #        os.system("qsub "+name+"")
-        
+    def run_MMPBSA(self):
+        os.system("$AMBERHOME/bin/MMPBSA.py -O -i in_files/mmpbsa.in -o data/MMPBSA.dat -sp "+self.complex_solvated+" -cp "+self.complex_nowat+" -y /"+self.dcdname_solvated+" -rp "+self.receptor_nowat+"  -srp "+self.receptor_solvated+" -yr "+self.receptor_dcd+" -lp "+self.ligand_nowat+" -slp "+self.ligand_solvated+" -yl "+self.ligand_dcd+"  -eo data/MMPBSA.csv ")
         
 def main():
     if not os.path.exists(""+root+"/data"):
@@ -98,6 +99,7 @@ def main():
     #Define the methods of the constructor    
     mmpbsaAnalysis.mmpbsa()
     mmpbsaAnalysis.qsubMMPBSA()
+    mmpbsaAnalysis.run_MMPBSA()
     
     os.chdir(""+home+"")
 if __name__ == '__main__': main()

@@ -105,7 +105,7 @@ def main():
         makeR_Analysis.write_R_sh(root)
 
     if MMPBSA == "on":
-        mmpbsaAnalysis = MMPBSA.MMPBSA()
+        mmpbsaAnalysis = MMPBSA_analysis()
         mmpbsaAnalysis.mmpbsa(root)
         mmpbsaAnalysis.qsubMMPBSA(root,protein)
     

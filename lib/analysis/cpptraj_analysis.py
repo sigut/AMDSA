@@ -198,7 +198,6 @@ def main():
         makeAnalysis.analyse_azo()
     else:
         makeAnalysis.analyse()
-    if makeAnalysis == "on":
         makeAnalysis.run_analysis(root,qsub)
     os.chdir(""+home+"")
 if __name__ == '__main__': main()
