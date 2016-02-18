@@ -173,7 +173,7 @@ class Analysis:
                     os.system("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj")
 
                 if mergeTrajSolvate == "on": #Make the solvatede dcd file
-                    print "merging the mdcrd files to a solvated dcd file
+                    print "merging the mdcrd files to a solvated dcd file"
                     os.system("cpptraj -p in_files/"+prmtop+" -i in_files/trajin_solvate.traj")
             if makeAnalysis == "on":
                 print "starting the cpptraj analysis"
