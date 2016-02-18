@@ -57,10 +57,10 @@ def main():
         
     if qsub == None:
         makeAnalysis = cpptraj_analysis.main()
-        print 'starting the plotting'
         if R_Analysis == "on":        
-            RPlot = R_analysis.main()        
-        makePlot = plot.main()
+            RPlot = R_analysis.main()  
+        if makePlots == "on":
+            makePlot = plot.main()
     else:
         submit = qsub_hpc.main()
 if __name__ == '__main__': main()

@@ -127,12 +127,18 @@ qm_pme      = config.get('QM','qm_pme')
 
 ######## Analysis ##############################
 #Cluster Analysis:
+mergeTraj           =   config.get('Analysis','mergeTraj')
 deleteOldData       =   config.get('Analysis','deleteOldData')
 dcdname             =   config.get('Analysis','dcdname')
+mergeTrajSolvate    =   config.get('Analysis','mergeTrajSolvate')
+dcdnameSolvated     =   config.get('Analysis','dcdnameSolvated')
 includeHeat         =   config.get('Analysis','includeHeat')
 includeEquil        =   config.get('Analysis','includeEquil')
 interval            =   config.get('Analysis','interval')
-removeWaters        =   config.get('Analysis','removeWaters')
+#removeWaters        =   config.get('Analysis','removeWaters')
+
+makePlots            =   config.get('Analysis','makePlots')
+
 clusterAnalysis     =   config.get('Analysis','clusterAnalysis')
 nodesAnalysis       =   config.get('Analysis','nodes')
 coresAnalysis       =   config.get('Analysis','cores')
@@ -141,7 +147,15 @@ epsilon_hier        =   config.get('Analysis','epsilon_hier')
 epsilon_dbscan      =   config.get('Analysis','epsilon_dbscan') 
 sieve_hier          =   config.get('Analysis','sieve_hier')
 sieve_dbscan        =   config.get('Analysis','sieve_dbscan')
+
 R_Analysis          =   config.get('Analysis','R_analysis')
+
+MMPBSA              =   config.get('Analysis','MMPBSA')
+intervalMMPBSA      =   config.get('Analysis','intervalMMPBSA')
+qmcharge_ion        =   config.get('Analysis','qmcharge_ion')
+qmcharge_protein    =   config.get('Analysis','qmcharge_protein')
+qmcharge_complex    =   config.get('Analysis','qmcharge_complex')
+qm_residues         =   config.get('Analysis','qm_residues')
 
 ###############################################################################
 ###############################################################################

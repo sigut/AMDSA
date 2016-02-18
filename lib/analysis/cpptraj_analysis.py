@@ -56,14 +56,18 @@ class Analysis:
                     name = file
                     mdcrd_files.append(name)
         mdcrd_files = natural_sort(mdcrd_files)
-        
+        print "found"
+        print len(mdcrd_files)
+        print "mdcrd files"
+                
         f = open("in_files/trajin.traj",'w')
         if includeHeat == "on":
             f.write("trajin md_files/heat1.mdcrd 1 last 1 \n")
             f.write("trajin md_files/heat2.mdcrd 1 last 1 \n")
         if includeEquil == "on":
             f.write("trajin md_files/equil0.mdcrd 1 last 1 \n")
-        for names in mdcrd_files[1:]:
+        for names in mdcrd_files[0:]:
+            print names
             f.write("trajin md_files/"+names+" 1 last "+interval+" \n")
             f.write(' \n')
     #Cpptraj for stripping all the water
@@ -72,13 +76,34 @@ class Analysis:
         f.write('center :1 origin \n')
         f.write('image origin center familiar \n')
         f.write('\n')
-        if removeWaters == "on":
-            f.write('# Remove all water molecules \n')
-            f.write('strip :WAT outprefix in_files/strip \n')
+        f.write('# Remove all water molecules \n')
+        f.write('strip :WAT outprefix in_files/strip \n')
         f.write('\n')
         f.write('# Create output \n')
         f.write("trajout resultsDir/"+dcdname+" charmm nobox \n")
         f.write('go')
+        f.close()
+        
+        
+        f = open("in_files/trajin_solvate.traj",'w')
+        if includeHeat == "on":
+            f.write("trajin md_files/heat1.mdcrd 1 last 1 \n")
+            f.write("trajin md_files/heat2.mdcrd 1 last 1 \n")
+        if includeEquil == "on":
+            f.write("trajin md_files/equil0.mdcrd 1 last 1 \n")
+        for names in mdcrd_files[0:]:
+            f.write("trajin md_files/"+names+" 1 last "+interval+" \n")
+            f.write(' \n')
+    #Cpptraj for stripping all the water
+        f.write('\n')
+        f.write('# Center \n')
+        f.write('center :1 origin \n')
+        f.write('image origin center familiar \n')
+        f.write('\n')
+        f.write('# Create output \n')
+        f.write("trajout resultsDir/"+dcdnameSolvated+" charmm nobox \n")
+        f.write('go')
+        f.close()
     # Make cpptraj keep nearest water molecules  
 #        f.write('\n')
 #        f.write('# Keep closest 100 water molecules, remove the rest \n')
@@ -87,7 +112,8 @@ class Analysis:
 #        f.write('# Create output \n')
 #        f.write('trajout resultsDir/mergedResult_closest.dcd charmm nobox \n')
 #        f.write('go')
-        f.close()
+
+    
     
    
     def analyse(self):
@@ -143,7 +169,12 @@ class Analysis:
             print 
             if nomerge == None:
                 print "--- Merging the mdcrd files manually"
-                os.system("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj")
+                if mergeTraj == "on":
+                    os.system("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj")
+
+                if mergeTrajSolvate == "on": #Make the solvatede dcd file
+                    os.system("cpptraj -p in_files/"+prmtop+" -i in_files/trajin_solvate.traj")
+                
                 os.system("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj")
             else:
                 print '--- Will not merge the mdcrd files ---'

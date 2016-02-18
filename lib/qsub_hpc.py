@@ -28,6 +28,17 @@ import cpptraj_analysis, R_analysis, plot
 class qsub():
     def init(self):
         self.prmtop = None
+        self.complex_solvated   = "in_files/"+protein+".prmtop"
+        self.complex_nowat      = "in_files/"+protein+"_nowat.prmtop"
+        self.dcdname_solvated   = "resultsDir/"+dcdnameSolvated+""
+        
+        self.receptor_solvated  = ""+absdir_home+"/CUDA_Simulations/1IXH_aMD_1/in_files/1IXH.prmtop"        
+        self.receptor_nowat     = ""+absdir_home+"/CUDA_Simulations/1IXH_aMD_1/in_files/1IXH_nowat.prmtop"
+        self.receptor_dcd       = ""+absdir_home+"/CUDA_Simulations/1IXH_aMD_1/resultsDir/mergedResult_solvated.dcd"
+        
+        self.ligand_solvated    = ""+absdir_home+"/Phosphate_Simulations/HPO4_QM/in_files/HPO4.prmtop"
+        self.ligand_nowat       = ""+absdir_home+"/Phosphate_Simulations/HPO4_QM/in_files/HPO4_nowat.prmtop"
+        self.ligand_dcd         = ""+absdir_home+"/Phosphate_Simulations/HPO4_QM/resultsDir/mergedResult_solvated.dcd"
         
     def find_prmtop(self,root):
         for file in os.listdir("in_files/"):
@@ -58,17 +69,20 @@ class qsub():
         f.write("#clock time\n")
         f.write("#PBS -l walltime="+walltimeAnalysis+" \n")
         f.write("cd $PBS_O_WORKDIR\n")
-        if nomerge == None:
-            f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj \n")
-            f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
-            if R_Analysis == "on":
-                f.write("R < in_files/analysis.R --no-save \n")            
+        if nomerge == None :
+            if mergeTraj == "on":
+                f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj \n")
+            if mergeTrajSolvate == "on":
+                f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin_solvate.traj \n")
+            
+        f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
+        if R_Analysis == "on":
+            f.write("R < in_files/analysis.R --no-save \n")            
+        if MMPBSA == "on":
+            f.write("$AMBERHOME/bin/MMPBSA.py -O -i in_files/mmpbsa.in -o data/MMPBSA.dat -sp "+self.complex_solvated+" -cp "+self.complex_nowat+" -y /"+self.dcdname_solvated+" -rp "+self.receptor_nowat+"  -srp "+self.receptor_solvated+" -yr "+self.receptor_dcd+" -lp "+self.ligand_nowat+" -slp "+self.ligand_solvated+" -yl "+self.ligand_dcd+"  -eo data/MMPBSA.csv \n")
+        if Plot == "on":
             f.write("python "+home+"/lib/plotting/plot.py -i ./ -p "+protein+" \n")
-        else:
-            f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
-            f.write("python "+home+"/lib/plotting/plot.py -i ./ -p "+protein+" \n")
-            if R_Analysis == "on":
-                f.write("R < in_files/analysis.R --no-save \n")            
+            
         f.close()        
         os.system("qsub cpptraj_submit.sh")
             
@@ -89,6 +103,11 @@ def main():
         #Define the methods of the constructor
         makeR_Analysis.write_R(root,protein)
         makeR_Analysis.write_R_sh(root)
+
+    if MMPBSA == "on":
+        mmpbsaAnalysis = MMPBSA.MMPBSA()
+        mmpbsaAnalysis.mmpbsa(root)
+        mmpbsaAnalysis.qsubMMPBSA(root,protein)
     
 #Define the qsub constructor   
     submit = qsub()
