@@ -81,7 +81,7 @@ class MMPBSA():
         f.write("#clock time\n")	
         f.write("#PBS -l walltime="+walltimeAnalysis+"\n")
         f.write("cd $PBS_O_WORKDIR\n")
-        f.write("$AMBERHOME/bin/MMPBSA.py -O -i in_files/mmpbsa.in -o data/MMPBSA.dat -sp "+self.complex_solvated+" -cp "+self.complex_nowat+" -y /"+self.dcdname_solvated+" -rp "+self.receptor_nowat+"  -srp "+self.receptor_solvated+" -yr "+self.receptor_dcd+" -lp "+self.ligand_nowat+" -slp "+self.ligand_solvated+" -yl "+self.ligand_dcd+"  -eo data/MMPBSA.csv \n")
+        f.write("$AMBERHOME/bin/MMPBSA.py -O -i in_files/mmpbsa.in -o data/MMPBSA.dat -sp "+self.complex_solvated+" -cp "+self.complex_nowat+" -y "+self.dcdname_solvated+" -rp "+self.receptor_nowat+"  -srp "+self.receptor_solvated+" -yr "+self.receptor_dcd+" -lp "+self.ligand_nowat+" -slp "+self.ligand_solvated+" -yl "+self.ligand_dcd+"  -eo data/MMPBSA.csv \n")
 #        f.write("$AMBERHOME/bin/MMPBSA.py -O -i in_files/mmpbsa_STP.in -o data/MMPBSA/MMPBSA_STP.dat -sp "+self.complex_solvated+" -cp "+self.complex_nowat+" -rp "+self.receptor_nowat+" -lp "+self.ligand_nowat+" -y /"+dcdnameSolvated+" -srp "+self.receptor_solvated+" -yr "+self.receptor_dcd+" -eo data/MMPBSA_Energy_MTP.csv \n")
         f.close()
         #Submitting the script to the server
