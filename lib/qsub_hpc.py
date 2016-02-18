@@ -74,8 +74,8 @@ class qsub():
                 f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj \n")
             if mergeTrajSolvate == "on":
                 f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin_solvate.traj \n")
-            
-        f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
+        if makeAnalysis == "on":    
+            f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
         if R_Analysis == "on":
             f.write("R < in_files/analysis.R --no-save \n")            
         if MMPBSA == "on":

@@ -54,13 +54,18 @@ def main():
     import cpptraj_analysis     # This script runs the cpptraj module for merging mdcrd files and making the analysis on the combined dcd file. The analysis includes rmsd, distance and clustering
     import R_analysis           # This script runs the "bio3d" package of "R" - which makes the principal component analysis
     import plot       
+    import MMPBSA_analysis
         
     if qsub == None:
-        makeAnalysis = cpptraj_analysis.main()
+        if makeAnalysis == "on":
+            CPPTRAJ = cpptraj_analysis.main()
         if R_Analysis == "on":        
             RPlot = R_analysis.main()  
+        if MMPBSA == "on":
+            mmpbsa = MMPBSA_analysis.main()
         if makePlots == "on":
-            makePlot = plot.main()
+            Plot = plot.main()
+        
     else:
         submit = qsub_hpc.main()
 if __name__ == '__main__': main()

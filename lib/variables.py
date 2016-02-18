@@ -137,7 +137,8 @@ includeEquil        =   config.get('Analysis','includeEquil')
 interval            =   config.get('Analysis','interval')
 #removeWaters        =   config.get('Analysis','removeWaters')
 
-makePlots            =   config.get('Analysis','makePlots')
+makeAnalysis        =   config.get('Analysis','MakeAnalysis')
+makePlots           =   config.get('Analysis','makePlots')
 
 clusterAnalysis     =   config.get('Analysis','clusterAnalysis')
 nodesAnalysis       =   config.get('Analysis','nodes')
