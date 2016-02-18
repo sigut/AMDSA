@@ -80,7 +80,7 @@ class qsub():
             f.write("R < in_files/analysis.R --no-save \n")            
         if MMPBSA == "on":
             f.write("$AMBERHOME/bin/MMPBSA.py -O -i in_files/mmpbsa.in -o data/MMPBSA.dat -sp "+self.complex_solvated+" -cp "+self.complex_nowat+" -y /"+self.dcdname_solvated+" -rp "+self.receptor_nowat+"  -srp "+self.receptor_solvated+" -yr "+self.receptor_dcd+" -lp "+self.ligand_nowat+" -slp "+self.ligand_solvated+" -yl "+self.ligand_dcd+"  -eo data/MMPBSA.csv \n")
-        if Plot == "on":
+        if makePlots == "on":
             f.write("python "+home+"/lib/plotting/plot.py -i ./ -p "+protein+" \n")
             
         f.close()        

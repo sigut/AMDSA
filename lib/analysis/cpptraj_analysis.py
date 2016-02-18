@@ -67,7 +67,6 @@ class Analysis:
         if includeEquil == "on":
             f.write("trajin md_files/equil0.mdcrd 1 last 1 \n")
         for names in mdcrd_files[0:]:
-            print names
             f.write("trajin md_files/"+names+" 1 last "+interval+" \n")
             f.write(' \n')
     #Cpptraj for stripping all the water
@@ -170,15 +169,18 @@ class Analysis:
             if nomerge == None:
                 print "--- Merging the mdcrd files manually"
                 if mergeTraj == "on":
+                    print "merging the mdcrd files to a dcd file and removing the waters"
                     os.system("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj")
 
                 if mergeTrajSolvate == "on": #Make the solvatede dcd file
+                    print "merging the mdcrd files to a solvated dcd file
                     os.system("cpptraj -p in_files/"+prmtop+" -i in_files/trajin_solvate.traj")
-                
+            if makeAnalysis == "on":
+                print "starting the cpptraj analysis"
                 os.system("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj")
             else:
                 print '--- Will not merge the mdcrd files ---'
-                os.system("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj")
+#                os.system("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj")
         else:
             print "--- submitting the cpptraj analysis to the hpc queue"
        
