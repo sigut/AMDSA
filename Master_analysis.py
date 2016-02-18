@@ -58,8 +58,7 @@ def main():
         
     if qsub == None:
         
-        if makeAnalysis == "on":
-            CPPTRAJ = cpptraj_analysis.main()
+        CPPTRAJ = cpptraj_analysis.main()
             
         if R_Analysis == "on":        
             RPlot = R_analysis.main()  
