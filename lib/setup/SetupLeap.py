@@ -36,8 +36,8 @@ class SetupLeap(CalcIonPosition):
             self.frcmodGAFF = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".dat"
         
         if insertAzobenzene == "on":
-            self.inputAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/Azobenzene/"+azoName+"/"+azoName+".mol2"
-            self.frcmodAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/Azobenzene/"+azoName+"/"+azoName+".frcmod"
+            self.inputAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/"+azoName+"/"+azoConfig+"/"+azoConfig+".mol2"
+            self.frcmodAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/"+azoName+"/"+azoConfig+"/"+azoConfig+".frcmod"
             
         self.WaterBoxSize = ""+waterboxsize+""
         # If Crosslink == on
@@ -162,20 +162,21 @@ class SetupLeap(CalcIonPosition):
         name = "LEaP_setupAzobenzene.ff"
         f = open(""+name+"",'w')
         f.write("source "+forcefield+" \n")
+        f.write("source leaprc.gaff \n")
         f.write("loadamberparams frcmod.ionsjc_spce \n")
-        f.write("addAtomTypes { \n")
-        f.write("{ \"C\"   \"C\"   \"sp2\" } \n" )
-        f.write("{ \"CA\"  \"C\"   \"sp2\" } \n" )
-        f.write("{ \"CT\"  \"C\"   \"sp3\" } \n" )
-        f.write("{ \"H\"   \"H\"   \"sp3\" } \n" )
-        f.write("{ \"H1\"  \"H\"   \"sp3\" } \n" )
-        f.write("{ \"HA\"  \"H\"   \"sp3\" } \n" )
-        f.write("{ \"HS\"  \"H\"   \"sp3\" } \n" )
-        f.write("{ \"N\"   \"N\"   \"sp2\" } \n" )
-        f.write("{ \"NC\"  \"N\"   \"sp2\" } \n" )
-        f.write("{ \"O\"   \"O\"   \"sp2\" } \n" )
-        f.write("{ \"SH\"  \"S\"   \"sp3\" } \n" )
-        f.write("} \n")
+#        f.write("addAtomTypes { \n")
+#        f.write("{ \"C\"   \"C\"   \"sp2\" } \n" )
+#        f.write("{ \"CA\"  \"C\"   \"sp2\" } \n" )
+#        f.write("{ \"CT\"  \"C\"   \"sp3\" } \n" )
+#        f.write("{ \"H\"   \"H\"   \"sp3\" } \n" )
+#        f.write("{ \"H1\"  \"H\"   \"sp3\" } \n" )
+#        f.write("{ \"HA\"  \"H\"   \"sp3\" } \n" )
+#        f.write("{ \"HS\"  \"H\"   \"sp3\" } \n" )
+#        f.write("{ \"N\"   \"N\"   \"sp2\" } \n" )
+#        f.write("{ \"NC\"  \"N\"   \"sp2\" } \n" )
+#        f.write("{ \"O\"   \"O\"   \"sp2\" } \n" )
+#        f.write("{ \"SH\"  \"S\"   \"sp3\" } \n" )
+#        f.write("} \n")
         f.write("loadAmberParams "+self.frcmodAzobenzene+" \n")            
         f.write(""+azoName+" = loadmol3 "+self.inputAzobenzene+" \n")
         f.write("addions "+azoName+" Na+ 0 \n")

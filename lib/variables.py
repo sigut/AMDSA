@@ -98,6 +98,7 @@ ionName         =   config.get('Leap','ionName')
 frcmod          =   config.get('Leap','frcmod')
 insertAzobenzene=   config.get('Leap','insertAzobenzene')
 azoName         =   config.get('Leap','azoName')
+azoConfig       =   config.get('Leap','azoConfig')
 
 ####### Mutations ##############################
 MakeMutations   =   config.get('Mutations','MakeMutations')
