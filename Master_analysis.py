@@ -53,7 +53,8 @@ def main():
     import qsub_hpc             # If qsub is specified the ccptraj, R and plot scripts will be submitted to the hpc-queue. 
     import cpptraj_analysis     # This script runs the cpptraj module for merging mdcrd files and making the analysis on the combined dcd file. The analysis includes rmsd, distance and clustering
     import R_analysis           # This script runs the "bio3d" package of "R" - which makes the principal component analysis
-    import plot       
+    import plot
+    import CombinedPlots
     import MMPBSA_analysis
         
     if qsub == None:
@@ -68,6 +69,8 @@ def main():
             
         if makePlots == "on":
             Plot = plot.main()
+        if makeHistPlots == "on":
+            CombinedPlots = HistPlot.main()
         
     else:
         submit = qsub_hpc.main()

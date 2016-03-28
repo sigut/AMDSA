@@ -140,6 +140,7 @@ interval            =   config.get('Analysis','interval')
 
 makeAnalysis        =   config.get('Analysis','makeAnalysis')
 makePlots           =   config.get('Analysis','makePlots')
+makeHistPlots       =   config.get('Analysis','makeHistPlots')
 
 clusterAnalysis     =   config.get('Analysis','clusterAnalysis')
 nodesAnalysis       =   config.get('Analysis','nodesAnalysis')

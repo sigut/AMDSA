@@ -18,7 +18,7 @@ for folders in the_list:
     if cmd_subfolder not in sys.path:
         sys.path.insert(0, cmd_subfolder)
         
-from variables import *
+
 
 #Argument parsing
 parser = argparse.ArgumentParser()
@@ -45,6 +45,7 @@ absdir_home = os.path.abspath(""+home+"")
 name = os.path.basename(os.path.normpath(""+absdir+""))
 directory = "./lib/analysis/"
 
+from variables import *
 
 class CombinedPlot():
     def __init__(self):
