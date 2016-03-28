@@ -20,36 +20,36 @@ for folders in the_list:
         
 
 
-#Argument parsing
-parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--idir',
-                    help = 'input directory of the simulation' )
-parser.add_argument('-p', '--protein',
-                    help = 'Protein specification, the current options are: pbpv, pbpu')
-parser.add_argument('-q','--qsub',
-                    help='if -q qsub is specified the setup or analysis will be submitted directly to the hpc-queue')
-parser.add_argument('-n','--nomerge',
-                    help='if -n nomerge is specified the cpptraj will not merge the mdcrd files into the dcd file')
-                    
-args = parser.parse_args()
+##Argument parsing
+#parser = argparse.ArgumentParser()
+#parser.add_argument('-i', '--idir',
+#                    help = 'input directory of the simulation' )
+#parser.add_argument('-p', '--protein',
+#                    help = 'Protein specification, the current options are: pbpv, pbpu')
+#parser.add_argument('-q','--qsub',
+#                    help='if -q qsub is specified the setup or analysis will be submitted directly to the hpc-queue')
+#parser.add_argument('-n','--nomerge',
+#                    help='if -n nomerge is specified the cpptraj will not merge the mdcrd files into the dcd file')
+#                    
+#args = parser.parse_args()
 
-#Command-line Variables:
-root  = args.idir
-protein = args.protein
-qsub = args.qsub
-nomerge = args.nomerge
-# Directory Variables:
-home = os.getcwd() #Specify the root directory
-absdir = os.path.abspath(""+root+"")
-absdir_home = os.path.abspath(""+home+"")
-name = os.path.basename(os.path.normpath(""+absdir+""))
-directory = "./lib/analysis/"
+##Command-line Variables:
+#root  = args.idir
+#protein = args.protein
+#qsub = args.qsub
+#nomerge = args.nomerge
+## Directory Variables:
+#home = os.getcwd() #Specify the root directory
+#absdir = os.path.abspath(""+root+"")
+#absdir_home = os.path.abspath(""+home+"")
+#name = os.path.basename(os.path.normpath(""+absdir+""))
+#directory = "./lib/analysis/"
 
 from variables import *
 
 class CombinedPlot():
     def __init__(self):
-        self.fontsize = 26
+        self.fontsize = 20
 
     def read_datafile(self,files):
         print files
@@ -106,7 +106,7 @@ class CombinedPlot():
             print i
             print self.y[0][0:10]
             print self.y[1][0:10]
-            plt.hist(self.y[i], normed=1,color=color[i],bins=np.arange(min(self.y[i]), max(self.y[i]) + binwidth, binwidth),label=[""+str(files[i])+""],alpha=0.5)
+            plt.hist(self.y[i], normed=1,color=color[i],bins=np.arange(min(self.y[i]), max(self.y[i]) + binwidth, binwidth),label=[""+str(files[i])[-1]+""],alpha=0.5)
 
 #        plt.hist(self.y,fit,normed=1,bins=np.arange(min(self.y), max(self.y) + binwidth, binwidth),color=color)
         plt.xlabel(u"Distance between S1-S2 [Å]",fontsize = self.fontsize)
@@ -129,7 +129,7 @@ def main():
 #    Enter the root directory
     files = ["/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_cis_2/data/distance_S_S1",
     ""+absdir+"/data/distance_"+Mutation1+"_"+Mutation2+"",
-    "/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_cis_2/data/distance_S_S1",
+    "/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_trans_2/data/distance_S_S1",
     ""+absdir+"_inP/data/distance_"+Mutation1+"_"+Mutation2+""]
     #["QM_trans","distance_226_298_P","distance_226_299_P","QM_cis","distance_226_298_open","distance_226_299_open"]
 #    files = ["rmsd_226_298","rmsd_226_298_P"]
