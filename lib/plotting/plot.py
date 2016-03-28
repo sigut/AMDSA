@@ -59,8 +59,8 @@ directory = "./lib/analysis/"
 
 
 #Create plots folder if it doesn't exist
-if not os.path.exists(""+root+"plots"):
-    os.makedirs(""+root+"plots")
+if not os.path.exists(""+root+"/plots"):
+    os.makedirs(""+root+"/plots")
 
 class Plot():
     def __init__(self,root):
