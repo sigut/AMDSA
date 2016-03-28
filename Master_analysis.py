@@ -70,7 +70,7 @@ def main():
         if makePlots == "on":
             Plot = plot.main()
         if makeHistPlots == "on":
-            CombinedPlots = CombinedPlot.main()
+            HistPlot = CombinedPlots.main()
         
     else:
         submit = qsub_hpc.main()
