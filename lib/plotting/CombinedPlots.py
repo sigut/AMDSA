@@ -100,7 +100,7 @@ class CombinedPlot():
 #        title = title.replace('_', '\_')
 #        plt.title(r""+title+"$\ \ \mu=%.3f,\ \sigma=%.3f$" %(mu, sigma))
         plt.legend(loc=2)
-        plt.savefig(""+absdir_home+"/plots/1IXH_"+Mutation1+"_"+Mutation2+".png",bbox_inches='tight')
+        plt.savefig(""+absdir_home+"/Mutations/plots/1IXH_"+Mutation1+"_"+Mutation2+".png",bbox_inches='tight')
         plt.savefig("/SCRATCH/sigut/phd/PBP_simulations/Mutations/plots/1IXH_"+Mutation1+"_"+Mutation2+".png",bbox_inches='tight')
         plt.clf()
             
