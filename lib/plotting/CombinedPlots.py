@@ -109,9 +109,11 @@ class CombinedPlot():
 def main():
 #    Enter the root directory
     files = ["/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_cis_2/data/distance_S_S1",
-    ""+absdir+"/data/distance_"+Mutation1+"_"+Mutation2+"",
-    "/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_trans_2/data/distance_S_S1",
-    ""+absdir+"_inP/data/distance_"+Mutation1+"_"+Mutation2+""]
+             "/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_cis_2/data/distance_C_C15",
+             ""+absdir+"/data/distance_"+Mutation1+"_"+Mutation2+"",
+             "/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_trans_2/data/distance_S_S1",
+             "/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_trans_2/data/distance_C_C15",
+             ""+absdir+"_inP/data/distance_"+Mutation1+"_"+Mutation2+""]
     #["QM_trans","distance_226_298_P","distance_226_299_P","QM_cis","distance_226_298_open","distance_226_299_open"]
 #    files = ["rmsd_226_298","rmsd_226_298_P"]
     
