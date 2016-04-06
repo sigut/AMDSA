@@ -79,14 +79,11 @@ class CombinedPlot():
         
         plt.figure(figsize=(12, 6))   
         binwidth = 0.1
-        color = ["violet","g","r","darkblue","0.75","blue","violet","lavender","darkorchid"]
+        color = ["r","0.75","violet","r","0.75","darkblue","0.75","blue","violet","lavender","darkorchid"]
         
         # the histogram of the data
         print "Beginnning plot"
         for i in range(0,len(files)):                    
-            print i
-            print self.y[0][0:10]
-            print self.y[1][0:10]
             plt.hist(self.y[i], normed=1,color=color[i],bins=np.arange(min(self.y[i]), max(self.y[i]) + binwidth, binwidth),label=[""+str(files[i].split("/")[-1])+""],alpha=0.5)
 
 #        plt.hist(self.y,fit,normed=1,bins=np.arange(min(self.y), max(self.y) + binwidth, binwidth),color=color)
