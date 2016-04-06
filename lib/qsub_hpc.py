@@ -83,7 +83,7 @@ class qsub():
         if makePlots == "on":
             f.write("python "+home+"/lib/plotting/plot.py -i ./ -p "+protein+" \n")
         if makeHistPlots == "on":
-            f.write("python "+home+"/lib/plotting/CombinedPlots.py -i "+absdir+" -p "+protein+" \n")
+            f.write("python "+home+"/lib/plotting/CombinedPlots.py -i "+absdir+" -p "+protein+" -m1 "+Mutation1+" -m2 "-+Mutation2+"  \n")
             
         f.close()        
         os.system("qsub cpptraj_submit.sh")
