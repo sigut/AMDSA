@@ -28,7 +28,6 @@ parser.add_argument('-m1','--mutation1',
 parser.add_argument('-m2','--mutation2',
                     help='Specifies the first mutation site to CYX of the protein')
                     
-            
 args = parser.parse_args()
 
 #Command-line Variables:

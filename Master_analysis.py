@@ -17,7 +17,7 @@ import sys,inspect
 import os
 
 # use this if you want to include modules from a subfolder
-the_list = ["lib","lib/analysis","lib/plotting"]
+the_list = ["lib","lib/analysis","lib/plotting","lib/setup"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:

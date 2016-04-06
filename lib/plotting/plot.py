@@ -16,38 +16,51 @@ import matplotlib.mlab as mlab
 import numpy as np
 import inspect
 
+#the_list = ["lib","lib/plotting"]
+#for folders in the_list:
+#    cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
+#    if cmd_subfolder not in sys.path:
+#        sys.path.insert(0, cmd_subfolder)
+
+##from variables import *
+
+##Argument parsing
+#parser = argparse.ArgumentParser()
+#parser.add_argument('-i', '--idir',
+#                    help = 'input directory of the simulation' )
+#parser.add_argument('-p', '--protein',
+#                    help = 'Protein specification, the current options are: pbpv, pbpu')
+#parser.add_argument('-q','--qsub',
+#                    help='if -q qsub is specified the setup or analysis will be submitted directly to the hpc-queue')
+#parser.add_argument('-n','--nomerge',
+#                    help='if -n nomerge is specified the cpptraj will not merge the mdcrd files into the dcd file')
+#                    
+#args = parser.parse_args()
+#
+##Command-line Variables:
+#root  = args.idir
+#protein = args.protein
+#qsub = args.qsub
+#nomerge = args.nomerge
+## Directory Variables:
+#home = os.getcwd() #Specify the root directory
+#absdir = os.path.abspath(""+root+"")
+#absdir_home = os.path.abspath(""+home+"")
+#name = os.path.basename(os.path.normpath(""+absdir+""))
+#directory = "./lib/analysis/"
+
 the_list = ["lib","lib/plotting"]
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
         sys.path.insert(0, cmd_subfolder)
+      
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
 
-#from variables import *
-
-#Argument parsing
-parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--idir',
-                    help = 'input directory of the simulation' )
-parser.add_argument('-p', '--protein',
-                    help = 'Protein specification, the current options are: pbpv, pbpu')
-parser.add_argument('-q','--qsub',
-                    help='if -q qsub is specified the setup or analysis will be submitted directly to the hpc-queue')
-parser.add_argument('-n','--nomerge',
-                    help='if -n nomerge is specified the cpptraj will not merge the mdcrd files into the dcd file')
-                    
-args = parser.parse_args()
-
-#Command-line Variables:
-root  = args.idir
-protein = args.protein
-qsub = args.qsub
-nomerge = args.nomerge
-# Directory Variables:
-home = os.getcwd() #Specify the root directory
-absdir = os.path.abspath(""+root+"")
-absdir_home = os.path.abspath(""+home+"")
-name = os.path.basename(os.path.normpath(""+absdir+""))
-directory = "./lib/analysis/"
+from variables import * 
 
 #Define the files to plot:
 

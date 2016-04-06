@@ -19,7 +19,6 @@ Created on Mon Sep 14 17:09:03 2015
 
 import sys,inspect
 import os
-import shutil
 
 # The two following functions adds subfolders to the python-path and allows import of the modules into this program
 # use this if you want to include modules from a subfolder
@@ -28,7 +27,6 @@ for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
         sys.path.insert(0, cmd_subfolder)
-#import lib
 from variables import *
 import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos, Mutations, Crosslinker
 
