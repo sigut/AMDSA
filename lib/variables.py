@@ -23,7 +23,12 @@ parser.add_argument('-q','--qsub',
                     help='if -q qsub is specified the setup or analysis will be submitted directly to the hpc-queue')
 parser.add_argument('-n','--nomerge',
                     help='if -n nomerge is specified the cpptraj will not merge the mdcrd files into the dcd file')
+parser.add_argument('-m1','--mutation1',
+                    help='Specifies the first mutation site to CYX of the protein')
+parser.add_argument('-m2','--mutation2',
+                    help='Specifies the first mutation site to CYX of the protein')
                     
+            
 args = parser.parse_args()
 
 #Command-line Variables:
@@ -102,8 +107,14 @@ azoConfig       =   config.get('Leap','azoConfig')
 
 ####### Mutations ##############################
 MakeMutations   =   config.get('Mutations','MakeMutations')
-Mutation1       =   config.get('Mutations','Mutation1')
-Mutation2       =   config.get('Mutations','Mutation2')
+Mutation1       =   args.mutation1
+Mutation2       =   args.mutation2
+
+if args.mutation1 == None:
+    Mutation1       =   config.get('Mutations','Mutation1')
+if args.mutation1 == None:
+    Mutation2       =   config.get('Mutations','Mutation2')
+
 
 ####### System parameters #####################
 # Regular parameters
