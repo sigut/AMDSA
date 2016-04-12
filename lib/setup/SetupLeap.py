@@ -31,9 +31,9 @@ class SetupLeap(CalcIonPosition):
                 self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
         
         if insertAnion == "on":
-            self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+"_"+frcmod+".mol2"
-            self.frcmodRED = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".frcmod"
-            self.frcmodGAFF = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".dat"
+            self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
+            self.frcmodAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
+#            self.frcmodGAFF = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".dat"
         
         if insertAzobenzene == "on":
             self.inputAzobenzene = ""+absdir_home+"/lib/setup/TemplateFiles/"+azoName+"/"+azoConfig+"/"+azoConfig+".mol2"
@@ -47,7 +47,7 @@ class SetupLeap(CalcIonPosition):
         name = "LEaP_sequence.ff"
         f = open(""+name+"",'w')
         f.write("source "+forcefield+" \n")
-        f.write("source leaprc.gaff \n")
+        #f.write("source leaprc.gaff \n")
         f.write("loadamberparams frcmod.ionsjc_spce \n")
         f.write(" \n")
         f.write(""+protein+" = loadpdb "+self.pdbFile+" \n")
@@ -66,7 +66,7 @@ class SetupLeap(CalcIonPosition):
         name = "LEaP_setup.ff"
         f = open(""+name+"",'w')
         f.write("source "+forcefield+" \n")
-        f.write("source leaprc.gaff \n")
+        #f.write("source leaprc.gaff \n")
         f.write("loadamberparams frcmod.ionsjc_spce \n")
         f.write(" \n")
         if crosslink == "on":
@@ -78,16 +78,20 @@ class SetupLeap(CalcIonPosition):
             f.write("bond "+protein+".115.SG "+protein+".160.SG \n")
             f.write("bond "+protein+".301.SG "+protein+".364.SG \n")
         if insertAnion =="on":
-            if frcmod == "RED":        
-                f.write("addAtomTypes { \n")
-                f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
-                f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
-                f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
-                f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
-                f.write(" } \n")
-                f.write("loadAmberParams "+self.frcmodRED+" \n")            
-            if frcmod == "gaff":
-                f.write("loadAmberParams "+self.frcmodGAFF+" \n")
+            f.write("addAtomTypes { \n")
+#            f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
+#            f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
+#            f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
+#            f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
+#            f.write(" } \n")
+            f.write("{ \"ho\"  \"H\"   \"sp3\" } \n")
+            f.write("{ \"o\"  \"O\"   \"sp2\" } \n")
+            f.write("{ \"oh\"  \"O\"   \"sp3\" } \n")
+            f.write("{ \"p5\"   \"P\"   \"sp3\" } \n")
+            f.write(" } \n")
+            f.write("loadAmberParams "+self.frcmodAnion+" \n")            
+#            if frcmod == "gaff":
+#                f.write("loadAmberParams "+self.frcmodGAFF+" \n")
             f.write("anion = loadmol2 "+self.inputAnion+" \n")
             f.write("translate anion {"+coordinates+"} \n")
             f.write(""+protein+" = combine{"+protein+" anion} \n")
@@ -135,17 +139,21 @@ class SetupLeap(CalcIonPosition):
 #        f.write("source leaprc.gaff \n")
         f.write("loadamberparams frcmod.ionsjc_spce \n")
         f.write(" \n")
-        if frcmod == "RED":        
-            f.write("addAtomTypes { \n")
-            f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
-            f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
-            f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
-            f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
-            f.write(" } \n")
-            f.write("loadAmberParams "+self.frcmodAnion+" \n")            
-        if frcmod == "gaff":
-            f.write("loadamberparams "+self.frcmodGAFF+" \n")
-        f.write(""+ionName+" = loadmol3 "+self.inputAnion+" \n")
+        f.write("addAtomTypes { \n")
+#            f.write("{ \"HO\"  \"H\"   \"sp3\" } \n")
+#            f.write("{ \"O2\"  \"O\"   \"sp2\" } \n")
+#            f.write("{ \"OH\"  \"O\"   \"sp3\" } \n")
+#            f.write("{ \"P\"   \"P\"   \"sp3\" } \n")
+#            f.write(" } \n")
+        f.write("{ \"ho\"  \"H\"   \"sp3\" } \n")
+        f.write("{ \"o\"  \"O\"   \"sp2\" } \n")
+        f.write("{ \"oh\"  \"O\"   \"sp3\" } \n")
+        f.write("{ \"p5\"   \"P\"   \"sp3\" } \n")
+        f.write(" } \n")
+        f.write("loadAmberParams "+self.frcmodAnion+" \n")            
+#        if frcmod == "gaff":
+#            f.write("loadAmberparams "+self.frcmodGAFF+" \n")
+        f.write(""+ionName+" = loadmol2 "+self.inputAnion+" \n")
         f.write("addions "+ionName+" Na+ 0 \n")
         f.write("addions "+ionName+" Cl- 0 \n")
         f.write("saveamberparm "+ionName+" "+absdir+"/in_files/"+ionName+"_nowat.prmtop "+absdir+"/in_files/"+ionName+"_nowat.inpcrd \n")
