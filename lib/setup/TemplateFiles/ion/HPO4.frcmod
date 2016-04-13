@@ -11,7 +11,7 @@ o-p5      306.9884          1.5489         parametrized using paramfit
 oh-p5     299.0255          1.7307         parametrized using paramfit
 
 ANGLE  K(kcal.mol-1.rad-2)  Theta0(deg)    Source
-ho-oh-p5       70.5119      113.3276       parametrized using paramfit
+ho-oh-p5       30.5119      113.3276       parametrized using paramfit
 o-p5-o         93.7839      115.5564       parametrized using paramfit
 o-p5-oh        84.9854      106.3185       parametrized using paramfit
 
