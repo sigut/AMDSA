@@ -64,111 +64,133 @@ if protein == "AzobenzeneTrans":
     resi_protein = "1"
     NumberOfResidues = 1
 
-config = ConfigParser.ConfigParser()
-config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','config.cfg'))
+configSetup = ConfigParser.ConfigParser()
+configSetup.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','configSetup.cfg'))
 
 ###############################################################################
-#################            Config variables        ##########################
+#################         Config setup variables     ##########################
 ###############################################################################
 
 
 ####### #System ################################
-#ion         = config.get('System', 'ion')
-method      = config.get('System','method')
-compiler    = config.get('System','compiler')
+#ion         = configSetup.get('System', 'ion')
+method      = configSetup.get('System','method')
+compiler    = configSetup.get('System','compiler')
+computingSystem = configSetup.get('System','computingSystem')
 
 ####### Submitvariables #######################
-md_steps    = config.get('Submit','md_steps')
-nodes       = config.get('Submit','nodes')
-cores       = config.get('Submit','cores')
-ptile       = config.get('Submit','ptile')
-gpus        = config.get('Submit','gpus')
-gpu_cores   = config.get('Submit','gpu_cores')
-walltime    = config.get('Submit','walltime')
-#queue       = config.get('Submit','queue')
+md_steps    = configSetup.get('Submit','md_steps')
+nodes       = configSetup.get('Submit','nodes')
+cores       = configSetup.get('Submit','cores')
+ptile       = configSetup.get('Submit','ptile')
+gpus        = configSetup.get('Submit','gpus')
+gpu_cores   = configSetup.get('Submit','gpu_cores')
+walltime    = configSetup.get('Submit','walltime')
+#queue       = configSetup.get('Submit','queue')
 
 ####### Leap parameters #######################
-insertProtein   =   config.get('Leap','insertProtein')
-crosslink       =   config.get('Leap','crosslink')
-link1           =   config.get('Leap','link1')
-link2           =   config.get('Leap','link2')
-configuration   =   config.get('Leap','configuration')
-forcefield      =   config.get('Leap','forcefield')
-waterboxsize    =   config.get('Leap','waterboxsize')
-solvate         =   config.get('Leap','solvation')
-structure       =   config.get('Leap','structure')
-insertAnion     =   config.get('Leap','insertAnion')
-ionName         =   config.get('Leap','ionName')
-frcmod          =   config.get('Leap','frcmod')
-insertAzobenzene=   config.get('Leap','insertAzobenzene')
-azoName         =   config.get('Leap','azoName')
-azoConfig       =   config.get('Leap','azoConfig')
+insertProtein   =   configSetup.get('Leap','insertProtein')
+crosslink       =   configSetup.get('Leap','crosslink')
+link1           =   configSetup.get('Leap','link1')
+link2           =   configSetup.get('Leap','link2')
+configuration   =   configSetup.get('Leap','configuration')
+forcefield      =   configSetup.get('Leap','forcefield')
+waterboxsize    =   configSetup.get('Leap','waterboxsize')
+solvate         =   configSetup.get('Leap','solvation')
+structure       =   configSetup.get('Leap','structure')
+insertAnion     =   configSetup.get('Leap','insertAnion')
+ionName         =   configSetup.get('Leap','ionName')
+frcmod          =   configSetup.get('Leap','frcmod')
+insertAzobenzene=   configSetup.get('Leap','insertAzobenzene')
+azoName         =   configSetup.get('Leap','azoName')
+azoConfig       =   configSetup.get('Leap','azoConfig')
 
 ####### Mutations ##############################
-MakeMutations   =   config.get('Mutations','MakeMutations')
+MakeMutations   =   configSetup.get('Mutations','MakeMutations')
 Mutation1       =   args.mutation1
 Mutation2       =   args.mutation2
 
 if args.mutation1 == None:
-    Mutation1       =   config.get('Mutations','Mutation1')
+    Mutation1       =   configSetup.get('Mutations','Mutation1')
 if args.mutation1 == None:
-    Mutation2       =   config.get('Mutations','Mutation2')
+    Mutation2       =   configSetup.get('Mutations','Mutation2')
 
 
 ####### System parameters #####################
 # Regular parameters
-ntc         = config.get('in_files','ntc')
-ntf         = config.get('in_files','ntf')  
-timestep    = config.get('in_files','timestep')
-implicit    = config.get('in_files','implicit')
-igb         = config.get('in_files','igb')
-epsilon     = config.get('in_files','epsilon')
-#gamma       = config.get('in_files','gamma')
-aMD         = config.get('in_files','aMD')
-iamd        = config.get('in_files','iamd')
-DISANG      = config.get('in_files','DISANG')
+ntc         = configSetup.get('in_files','ntc')
+ntf         = configSetup.get('in_files','ntf')  
+timestep    = configSetup.get('in_files','timestep')
+implicit    = configSetup.get('in_files','implicit')
+igb         = configSetup.get('in_files','igb')
+epsilon     = configSetup.get('in_files','epsilon')
+#gamma       = configSetup.get('in_files','gamma')
+aMD         = configSetup.get('in_files','aMD')
+iamd        = configSetup.get('in_files','iamd')
+DISANG      = configSetup.get('in_files','DISANG')
 #QM parameters 
-QM          = config.get('QM','QM') #If QM is set to "None" the rest of the specification will not be included
-qmcharge    = config.get('QM','qmcharge')
-qmmask      = config.get('QM','qmmask')
-qm_theory   = config.get('QM','qm_theory')
-qmshake     = config.get('QM','qmshake')
-qm_ewald    = config.get('QM','qm_ewald')
-qm_pme      = config.get('QM','qm_pme')
+QM          = configSetup.get('QM','QM') #If QM is set to "None" the rest of the specification will not be included
+qmcharge    = configSetup.get('QM','qmcharge')
+qmmask      = configSetup.get('QM','qmmask')
+qm_theory   = configSetup.get('QM','qm_theory')
+qmshake     = configSetup.get('QM','qmshake')
+qm_ewald    = configSetup.get('QM','qm_ewald')
+qm_pme      = configSetup.get('QM','qm_pme')
 
-######## Analysis ##############################
+#Steered MD parameters
+sMD            = configSetup.get('Steered','sMD')
+newSim         = configSetup.get('Steered','newSim')
+NumberOfsMDRuns= configSetup.get('Steered','NumberOfsMDRuns')
+
+SteeredRes1    = configSetup.get('Steered','SteeredRes1')
+AtomType1      = configSetup.get('Steered','AtomType1')
+
+SteeredRes2    = configSetup.get('Steered','SteeredRes2')
+AtomType2      = configSetup.get('Steered','AtomType2')
+
+initialDistance= configSetup.get('Steered','initialDistance')
+finalDistance  = configSetup.get('Steered','finalDistance')
+r2k            = configSetup.get('Steered','r2k')
+
+###############################################################################
+#################         Config analysis variables  ##########################
+###############################################################################
+
+configAnalysis = ConfigParser.ConfigParser()
+configAnalysis.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','configAnalysis.cfg'))
+
 #Cluster Analysis:
-mergeTraj           =   config.get('Analysis','mergeTraj')
-deleteOldData       =   config.get('Analysis','deleteOldData')
-dcdname             =   config.get('Analysis','dcdname')
-mergeTrajSolvate    =   config.get('Analysis','mergeTrajSolvate')
-dcdnameSolvated     =   config.get('Analysis','dcdnameSolvated')
-includeHeat         =   config.get('Analysis','includeHeat')
-includeEquil        =   config.get('Analysis','includeEquil')
-interval            =   config.get('Analysis','interval')
-#removeWaters        =   config.get('Analysis','removeWaters')
+mergeTraj           =   configAnalysis.get('Analysis','mergeTraj')
+deleteOldData       =   configAnalysis.get('Analysis','deleteOldData')
+dcdname             =   configAnalysis.get('Analysis','dcdname')
+mergeTrajSolvate    =   configAnalysis.get('Analysis','mergeTrajSolvate')
+dcdnameSolvated     =   configAnalysis.get('Analysis','dcdnameSolvated')
+includeHeat         =   configAnalysis.get('Analysis','includeHeat')
+includeEquil        =   configAnalysis.get('Analysis','includeEquil')
+interval            =   configAnalysis.get('Analysis','interval')
+#removeWaters        =   configAnalysis.get('Analysis','removeWaters')
 
-makeAnalysis        =   config.get('Analysis','makeAnalysis')
-makePlots           =   config.get('Analysis','makePlots')
-makeHistPlots       =   config.get('Analysis','makeHistPlots')
+makeAnalysis        =   configAnalysis.get('Analysis','makeAnalysis')
+makePlots           =   configAnalysis.get('Analysis','makePlots')
+makeHistPlots       =   configAnalysis.get('Analysis','makeHistPlots')
 
-clusterAnalysis     =   config.get('Analysis','clusterAnalysis')
-nodesAnalysis       =   config.get('Analysis','nodesAnalysis')
-coresAnalysis       =   config.get('Analysis','coresAnalysis')
-walltimeAnalysis    =   config.get('Analysis','walltimeAnalysis')
-epsilon_hier        =   config.get('Analysis','epsilon_hier')
-epsilon_dbscan      =   config.get('Analysis','epsilon_dbscan') 
-sieve_hier          =   config.get('Analysis','sieve_hier')
-sieve_dbscan        =   config.get('Analysis','sieve_dbscan')
+clusterAnalysis     =   configAnalysis.get('Analysis','clusterAnalysis')
+nodesAnalysis       =   configAnalysis.get('Analysis','nodesAnalysis')
+coresAnalysis       =   configAnalysis.get('Analysis','coresAnalysis')
+walltimeAnalysis    =   configAnalysis.get('Analysis','walltimeAnalysis')
+epsilon_hier        =   configAnalysis.get('Analysis','epsilon_hier')
+epsilon_dbscan      =   configAnalysis.get('Analysis','epsilon_dbscan') 
+sieve_hier          =   configAnalysis.get('Analysis','sieve_hier')
+sieve_dbscan        =   configAnalysis.get('Analysis','sieve_dbscan')
 
-R_Analysis          =   config.get('Analysis','R_analysis')
+R_Analysis          =   configAnalysis.get('Analysis','R_analysis')
 
-MMPBSA              =   config.get('Analysis','MMPBSA')
-intervalMMPBSA      =   config.get('Analysis','intervalMMPBSA')
-qmcharge_ion        =   config.get('Analysis','qmcharge_ion')
-qmcharge_protein    =   config.get('Analysis','qmcharge_protein')
-qmcharge_complex    =   config.get('Analysis','qmcharge_complex')
-qm_residues         =   config.get('Analysis','qm_residues')
+MMPBSA              =   configAnalysis.get('Analysis','MMPBSA')
+intervalMMPBSA      =   configAnalysis.get('Analysis','intervalMMPBSA')
+qmcharge_ion        =   configAnalysis.get('Analysis','qmcharge_ion')
+qmcharge_protein    =   configAnalysis.get('Analysis','qmcharge_protein')
+qmcharge_complex    =   configAnalysis.get('Analysis','qmcharge_complex')
+qm_residues         =   configAnalysis.get('Analysis','qm_residues')
 
 ###############################################################################
 ###############################################################################
@@ -205,7 +227,7 @@ echo $AMBERHOME
     """
         return buffer
     if queue == "hpc":
-        if compiler == "pmemd.cuda":
+        if compiler == "cuda":
             buffer = """
 #!/bin/sh
 #

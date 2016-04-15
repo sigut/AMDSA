@@ -269,11 +269,100 @@ class SetupInfiles:
         if DISANG == "on":
             f.write("DISANG=distFile.RST                      \n")
         f.close()
-                
+    
+    def sMD(self):
+        f = open("in_files/sMD.in",'w')
+        f.write(" steered MD run 2 ns     \n")
+        f.write(" &cntrl                    \n")
+        f.write("  irest=1,ntx=5,    \n")
+        if implicit == "on":
+            f.write(""+self.implicit+"\n")
+        else:
+            f.write("  cut=10.0, ntb=1, ntp=0,  \n")
+        if timestep == "0.002":
+            f.write("  nstlim=1000000,dt=0.002, ,iwrap=1 \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
+        if timestep == "0.001":
+            f.write("  nstlim=2000000,dt=0.001, \n")     # Production run for 200000*0.001 ps = 2000 ps = 2 ns (repeated in submit.sh)
+        f.write("  ntc="+ntc+",ntf="+ntf+",ig=-1,       \n")
+        f.write("  ntpr=1000, ntwx=1000,    \n")
+        f.write("  ntt=3, gamma_ln=2.0,     \n")
+        f.write("  temp0=300.0,ioutfm=1, \n")
+        f.write("  jar = 1, \n")
+        if DISANG == "on":
+            f.write("  nmropt = 1,                      \n")
+        if QM == "on":
+            f.write(""+self.QMMM+"")
+        f.write("/ \n")
+        if DISANG == "on":
+            f.write("DISANG=distFile.RST                      \n")
+        
+        f.write("&wt type=’DUMPFREQ’, istep1=1, \n")        
+        f.write("&wt type=’END’, \n")        
+        f.write("DISANG=in_files/sMD.RST \n")        
+        f.write("DUMPAVE=dist_vs_t \n")        
+        f.write("LISTIN=POUT \n")        
+        f.write("LISTOUT=POUT \n")        
+        f.close()
+        
+        f = open("in_files/sMD.RST",'w')
+        f.write("&rst  iat= "+str(self.AtomNumber1)+","+str(self.AtomNumber2)+" , r2="+initialDistance+", r2k="+r2k+", r2a="+finalDistance+"")
+        f.close()
+    
     def DISANG(self):
         f = open("in_files/distFile.RST",'w')
         f.write("  &rst  iat= 1327,"+P_protein+", r1=1, r2=2.5, r3=15, r4=20, rk2=0, rk3=50, &end ")
         f.close()
+        
+        
+    def FindAtomNumbers(self,protein): # Read the coordinates of the protein pdb file
+        self.pdbFile = ""+absdir+"/in_files/"+protein+"_finalLEAP_nowater.pdb"
+        f = open(self.pdbFile,'r')
+        pdb = f.readlines()[0:]
+        f.close()
+    
+        n = 0
+        for line in pdb[0:]: # Start coordinate handling when the atoms start
+            if line[0:4] == "ATOM":
+                break
+            n+=1
+        
+        k = 0
+        self.AtomNumber1 = None
+        self.AtomNumber2 = None
+        
+        for line in pdb[n:]:
+            k +=1            
+            coor = line.split()
+            if str(coor[2]) == ""+str(AtomType1)+"":
+                if coor[4] == ""+SteeredRes1+"":
+                    print ""
+                    print ""+str(coor[4])+" "+str(coor[2])+""
+                    self.AtomNumber1 = k
+                    print "This is the AtomNumber1 for sMD: " +str(self.AtomNumber1)+""
+                    
+            if str(coor[2]) == ""+str(AtomType2)+"":
+                if coor[4] == ""+SteeredRes2+"":
+                    print ""+str(coor[4])+" "+str(coor[2])+""
+                    self.AtomNumber2 = k
+                    print "This is the AtomNumber2 for sMD: " +str(self.AtomNumber2)+""
+                    print ""
+                    break
+        if self.AtomNumber1 == None:
+            print "AtomNumber1: Atom type or residue combination not found"            
+            raise TypeError 
+        if self.AtomNumber2 == None:
+            print "AtomNumber2: Atom type or residue combination not found"            
+            raise TypeError 
+            
+            
+#        print "These are the updated sMD AtomNumbers"
+#        print self.AtomNumber1
+#        print self.AtomNumber2
+        
+#        f = open(""+root+"/README_sMD_"+str(self.AtomNumber1)+"_"+str(self.AtomNumber2)+".txt",'w')
+#        f.write("This folder contains files for sMD simulations of the protein with prmtop "+protein+". The steered atoms are: "+str(SteeredRes1)+"."+str(AtomType1)+"="+str(self.AtomNumber1)+" and "+str(SteeredRes1)+"."+str(AtomType1)+"="+str(self.AtomNumber2)+"")
+#        f.close()
+               
 class SetupAMD:
     
     def __init__(self):
@@ -366,6 +455,8 @@ class SetupAMD:
             f.write("DISANG=distFile.RST                      \n")
         f.close()
 
+    
+
 def amd():
     os.chdir(""+root+"")
     aMD = SetupAMD()
@@ -383,7 +474,10 @@ def main():
          aMDsetup.FindParameters()
          aMDsetup.aMD_in()
          if DISANG == "on":
-            setup.DISANG()             
+            setup.DISANG()
+    if sMD == "on" and newSim == "off":
+        setup.FindAtomNumbers(protein)
+        setup.sMD()
     else:
 #        setup.init()
         setup.setup_min()
@@ -391,11 +485,12 @@ def main():
         setup.equil()
         if ""+method+"" == "cMD":
             setup.cMD()
+        if sMD == "on" and newSim == "on":
+            setup.FindAtomNumbers(protein)
+            setup.sMD()
         if DISANG == "on":
-            setup.DISANG() 
-        print "finished writing in_files"
-        print "Next step is to submit the simulation"
-
-         
+            setup.DISANG()
+                 
     os.chdir(""+home+"")    
+    print "finished writing in files"
 if __name__ == '__main__': main()

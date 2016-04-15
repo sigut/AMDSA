@@ -219,4 +219,5 @@ def main():
             run_leap.leapAzobenzene()
         
     os.chdir(""+home+"")
+    print "Finished creating the prmtop, inpcrd and pdb files for the simulation"
 if __name__ == '__main__': main()

@@ -50,6 +50,8 @@ class CreateFolders():
                 os.mkdir(""+root+"/pdb_files")
             if not os.path.exists(""+root+"/data"):
                 os.mkdir(""+root+"/data")
+            if not os.path.exists(""+root+"/submissionScripts"):
+                os.mkdir(""+root+"/submissionScripts")
             
            
     def check_folder(self,root):
@@ -65,16 +67,13 @@ class CreateFolders():
             CreateFolders.create_folder(self,root)
             
 def main():       
-       
- 
     if aMD == "on": # iamd is specified in the config file. If specified it will be taken care of in the setupInfiles module
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
         
-    else:
+    if sMD == "on" and newSim == "on":
         CheckFolder = CreateFolders()
         CheckFolder.check_folder(root)
-#        CheckFolder.copy_files(root)
         if MakeMutations == "on":
             RunMutations = Mutations.main()
         if insertAnion == "on" and insertProtein == "on":
@@ -82,5 +81,20 @@ def main():
         Runleap = SetupLeap.main() #Create the parameter topology files
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
+    if sMD == "on" and newSim == "off":
+        Setup = SetupInfiles.main()
+        MakeSubmissionFile = SetupSubmit.main()
 
+    else:
+        CheckFolder = CreateFolders()
+        CheckFolder.check_folder(root)
+        if MakeMutations == "on":
+            RunMutations = Mutations.main()
+        if insertAnion == "on" and insertProtein == "on":
+            Calc = CalcIonPos.main()
+        Runleap = SetupLeap.main() #Create the parameter topology files
+        Setup = SetupInfiles.main()
+        MakeSubmissionFile = SetupSubmit.main()
+    print ""
+    print "\"May the Force(Field) be with you\" -- somewhere"
 if __name__ == '__main__': main()
