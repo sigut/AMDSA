@@ -217,6 +217,11 @@ def main():
             run_leap.leapAnion()
         if insertAzobenzene == "on":
             run_leap.leapAzobenzene()
+            
+    #Copy mol2 and frcmod file into folder 
+    if insertAnion == "on":
+        os.system("cp "+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"" "+root+"/in_files/"  )
+        os.system("cp "+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"" "+root+"/in_files/"  )
         
     os.chdir(""+home+"")
     print "Finished creating the prmtop, inpcrd and pdb files for the simulation"
