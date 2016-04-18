@@ -6,14 +6,14 @@ oh        16.000            0.465          taken from parm10.dat
 p5        30.970            1.538          taken from parm10.dat
 
 BOND   K(kcal.mol-1.ang-2)  Dist0(ang)     Source
-oh-ho       500.0000         0.9700		   parametrized using paramfit
-p5-o        300.0000         1.5500		   parametrized using paramfit
-p5-oh       310.0000         1.7273		   parametrized using paramfit
+oh-ho       530.0000         0.9700		   parametrized using paramfit
+p5-o        433.0000         1.5500		   parametrized using paramfit
+p5-oh       163.0000         1.7200		   parametrized using paramfit
 
 ANGLE  K(kcal.mol-1.rad-2)  Theta0(deg)    Source
-p5-oh-ho        43.0000       115.0
-o -p5-oh        135.000       105.6
-o -p5-o         83.0000       116.0
+p5-oh-ho        49.0000       111.7
+o -p5-oh        141.600       104.9
+o -p5-o         80.0000       115.0
 
 DIHEDRAL    Path V(kcal.mol-1.rad-1) Phase(deg.) Period Source
 o -p5-oh-ho    1         0.1300         0.0000         3.0000
