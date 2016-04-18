@@ -136,9 +136,10 @@ class Analysis:
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
         #f.write("atomicfluct out data/backbone_RMSF.apf @C,CA,N \n")
         f.write('rms HPO4 out data/rmsd.dat @P,O,O1,O2,O3,H time 1 \n')
-        f.write('angle OH-P-O O3 P O  angle_OH-P-O.dat \n')
-        f.write('angle O-P-O O1 P O  angle_O-P-O.dat \n')
-        f.write('angle HO-OH-P H O3 P  angle_HO-OH-P.dat \n')
+        f.write('angle OH-P-O out data/angle_OH-P-O.dat :1@O3 :1@P :1@O time 1  \n')
+        f.write('angle O-P-O out data/angle_O-P-O.dat :1@O :1@P :1@O1 time 1 \n')
+        f.write('angle HO-OH-P out data/angle_HO-OH-P.dat :1@H :1@O3 :1@P time 1 \n')
+        f.write('dihedral dihedral out data/dihedral.dat :1@H :1@O3 :1@P :1@O time 1 \n')
         if protein == "pbpu" or protein == "pbpv":
             f.write("distance end_to_end :10@HD22 :147@HA3 out data/distance_10_147.dat \n")
             f.write("distance end_to_end1 :10@HD22 :63@OD1 out data/distance_10_63.dat \n")
