@@ -135,6 +135,10 @@ class Analysis:
         f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
         #f.write("atomicfluct out data/backbone_RMSF.apf @C,CA,N \n")
+        f.write('rms HPO4 out data/rmsd.dat @P,O,O1,O2,O3,H time 1 \n')
+        f.write('angle OH-P-O O3 P O  angle_OH-P-O.dat \n')
+        f.write('angle O-P-O O1 P O  angle_O-P-O.dat \n')
+        f.write('angle HO-OH-P H O3 P  angle_HO-OH-P.dat \n')
         if protein == "pbpu" or protein == "pbpv":
             f.write("distance end_to_end :10@HD22 :147@HA3 out data/distance_10_147.dat \n")
             f.write("distance end_to_end1 :10@HD22 :63@OD1 out data/distance_10_63.dat \n")
@@ -144,14 +148,6 @@ class Analysis:
         if protein == "2ABH" or protein == "1IXH":
             f.write("distance end_to_end :226@CG :297@CG out data/distance_226_297.dat \n")
             f.write("distance end_to_endP :10@CB :322@P out data/distance_10_P.dat \n")
-            
-
-#        if protein == "pbpu":
-#            f.write("distance end_to_endpbpuP :93@CG2 :376@P out data/distanceP.dat \n")
-#        if protein == "pbpv":
-#            f.write("distance end_to_endpbpvP :93@CG2 :373@P out data/distanceP.dat \n")
-#        if protein == "1IXH" or protein == "2ABH":
-#            f.write("distance end_to_endP :93@CG2 :322@P out data/distanceP.dat \n")
         
         if clusterAnalysis == "on":
             f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb \n")
