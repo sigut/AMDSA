@@ -113,9 +113,19 @@ class Analysis:
 #        f.write('go')
 
     
-    
+    def analyse_ligand(self):
+        if not os.path.exists("data"):
+            os.makedirs("data")
+        f = open("in_files/analysis.traj",'w')
+        f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
+        f.write('rms first out data/rmsd.dat @P,O,O1,O2,O3,H time 1 \n')
+        f.write('angle OH-P-O O3 P O  angle_OH-P-O.dat \n')
+        f.write('angle O-P-O O1 P O  angle_O-P-O.dat \n')
+        f.write('angle HO-OH-P H O3 P  angle_HO-OH-P.dat \n')
+        f.close()
+        
    
-    def analyse(self):
+    def analyse_protein(self):
         if not os.path.exists("data"):
             os.makedirs("data")
         if not os.path.exists("data/cluster"):
@@ -196,10 +206,14 @@ def main():
     makeAnalysis.find_prmtop(root)
     makeAnalysis.makeTrajin(root,protein)
     
+    if protein == "HPO4":
+        makeAnalysis.analyse_ligand()
+        makeAnalysis.run_analysis(root,qsub)
+        
     if protein == "cis" or protein == "trans":
         makeAnalysis.analyse_azo()
     else:
-        makeAnalysis.analyse()
+        makeAnalysis.analyse_protein()
         makeAnalysis.run_analysis(root,qsub)
     os.chdir(""+home+"")
 if __name__ == '__main__': main()
