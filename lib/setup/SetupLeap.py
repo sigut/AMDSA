@@ -220,8 +220,8 @@ def main():
             
     #Copy mol2 and frcmod file into folder 
     if insertAnion == "on":
-        os.system("cp "+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"" "+root+"/in_files/"  )
-        os.system("cp "+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"" "+root+"/in_files/"  )
+        os.system("cp "+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"" "+absdir+"/in_files/"  )
+        os.system("cp "+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"" "+absdir+"/in_files/"  )
         
     os.chdir(""+home+"")
     print "Finished creating the prmtop, inpcrd and pdb files for the simulation"

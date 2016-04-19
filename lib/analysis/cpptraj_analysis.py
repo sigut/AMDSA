@@ -66,7 +66,7 @@ class Analysis:
             f.write("trajin md_files/heat2.mdcrd 1 last 1 \n")
         if includeEquil == "on":
             f.write("trajin md_files/equil0.mdcrd 1 last 1 \n")
-        for names in mdcrd_files[0:]:
+        for names in mdcrd_files[1:]:
             f.write("trajin md_files/"+names+" 1 last "+interval+" \n")
             f.write(' \n')
     #Cpptraj for stripping all the water
@@ -90,7 +90,7 @@ class Analysis:
             f.write("trajin md_files/heat2.mdcrd 1 last 1 \n")
         if includeEquil == "on":
             f.write("trajin md_files/equil0.mdcrd 1 last 1 \n")
-        for names in mdcrd_files[0:]:
+        for names in mdcrd_files[1:]:
             f.write("trajin md_files/"+names+" 1 last "+interval+" \n")
             f.write(' \n')
     #Cpptraj for stripping all the water
