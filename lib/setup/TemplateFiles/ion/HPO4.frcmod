@@ -16,12 +16,12 @@ o -p5-oh        141.600       104.9
 o -p5-o         80.0000       115.0
 
 DIHEDRAL    Path V(kcal.mol-1.rad-1) Phase(deg.) Period Source
-o -p5-oh-ho    1         0.1300         0.0000         3.0000
+o -p5-oh-ho    1         0.1300      0.0000      3.0000 SCEE=2 
 
 IMPROPER         V(kcal.mol-1.rad-1) Phase(deg.) Period Source
 
 NONBON     R*(ang)   Eps(kcal.mol-1)       Source
-ho         0.6000    0.01000000            OPLS Jorgensen, JACS,110,(1988),1657
+ho         0.6000    0.00700000            OPLS Jorgensen, JACS,110,(1988),1657
 o          1.9912    0.21000000            Optimized using Steinbrecher et al 2013
 oh         2.0510    0.21040000            Optimized using Steinbrecher et al 2013
 p5         2.1000    0.20000000            taken from parm10.dat
