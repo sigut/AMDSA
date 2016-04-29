@@ -16,7 +16,7 @@ o -p5-oh        141.600       104.9
 o -p5-o         80.0000       115.0
 
 DIHEDRAL    Path V(kcal.mol-1.rad-1) Phase(deg.) Period Source
-o -p5-oh-ho    1         0.1300      0.0000      3.0000 SCEE=2 
+o -p5-oh-ho    1         0.1300      0.0000      3.0000 SCEE=2.5
 
 IMPROPER         V(kcal.mol-1.rad-1) Phase(deg.) Period Source
 
