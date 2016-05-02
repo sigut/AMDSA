@@ -1,4 +1,4 @@
-FRCMOD file created using paramfit and various papers
+FRCMOD file created using mdgx and various papers
 MASS      mass              pol            Source
 ho        1.008             0.135          taken from parm10.dat
 o         16.000            0.434          taken from parm10.dat
@@ -6,17 +6,17 @@ oh        16.000            0.465          taken from parm10.dat
 p5        30.970            1.538          taken from parm10.dat
 
 BOND   K(kcal.mol-1.ang-2)  Dist0(ang)     Source
-oh-ho       530.0000         0.9700		   parametrized using paramfit
-p5-o        433.0000         1.5500		   parametrized using paramfit
-p5-oh       163.0000         1.7200		   parametrized using paramfit
+ho-oh     528.56          0.9700         parametrized using mdgx
+o-p5      427.49          1.5460         parametrized using mdgx
+oh-p5     165.15          1.7150         parametrized using mdgx
 
 ANGLE  K(kcal.mol-1.rad-2)  Theta0(deg)    Source
-p5-oh-ho        49.0000       111.7
-o -p5-oh        141.600       104.9
-o -p5-o         80.0000       115.0
+ho-oh-p5       36.16         111.7          parametrized using mdgx
+o-p5-o         91.30         115.0          parametrized using mdgx
+o-p5-oh        80.67         105.0          parametrized using mdgx
 
 DIHEDRAL    Path V(kcal.mol-1.rad-1) Phase(deg.) Period Source
-o -p5-oh-ho    1         0.1300      0.0000      3.0000 SCEE=2.5
+ho-oh-p5-o   1    0.19        	     0.0        3.  SCEE=26.84   parametrized using mdgx
 
 IMPROPER         V(kcal.mol-1.rad-1) Phase(deg.) Period Source
 
