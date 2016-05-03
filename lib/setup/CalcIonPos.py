@@ -50,6 +50,8 @@ class CalcIonPosition():
             self.list = [8,9,10,32,33,63,142,146,147,148]
         if protein in ("1IXH", "2ABH"): 
             self.list = [10,11,38,56,135,137,139,140,141]
+        if protein in ("SGAGKT"):
+            self.list = [1,2,3,4,5,6]
             
     def ReadProteinCoordinates(self): # Read the coordinates of the protein pdb file
         f = open(self.pdbFile,'r')
