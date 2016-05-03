@@ -383,11 +383,11 @@ class SetupAMD:
         linenumber = 0
         with open("logs/equil0.out",'r') as equilfile:
             for line in equilfile: 
+#                print line
                 if "NATOM" in line:
                     Atoms = line.split()
                     NumberOfAtoms = float(Atoms[2])
                     break
-                
             for line in equilfile: #This loop runs until we get to the A V E R A G E S part.  The next loop finds the EPtot and DIHED and breaks out afterwards.
                 linenumber += 1
                 if "A V E R A G E S" in line:
@@ -395,19 +395,33 @@ class SetupAMD:
                 
             for line in equilfile:
                 if "EPtot" in line:
+                    print line
                     Energy = line.split()
                     EPTOT = float(Energy[8])
                 if "DIHED" in line:
                     DihedralEnergy= line.split()
                     DIHED = float(DihedralEnergy[8])
                     break    #Break out of loop to avoid overwriting the EPTOT and DIHED parameters
-                
+   
 
+       # Find the number of solute resiudes from pdb file
+        with open("in_files/"+protein+"_finalLEAP_nowater.pdb",'r') as pdbfile:
+            for line in pdbfile:
+                if "TER" in line:
+                    break
+                l = line.split()
             
+            if insertAnion == "on":
+                NumberOfResidues = int(l[4])+1
+            else:
+                NumberOfResidues = int(l[4])
+            
+    
         EnergyAtom = 0.16
         EnergyResi = 4
         
         print "Number of atoms: "+str(NumberOfAtoms)+""
+        print "Number of residues: "+str(NumberOfResidues)+""
         print "Potential Energy: "+str(EPTOT)+""
         print "Dihedral Energy: "+str(DIHED)+""
         
@@ -415,13 +429,13 @@ class SetupAMD:
         self.EthreshP = EPTOT - self.alphaP
         
         self.alphaD = 0.2*EnergyResi*NumberOfResidues
-        self.EthreshD = DIHED + self.alphaD
+        self.EthreshD = DIHED + 5*self.alphaD
         
         print "This is AlphaP: "+str(self.alphaP)+""
-        print "This is EthresP: "+str(self.EthreshP)+""
+        print "This is EthreshP: "+str(self.EthreshP)+""
         
         print "This is AlphaD: "+str(self.alphaD)+""
-        print "This is EthresD: "+str(self.EthreshD)+""
+        print "This is EthreshD: "+str(self.EthreshD)+""
         
     def aMD_in(self):
             #If aMD is specified then:
