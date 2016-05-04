@@ -199,6 +199,8 @@ epsilon_dbscan      =   configAnalysis.get('Analysis','epsilon_dbscan')
 sieve_hier          =   configAnalysis.get('Analysis','sieve_hier')
 sieve_dbscan        =   configAnalysis.get('Analysis','sieve_dbscan')
 
+PCA = configAnalysis.get('Analysis','PCA')
+
 R_Analysis          =   configAnalysis.get('Analysis','R_analysis')
 
 MMPBSA              =   configAnalysis.get('Analysis','MMPBSA')

@@ -118,6 +118,8 @@ class Analysis:
             os.makedirs("data")
         if not os.path.exists("data/cluster"):
             os.makedirs("data/cluster")
+        if not os.path.exists("data/pca"):
+            os.makedirs("data/pca")
             
         f = open("in_files/analysis.traj",'w')
         f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
@@ -127,13 +129,21 @@ class Analysis:
             f.write('angle OH-P-O out data/angle_OH-P-O.dat @O3 @P @O time 1  \n')
             f.write('angle O-P-O out data/angle_O-P-O.dat @O @P @O1 time 1  \n')
             f.write('angle HO-OH-P out data/angle_HO-OH-P.dat @H @O3 @P time 1  \n')
-            f.write('dihedral dihedral out data/dihedral.dat @H @O3 @P :@O time 1 \n')
+            f.write('dihedral dihedral out data/dihedral.dat @H @O3 @P @O time 1 \n')
         
         if clusterAnalysis == "on":
             f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb \n")
             f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.txt summary data/cluster_dbscan_summary_out.txt repout data/cluster/dbscan_centroid repfmt pdb \n")         
         if AnalyseMutations == "on":
             f.write("distance end_to_endSG :"+Mutation1+"@SG :"+Mutation2+"@SG out data/distance_"+Mutation1+"_"+Mutation2+".dat \n")
+            
+        if PCA == "on":
+            f.write("matrix covar name matrixdat @CA out data/pca/covmat-ca.dat  \n")
+            f.write("analyze matrix matrixdat out data/pca/evecs-ca.dat vecs 174  \n")
+            f.write("analyze matrix matrixdat name data/pca/evecs-ca vecs 174  \n")
+            f.write("analyze modes fluct out data/pca/analyzemodesflu.dat stack data/pca/evecs-ca beg 1 end 174  \n")
+            f.write("analyze modes displ out data/pca/analyzemodesdis.dat stack data/pca/evecs-ca beg 1 end 174  \n")
+            f.write("projection modes data/pca/evecs-ca.dat out data/pca/pca12-ca beg 1 end 3 @CA  \n")
         
         f.close()
     
