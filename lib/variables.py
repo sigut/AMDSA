@@ -159,6 +159,22 @@ r2k            = configSetup.get('Steered','r2k')
 configAnalysis = ConfigParser.ConfigParser()
 configAnalysis.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','configAnalysis.cfg'))
 
+#Residues
+ligand          = configAnalysis.get('Residues','ligand')
+ligandType      = configAnalysis.get('Residues','ligandType')
+azobenzene      = configAnalysis.get('Residues','azobenzene')
+azobenzeneType  = configAnalysis.get('Residues','azobenzeneType')
+
+#MutationAnalysis
+AnalyseMutations=   configAnalysis.get('Mutations','MakeMutations')
+Mutation1       =   args.mutation1
+Mutation2       =   args.mutation2
+
+if args.mutation1 == None:
+    Mutation1       =   configAnalysis.get('Mutations','Mutation1')
+if args.mutation1 == None:
+    Mutation2       =   configAnalysis.get('Mutations','Mutation2')
+
 #Cluster Analysis:
 mergeTraj           =   configAnalysis.get('Analysis','mergeTraj')
 deleteOldData       =   configAnalysis.get('Analysis','deleteOldData')

@@ -66,7 +66,7 @@ class CreateFolders():
             print "Creating new folder"
             CreateFolders.create_folder(self,root)
             
-def main():       
+def main():
     if aMD == "on": # iamd is specified in the config file. If specified it will be taken care of in the setupInfiles module
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
@@ -86,6 +86,7 @@ def main():
         MakeSubmissionFile = SetupSubmit.main()
 
     else:
+        print "apparently going into else loop"
         CheckFolder = CreateFolders()
         CheckFolder.check_folder(root)
         if MakeMutations == "on":
@@ -95,6 +96,7 @@ def main():
         Runleap = SetupLeap.main() #Create the parameter topology files
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
+        
     print ""
-    print "\"May the Force(Field) be with you\" -- somewhere"
+    print "\"May the Force(Field) be with you\""
 if __name__ == '__main__': main()

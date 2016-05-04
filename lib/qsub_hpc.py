@@ -92,13 +92,11 @@ def main():
     os.chdir(""+root+"")
 # Define the analysis constructor for cpptraj
     makeAnalysis = cpptraj_analysis.Analysis()
-#Define the methods of the constructor    
     makeAnalysis.find_prmtop(root)
     makeAnalysis.makeTrajin(root,protein)
-    if protein == "cis" or protein =="trans":
-        makeAnalysis.analyse_azo()
-    else:
-        makeAnalysis.analyse()
+    if ligand == "on":
+        makeAnalysis.analyse_ligand()
+    makeAnalysis.analyse_protein()
 # Define the analysis constructor for "R"
     if R_Analysis == "on":
         makeR_Analysis = R_analysis.R()
