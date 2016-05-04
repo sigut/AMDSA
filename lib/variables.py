@@ -166,7 +166,7 @@ azobenzene      = configAnalysis.get('Residues','azobenzene')
 azobenzeneType  = configAnalysis.get('Residues','azobenzeneType')
 
 #MutationAnalysis
-AnalyseMutations=   configAnalysis.get('Mutations','MakeMutations')
+AnalyseMutations=   configAnalysis.get('MutationAnalysis','AnalyseMutations')
 Mutation1       =   args.mutation1
 Mutation2       =   args.mutation2
 
