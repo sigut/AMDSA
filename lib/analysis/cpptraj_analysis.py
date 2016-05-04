@@ -113,19 +113,7 @@ class Analysis:
 #        f.write('go')
 
     
-    def analyse_ligand(self):
-        if not os.path.exists("data"):
-            os.makedirs("data")
-        f = open("in_files/analysis.traj",'w')
-        f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
-        f.write('rms first out data/rmsd.dat @P,O,O1,O2,O3,H time 1 \n')
-        f.write('angle OH-P-O O3 P O  angle_OH-P-O.dat \n')
-        f.write('angle O-P-O O1 P O  angle_O-P-O.dat \n')
-        f.write('angle HO-OH-P H O3 P  angle_HO-OH-P.dat \n')
-        f.close()
-        
-   
-    def analyse_protein(self):
+    def cpptrajScript(self):
         if not os.path.exists("data"):
             os.makedirs("data")
         if not os.path.exists("data/cluster"):
@@ -134,41 +122,31 @@ class Analysis:
         f = open("in_files/analysis.traj",'w')
         f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
-        #f.write("atomicfluct out data/backbone_RMSF.apf @C,CA,N \n")
-        f.write('rms HPO4 out data/rmsd.dat @P,O,O1,O2,O3,H time 1 \n')
-        f.write('angle OH-P-O out data/angle_OH-P-O.dat :1@O3 :1@P :1@O time 1  \n')
-        f.write('angle O-P-O out data/angle_O-P-O.dat :1@O :1@P :1@O1 time 1 \n')
-        f.write('angle HO-OH-P out data/angle_HO-OH-P.dat :1@H :1@O3 :1@P time 1 \n')
-        f.write('dihedral dihedral out data/dihedral.dat :1@H :1@O3 :1@P :1@O time 1 \n')
-        if protein == "pbpu" or protein == "pbpv":
-            f.write("distance end_to_end :10@HD22 :147@HA3 out data/distance_10_147.dat \n")
-            f.write("distance end_to_end1 :10@HD22 :63@OD1 out data/distance_10_63.dat \n")
-            f.write("distance end_to_end2 :115@SG :160@SG out data/distance_disulfur1.dat \n")
-            f.write("distance end_to_end3 :301@SG :364@SG out data/distance_disulfur2.dat \n")
-            
-        if protein == "2ABH" or protein == "1IXH":
-            f.write("distance end_to_end :226@CG :297@CG out data/distance_226_297.dat \n")
-            f.write("distance end_to_endP :10@CB :322@P out data/distance_10_P.dat \n")
+        if ligand == "on":
+            f.write('rms first out data/rmsdPhosphate.dat @P,O,O1,O2,O3,H time 1 \n')
+            f.write('angle OH-P-O out data/angle_OH-P-O.dat @O3 @P @O time 1  \n')
+            f.write('angle O-P-O out data/angle_O-P-O.dat @O @P @O1 time 1  \n')
+            f.write('angle HO-OH-P out data/angle_HO-OH-P.dat @H @O3 @P time 1  \n')
+            f.write('dihedral dihedral out data/dihedral.dat @H @O3 @P :@O time 1 \n')
         
         if clusterAnalysis == "on":
             f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb \n")
-            f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.txt summary data/cluster_dbscan_summary_out.txt repout data/cluster/dbscan_centroid repfmt pdb \n")     
-        
+            f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.txt summary data/cluster_dbscan_summary_out.txt repout data/cluster/dbscan_centroid repfmt pdb \n")         
         if AnalyseMutations == "on":
             f.write("distance end_to_endSG :"+Mutation1+"@SG :"+Mutation2+"@SG out data/distance_"+Mutation1+"_"+Mutation2+".dat \n")
         
         f.close()
     
-    def analyse_azo(self):
-        if protein == "cis" or protein == "trans":
-            f = open("in_files/analysis.traj",'w')
-            f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
-            f.write('rms first out data/rmsd.dat @S,S1 time 1 \n')
-            f.write("distance end_to_endSG :1@S :1@S1 out data/distance_S_S1.dat \n")        
-            f.close()
+#    def analyse_azo(self):
+#        if protein == "cis" or protein == "trans":
+#            f = open("in_files/analysis.traj",'w')
+#            f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
+#            f.write('rms first out data/rmsd.dat @S,S1 time 1 \n')
+#            f.write("distance end_to_endSG :1@S :1@S1 out data/distance_S_S1.dat \n")        
+#            f.close()
            
     # If specified the calculation is submitted to the hpc queue
-    def run_analysis(self,root,qsub):
+    def run_Script(self,root,qsub):
         prmtop = self.prmtop        
         # If qsub is not specified in the commandline, the cpptraj merge should be done locally.
         if qsub == None:
@@ -191,7 +169,7 @@ class Analysis:
         else:
             print "--- submitting the cpptraj analysis to the hpc queue"
        
-
+        
 def main():
     if not os.path.exists(""+root+"/data"):
         os.mkdir(""+root+"/data")    
@@ -199,15 +177,11 @@ def main():
     
     # Define the constructor
     makeAnalysis = Analysis()
-    #Define the methods of the constructor    
+    
     makeAnalysis.find_prmtop(root)
     makeAnalysis.makeTrajin(root,protein)
-         
-#    if azobenzene == "on":
-#        makeAnalysis.analyse_azo()
-    if ligand == "on":
-        makeAnalysis.analyse_ligand()
-    makeAnalysis.analyse_protein()
-    makeAnalysis.run_analysis(root,qsub)
+    makeAnalysis.cpptrajScript()
+    makeAnalysis.run_Script(root,qsub)
+        
     os.chdir(""+home+"")
 if __name__ == '__main__': main()

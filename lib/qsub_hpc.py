@@ -52,7 +52,7 @@ class qsub():
                                print ' this is the prmtop file:'
                                print self.prmtop
     
-    def cpp_qsub(self,root,qsub):
+    def write_qsub(self,root):
         prmtop = self.prmtop        
         # If qsub is not specified in the commandline, the cpptraj merge should be done locally.
    
@@ -69,35 +69,42 @@ class qsub():
         f.write("#clock time\n")
         f.write("#PBS -l walltime="+walltimeAnalysis+" \n")
         f.write("cd $PBS_O_WORKDIR\n")
+        
         if nomerge == None :
             if mergeTraj == "on":
                 f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin.traj \n")
             if mergeTrajSolvate == "on":
                 f.write("cpptraj -p in_files/"+prmtop+" -i in_files/trajin_solvate.traj \n")
+
         if makeAnalysis == "on":    
             f.write("cpptraj -p in_files/strip."+prmtop+" -i in_files/analysis.traj \n")
+
         if R_Analysis == "on":
             f.write("R < in_files/analysis.R --no-save \n")            
+
         if MMPBSA == "on":
             f.write("$AMBERHOME/bin/MMPBSA.py -O -i in_files/mmpbsa.in -o data/MMPBSA.dat -sp "+self.complex_solvated+" -cp "+self.complex_nowat+" -y "+self.dcdname_solvated+" -rp "+self.receptor_nowat+"  -srp "+self.receptor_solvated+" -yr "+self.receptor_dcd+" -lp "+self.ligand_nowat+" -slp "+self.ligand_solvated+" -yl "+self.ligand_dcd+"  -eo data/MMPBSA.csv \n")
+
         if makePlots == "on":
             f.write("python "+home+"/lib/plotting/plot.py -i ./ -p "+protein+" \n")
+
         if makeHistPlots == "on":
             f.write("python "+home+"/lib/plotting/CombinedPlots.py -i "+absdir+" -p "+protein+" -m1 "+Mutation1+" -m2 "+Mutation2+"  \n")
             
-        f.close()        
+        f.close()
+    def qsub_submit(self):
         os.system("qsub cpptraj_submit.sh")
             
 def main():
     os.chdir(""+root+"")
-# Define the analysis constructor for cpptraj
+    
+    # Run the analysis defined in the cpptraj_analysis script.
     makeAnalysis = cpptraj_analysis.Analysis()
     makeAnalysis.find_prmtop(root)
     makeAnalysis.makeTrajin(root,protein)
-    if ligand == "on":
-        makeAnalysis.analyse_ligand()
-    makeAnalysis.analyse_protein()
-# Define the analysis constructor for "R"
+    makeAnalysis.cpptrajScript()
+   
+   
     if R_Analysis == "on":
         makeR_Analysis = R_analysis.R()
         #Define the methods of the constructor
@@ -109,11 +116,11 @@ def main():
         mmpbsaAnalysis.mmpbsa(root)
         mmpbsaAnalysis.qsubMMPBSA(root,protein)
     
-#Define the qsub constructor   
     submit = qsub()
-#Define the method of the constructor
     submit.find_prmtop(root)
-    submit.cpp_qsub(root,qsub)
+    submit.write_qsub(root)
+    submit.qsub_submit()
+    
     
     os.chdir(""+home+"")
 if __name__ == '__main__': main()
