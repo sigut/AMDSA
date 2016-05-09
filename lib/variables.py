@@ -159,6 +159,10 @@ r2k            = configSetup.get('Steered','r2k')
 configAnalysis = ConfigParser.ConfigParser()
 configAnalysis.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','configAnalysis.cfg'))
 
+#Figures
+figSizeX        = configAnalysis.get('Figures','figSizeX')
+figSizeY        = configAnalysis.get('Figures','figSizeY')
+
 #Residues
 ligand          = configAnalysis.get('Residues','ligand')
 ligandType      = configAnalysis.get('Residues','ligandType')
