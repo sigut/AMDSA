@@ -143,7 +143,9 @@ class Analysis:
             f.write("analyze matrix matrixdat name data/pca/evecs-ca vecs 10  \n")
             f.write("analyze modes fluct out data/pca/analyzemodesfluct.dat name data/pca/evecs-ca beg 1 end 10  \n")
             f.write("analyze modes displ out data/pca/analyzemodesdispl.dat name data/pca/evecs-ca beg 1 end 10 \n")
+            f.write("go \n")
             f.write("projection modes data/pca/evecs-ca.dat out data/pca/pca-ca.dat beg 1 end 3 @CA  \n")
+            f.write("go \n")
         
         f.close()
     

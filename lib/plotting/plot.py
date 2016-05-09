@@ -271,7 +271,7 @@ def main():
 #            print "Warning --- "+str(i)+" does not exist. Cannot make plot"
 
     
-    if PCA == "on":
+    if PCAPlot == "on":
         makePlot.read_pca()
         makePlot.plot_pca()
         
@@ -283,7 +283,7 @@ def main():
                 makePlot.label_clusters(""+str(j)+"")
                 print "plotting datafile "+str(j)+".txt"
                 makePlot.plot_clusters(""+str(j)+"")
-                if PCA == "on":
+                if PCAPlot == "on":
                     makePlot.plot_pcaCluster(""+str(j)+"")
             else: 
                 print "Warning --- "+str(j)+".txt does not exist. Cannot make rmsd-cluster colored plot"

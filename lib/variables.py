@@ -204,6 +204,7 @@ sieve_hier          =   configAnalysis.get('Analysis','sieve_hier')
 sieve_dbscan        =   configAnalysis.get('Analysis','sieve_dbscan')
 
 PCA = configAnalysis.get('Analysis','PCA')
+PCAPlot = configAnalysis.get('Analysis','PCAPlot')
 
 R_Analysis          =   configAnalysis.get('Analysis','R_analysis')
 
