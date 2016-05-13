@@ -258,17 +258,17 @@ def main():
         os.mkdir(""+root+"/plots")
     os.chdir(""+root+"")         
 
-#    for i in files: #loop through the files (rmsd, distance...) and make the data-analysis and plot.
-#        if os.path.exists("data/"+str(i)+".dat") == True:
-#            makePlot.read_datafile(""+str(i)+"")
-#            print "read datafile "+str(i)+""
-#            makePlot.plot_datafile(""+str(i)+"")
-#            
-#            print "Making hist plot"
-#            makePlot.plot_histplot(""+str(i)+"")
-#            print "plotting datafile "+str(i)+""
-#        else: 
-#            print "Warning --- "+str(i)+" does not exist. Cannot make plot"
+    for i in files: #loop through the files (rmsd, distance...) and make the data-analysis and plot.
+        if os.path.exists("data/"+str(i)+".dat") == True:
+            makePlot.read_datafile(""+str(i)+"")
+            print "read datafile "+str(i)+""
+            makePlot.plot_datafile(""+str(i)+"")
+            
+            print "Making hist plot"
+            makePlot.plot_histplot(""+str(i)+"")
+            print "plotting datafile "+str(i)+""
+        else: 
+            print "Warning --- "+str(i)+" does not exist. Cannot make plot"
 
     
     if PCAPlot == "on":
