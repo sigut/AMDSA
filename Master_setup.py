@@ -12,7 +12,7 @@ Created on Mon Sep 14 17:09:03 2015
 #   All the scripts above uses the variables defined in the config.cfg file in the root folder.
 
 ####-----------------------------------------------#####
-# Usage: python R_analysis.py -i <inputdir> -p <protein>
+# Usage: python R_analysis.py -i <inputdir> -p <protein> -m1 <mutation1> -m2 <mutation2>
 ####-----------------------------------------------#####
 
 # Variables are loaded from the file lib/variables.py. Any new variable must be entered in this file. The variables.py also calls the config.py file that specifies more rigid/fixed simulation variables for the setup and submit environment.

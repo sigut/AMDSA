@@ -23,7 +23,6 @@ class MakeMutations():
         self.atomname   = []
         self.residuename= []
         self.residuenumber= []
-        self.list = [Mutation1, Mutation2]
         self.Mutationlines1 = []
         self.Mutationlines2 = []
         self.MutationNames1 = []
@@ -56,24 +55,28 @@ class MakeMutations():
             if line[0:4] == 'ATOM':
                
                 try: # If the pdb-file contains the residue number on column 4 then append, otherwise an error will occur and the script will enter the exception and write column 5 instead.
+                    print Mutation1
+                    print "YEAH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                     if isinstance(int(coor[4]),int) == True: 
-#                        for i in self.list: # Append the coordinates of the binding residues.
-                        if int(coor[4]) == int(Mutation1):
-                            self.Mutationlines1.append(k+n)
-                            self.MutationNames1.append(coor[3])
-                            self.Mutationlines.append(k+n)
-                        if int(coor[4]) == int(Mutation2):
-                            self.Mutationlines2.append(k+n)
-                            self.MutationNames2.append(coor[3])
-                            self.Mutationlines.append(k+n)
+                        if Mutation1 == "on":
+                            if int(coor[4]) == int(MutationRes1):
+                                self.Mutationlines1.append(k+n)
+                                self.MutationNames1.append(coor[3])
+                                self.Mutationlines.append(k+n)
+                        if Mutation2 == "on":
+                            if int(coor[4]) == int(MutationRes2):
+                                self.Mutationlines2.append(k+n)
+                                self.MutationNames2.append(coor[3])
+                                self.Mutationlines.append(k+n)
                                 
                 except ValueError:
-#                    for i in self.list: # Append the coordinates of the binding residues.
-                        if int(coor[5]) == int(Mutation1):
+                    if Mutation1 == "on":
+                        if int(coor[5]) == int(MutationRes1):
                             self.Mutationlines1.append(k+n)
                             self.MutationNames1.append(coor[3])
                             self.Mutationlines.append(k+n)
-                        if int(coor[5]) == int(Mutation2):
+                    if Mutation2 == "on":
+                        if int(coor[5]) == int(MutationRes2):
                             self.Mutationlines2.append(k+n)
                             self.MutationNames2.append(coor[3])
                             self.Mutationlines.append(k+n)
@@ -87,19 +90,25 @@ class MakeMutations():
             with open(self.pdbFile) as old_file:
                 for line in old_file:
                     line1 = line.split()
-                    l += 1                   
-                    if l == self.Mutationlines1[0]:
-                        new_file.write(line.replace(line1[3], "CYX"))
-                        
-                    if l == self.Mutationlines2[0]:
-                        new_file.write(line.replace(line1[3], "CYX"))
+                    l += 1
+                    if Mutation1 == "on":
+                        if l == self.Mutationlines1[0]:
+                            new_file.write(line.replace(line1[3], ""+MutationType1+""))
+                    if Mutation2 == "on":
+                        if l == self.Mutationlines2[0]:
+                            new_file.write(line.replace(line1[3], ""+MutationType2+""))
                     
                     if l not in self.Mutationlines:
                         new_file.write(line)                                     
                         
     def Note(self):
-        f = open(""+root+"/README_"+Mutation1+"_"+Mutation2+".txt",'w')
-        f.write("This folder contains files for simulations of the initial crystalstructure of "+structure+", with mutations on residues "+Mutation1+" and "+Mutation2+" ")
+        print Mutation1
+        f = open(""+root+"/README_Mutations.txt",'w')
+        f.write("This folder contains files for simulations of the initial crystalstructure of "+structure+", with mutations on residues \n")
+        if Mutation1 == "on":
+            f.write(""+MutationRes1+" to "+MutationType1+" \n")
+        if Mutation2 == "on":
+            f.write(""+MutationRes2+" to "+MutationType2+" \n")
         f.close()
 
 def main():

@@ -106,15 +106,18 @@ azoName         =   configSetup.get('Leap','azoName')
 azoConfig       =   configSetup.get('Leap','azoConfig')
 
 ####### Mutations ##############################
-MakeMutations   =   configSetup.get('Mutations','MakeMutations')
-Mutation1       =   args.mutation1
-Mutation2       =   args.mutation2
+MakeMutations      =   configSetup.get('Mutations','MakeMutations')
+#MutationRes1       =   args.mutation1
+#MutationRes2       =   args.mutation2
 
-if args.mutation1 == None:
-    Mutation1       =   configSetup.get('Mutations','Mutation1')
-if args.mutation1 == None:
-    Mutation2       =   configSetup.get('Mutations','Mutation2')
-
+#if args.mutation1 == None: 
+Mutation1       =   configSetup.get('Mutations','Mutation1')
+MutationRes1    =   configSetup.get('Mutations','MutationRes1')
+MutationType1   =   configSetup.get('Mutations','MutationType1')
+#if args.mutation2 == None:
+Mutation2       =   configSetup.get('Mutations','Mutation2')    
+MutationRes2    =   configSetup.get('Mutations','MutationRes2')
+MutationType2   =   configSetup.get('Mutations','MutationType2')
 
 ####### System parameters #####################
 # Regular parameters
@@ -170,14 +173,14 @@ azobenzene      = configAnalysis.get('Residues','azobenzene')
 azobenzeneType  = configAnalysis.get('Residues','azobenzeneType')
 
 #MutationAnalysis
-AnalyseMutations=   configAnalysis.get('MutationAnalysis','AnalyseMutations')
-Mutation1       =   args.mutation1
-Mutation2       =   args.mutation2
+AnalyseMutations        =   configAnalysis.get('MutationAnalysis','AnalyseMutations')
+MutationAnalysis1       =   args.mutation1
+MutationAnalysis2       =   args.mutation2
 
 if args.mutation1 == None:
-    Mutation1       =   configAnalysis.get('MutationAnalysis','Mutation1')
+    MutationAnalysis1       =   configAnalysis.get('MutationAnalysis','Mutation1')
 if args.mutation1 == None:
-    Mutation2       =   configAnalysis.get('MutationAnalysis','Mutation2')
+    MutationAnalysis2       =   configAnalysis.get('MutationAnalysis','Mutation2')
 
 #Cluster Analysis:
 mergeTraj           =   configAnalysis.get('Analysis','mergeTraj')
