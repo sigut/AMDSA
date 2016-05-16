@@ -24,8 +24,8 @@ for folders in the_list:
 from variables import *
 
 closest = []
-threshold = 3.2
-tries = 100
+threshold = 2.5
+tries = 200
 increment = 0.5
 
 class CalcIonPosition():

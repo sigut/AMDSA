@@ -25,8 +25,10 @@ class MakeMutations():
         self.residuenumber= []
         self.Mutationlines1 = []
         self.Mutationlines2 = []
+        self.Mutationlines3 = []
         self.MutationNames1 = []
         self.MutationNames2 = []
+        self.MutationNames3 = []
         self.Mutationlines = []
         
     def ReadProteinCoordinates(self): # Read the coordinates of the protein pdb file
@@ -55,8 +57,6 @@ class MakeMutations():
             if line[0:4] == 'ATOM':
                
                 try: # If the pdb-file contains the residue number on column 4 then append, otherwise an error will occur and the script will enter the exception and write column 5 instead.
-                    print Mutation1
-                    print "YEAH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                     if isinstance(int(coor[4]),int) == True: 
                         if Mutation1 == "on":
                             if int(coor[4]) == int(MutationRes1):
@@ -67,6 +67,11 @@ class MakeMutations():
                             if int(coor[4]) == int(MutationRes2):
                                 self.Mutationlines2.append(k+n)
                                 self.MutationNames2.append(coor[3])
+                                self.Mutationlines.append(k+n)
+                        if Mutation3 == "on":
+                            if int(coor[4]) == int(MutationRes2):
+                                self.Mutationlines3.append(k+n)
+                                self.MutationNames3.append(coor[3])
                                 self.Mutationlines.append(k+n)
                                 
                 except ValueError:
@@ -80,11 +85,13 @@ class MakeMutations():
                             self.Mutationlines2.append(k+n)
                             self.MutationNames2.append(coor[3])
                             self.Mutationlines.append(k+n)
-                            
+                    if Mutation3 == "on":
+                        if int(coor[5]) == int(MutationRes3):
+                            self.Mutationlines3.append(k+n)
+                            self.MutationNames3.append(coor[3])
+                            self.Mutationlines.append(k+n)                            
                         
             
-        print self.Mutationlines1, self.MutationNames1
-        print self.Mutationlines2, self.MutationNames2
         l = 0
         with open(""+absdir+"/in_files/"+protein+"_mutation.pdb",'w') as new_file:
             with open(self.pdbFile) as old_file:
@@ -97,6 +104,9 @@ class MakeMutations():
                     if Mutation2 == "on":
                         if l == self.Mutationlines2[0]:
                             new_file.write(line.replace(line1[3], ""+MutationType2+""))
+                    if Mutation3 == "on":
+                        if l == self.Mutationlines3[0]:
+                            new_file.write(line.replace(line1[3], ""+MutationType3+""))
                     
                     if l not in self.Mutationlines:
                         new_file.write(line)                                     
@@ -109,6 +119,8 @@ class MakeMutations():
             f.write(""+MutationRes1+" to "+MutationType1+" \n")
         if Mutation2 == "on":
             f.write(""+MutationRes2+" to "+MutationType2+" \n")
+        if Mutation3 == "on":
+            f.write(""+MutationRes3+" to "+MutationType3+" \n")
         f.close()
 
 def main():

@@ -118,6 +118,10 @@ MutationType1   =   configSetup.get('Mutations','MutationType1')
 Mutation2       =   configSetup.get('Mutations','Mutation2')    
 MutationRes2    =   configSetup.get('Mutations','MutationRes2')
 MutationType2   =   configSetup.get('Mutations','MutationType2')
+#if args.mutation2 == None:
+Mutation3       =   configSetup.get('Mutations','Mutation3')    
+MutationRes3    =   configSetup.get('Mutations','MutationRes3')
+MutationType3   =   configSetup.get('Mutations','MutationType3')
 
 ####### System parameters #####################
 # Regular parameters
