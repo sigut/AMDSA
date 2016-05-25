@@ -162,14 +162,14 @@ class SetupInfiles:
         if timestep == "0.001": 
             f.write("  nstlim=500000,dt=0.001,          \n") # Heat for 1000000*0.001 ps = 1000 ps         
         f.write("  nscm=500, ntt=1,                     \n") # Constant temperature using the weak-coupling algorithm
-        f.write("  temp0=0.0, tempi=0.0, tautp=0.5      \n")
+        f.write("  tempi=0.0, temp0=300.0, tautp=0.5      \n")
         if not implicit == "on":
             f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
             f.write("  restraintmask=\'!:WAT\', \n")
             f.write("  restraint_wt=10.0,                   \n")
         if DISANG == "on":
             f.write("  nmropt = 1,                      \n")
-        f.write("&end                 \n")
+        f.write("/                 \n")
         # Type defines quantity that is begin varied
         if timestep == "0.002":
             f.write("  &wt type='REST', istep1 = 0, istep2=0, value1=1.0, value2=1.0, &end \n") #Rest for relative weights of all the NMR restraint energy terms
