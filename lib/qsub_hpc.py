@@ -58,12 +58,12 @@ class qsub():
    
         print "--- submitting the cpptraj analysis to the hpc queue"
         os.system("rm -rf cpptraj_submit.sh.*")         #Remove old output and error files
-        name = "cpptraj_submit.sh"
+        #name = "cpptraj_submit.sh"
         f = open("cpptraj_submit.sh",'w')
         f.write("#!/bin/sh\n")            
         f.write("#\n")
         f.write("# job name\n")
-        f.write("#PBS -N "+name+"\n")
+        f.write("#PBS -N "+root+"\n")
         f.write("# request cores\n")
         f.write("#PBS -l nodes="+nodesAnalysis+":ppn="+coresAnalysis+"\n")
         f.write("#clock time\n")

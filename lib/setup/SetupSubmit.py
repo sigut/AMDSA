@@ -154,7 +154,7 @@ echo "Molecular Dynamics"
 echo "-- Number of previous MD runs: "$(($n-1))
 
 startI=$n
-endI=$(($n+$md_steps))
+endI=$(($n))
 
 while [ $startI -lt $endI ]
 do
@@ -197,7 +197,7 @@ done
 #echo "-- Number of previous MD runs: "$(($n-1))
 #
 #startI=$n
-#endI=$(($n+$md_steps))
+#endI=$(($n))
 #
 #while [ $startI -lt $endI ]
 #do
@@ -253,7 +253,7 @@ echo "Molecular Dynamics"
 echo "-- Number of previous MD runs: "$(($n))
 
 startI=$n
-endI=$(($n+$md_steps))
+endI=$(($n))
 
 while [ $startI -lt $endI ]
 do
@@ -310,7 +310,7 @@ echo "Molecular Dynamics"
 echo "-- Number of previous MD runs: "$(($n))
 
 startI=$n
-endI=$(($n+$md_steps))
+endI=$(($n))
 
 while [ $startI -lt $endI ]
 do
