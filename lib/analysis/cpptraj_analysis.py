@@ -135,7 +135,7 @@ class Analysis:
             f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb \n")
             f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.txt summary data/cluster_dbscan_summary_out.txt repout data/cluster/dbscan_centroid repfmt pdb \n")         
         if AnalyseMutations == "on":
-            f.write("distance end_to_endSG :"+Mutation1+"@SG :"+Mutation2+"@SG out data/distance_"+Mutation1+"_"+Mutation2+".dat \n")
+            f.write("distance end_to_endSG :"+MutationAnalysis1+"@SG :"+MutationAnalysis2+"@SG out data/distance_"+MutationAnalysis1+"_"+MutationAnalysis2+".dat \n")
             
         if PCA == "on":
             f.write("matrix covar name matrixdat @CA out data/pca/covmat-ca.dat  \n")

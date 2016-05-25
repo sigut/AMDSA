@@ -182,9 +182,9 @@ MutationAnalysis1       =   args.mutation1
 MutationAnalysis2       =   args.mutation2
 
 if args.mutation1 == None:
-    MutationAnalysis1       =   configAnalysis.get('MutationAnalysis','Mutation1')
+    MutationAnalysis1       =   configAnalysis.get('MutationAnalysis','MutationAnalysis1')
 if args.mutation1 == None:
-    MutationAnalysis2       =   configAnalysis.get('MutationAnalysis','Mutation2')
+    MutationAnalysis2       =   configAnalysis.get('MutationAnalysis','MutationAnalysis2')
 
 #Cluster Analysis:
 mergeTraj           =   configAnalysis.get('Analysis','mergeTraj')
