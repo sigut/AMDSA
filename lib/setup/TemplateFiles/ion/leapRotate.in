@@ -1,0 +1,12 @@
+loadAmberParams HPO4.frcmod
+hpo4 = loadmol2 HPO4.mol2
+
+transform hpo4 {{ 0  0 1  0 }
+      			{ 1  0  0  0 }
+		    	{ 0  0  0   0 }
+      			{ 0  1  0  1  } }
+#flip hpo4
+savepdb hpo4 HPO4_rotated.pdb
+savemol2 hpo4 HPO4_rotated.mol2 1
+
+
