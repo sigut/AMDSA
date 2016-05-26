@@ -167,8 +167,7 @@ class SetupInfiles:
             f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
             f.write("  restraintmask=\'!:WAT\', \n")
             f.write("  restraint_wt=10.0,                   \n")
-        if DISANG == "on":
-            f.write("  nmropt = 1,                      \n")
+        f.write("  nmropt = 1,                      \n")
         f.write("/                 \n")
         # Type defines quantity that is begin varied
         if timestep == "0.002":
