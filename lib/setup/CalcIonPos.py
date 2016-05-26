@@ -24,9 +24,9 @@ for folders in the_list:
 from variables import *
 
 closest = []
-threshold = 2.5
+threshold = 3.2
 tries = 200
-increment = 0.5
+increment = 0.25
 
 class CalcIonPosition():
     def __init__(self): 
@@ -45,11 +45,12 @@ class CalcIonPosition():
         self.atomname   = []
         self.residuename= []
         self.residuenumber= []
-        self.threshold = threshold + 0.5
+        self.threshold = threshold
         if protein in ("pbpu", "pbpv"):   
             self.list = [8,9,10,32,33,63,142,146,147,148]
         if protein in ("1IXH", "2ABH"): 
-            self.list = [10,11,38,56,135,137,139,140,141]
+            self.list = [10,11,38,56,135,137,139,140,141,195,254]
+#            self.list = [8,9,32,62,141,145,146,147]
         if protein in ("SGAGKT"):
             self.list = [1,2,3,4,5,6]
             
@@ -167,9 +168,6 @@ class CalcIonPosition():
         
         closest_temp = min(self.dist) # What is the distance to the nearest atom?
         closest.append(closest_temp)
-        print ""
-        print "this is the history of the closest atoms:"
-        print closest
         return closest
          
     def FindNearestAtom(self):
@@ -230,6 +228,9 @@ def main():
         
         if closest[i] > threshold: #If the nearest atom exceeds the threshold value the position optimization is complete
             print "Success!! Distance to nearest atom is larger than the threshold value"
+            print ""
+            print "this is the history of the closest atoms:"
+            print closest
             break
         else: # Repeat the process of finding the nearest atom, move the phosphate and evaluate the new distance
             Calc.FindNearestAtom()
