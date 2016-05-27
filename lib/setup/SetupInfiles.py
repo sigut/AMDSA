@@ -314,7 +314,7 @@ class SetupInfiles:
         
         
     def FindAtomNumbers(self,protein): # Read the coordinates of the protein pdb file
-        self.pdbFile = ""+absdir+"/in_files/"+protein+"_finalLEAP_nowater.pdb"
+        self.pdbFile = ""+absdir+"/in_files/"+protein+"_finalLEAP_nowat.pdb"
         f = open(self.pdbFile,'r')
         pdb = f.readlines()[0:]
         f.close()
