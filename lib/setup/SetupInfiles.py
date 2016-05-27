@@ -404,7 +404,7 @@ class SetupAMD:
    
 
        # Find the number of solute resiudes from pdb file
-        with open("in_files/"+protein+"_finalLEAP_nowater.pdb",'r') as pdbfile:
+        with open("in_files/"+protein+"_finalLEAP_nowat.pdb",'r') as pdbfile:
             for line in pdbfile:
                 if "TER" in line:
                     break
