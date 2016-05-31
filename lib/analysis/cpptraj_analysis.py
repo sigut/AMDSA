@@ -102,16 +102,15 @@ class Analysis:
         f.write('# Create output \n')
         f.write("trajout resultsDir/"+dcdnameSolvated+" charmm nobox \n")
         f.write('go')
-        f.close()
     # Make cpptraj keep nearest water molecules  
-#        f.write('\n')
-#        f.write('# Keep closest 100 water molecules, remove the rest \n')
-#        f.write('closest 100 :1-376 closestout in_files/closestmols.dat outprefix in_files/closest \n')
-#        f.write('\n')
-#        f.write('# Create output \n')
-#        f.write('trajout resultsDir/mergedResult_closest.dcd charmm nobox \n')
-#        f.write('go')
-
+        f.write('\n')
+        f.write('# Keep closest 100 water molecules, remove the rest \n')
+        f.write('closest 100 :1-321 closestout data/closestmols.dat outprefix in_files/closest \n')
+        f.write('\n')
+        f.write('# Create output \n')
+        f.write('trajout resultsDir/mergedResult_closest.dcd charmm nobox \n')
+        f.write('go')
+        f.close()
     
     def cpptrajScript(self):
         if not os.path.exists("data"):
@@ -125,11 +124,11 @@ class Analysis:
         f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
         if ligand == "on":
-            f.write('rms first out data/rmsdPhosphate.dat @P,O,O1,O2,O3,H time 1 \n')
+            f.write('rms first out data/rmsdPhosphate.dat @P,O1,O2,O3,H time 1 \n')
             f.write('angle OH-P-O out data/angle_OH-P-O.dat @O3 @P @O time 1  \n')
             f.write('angle O-P-O out data/angle_O-P-O.dat @O @P @O1 time 1  \n')
             f.write('angle HO-OH-P out data/angle_HO-OH-P.dat @H @O3 @P time 1  \n')
-            f.write('dihedral dihedral out data/dihedral_HO-OH-P-O.dat @H @O3 @P @O time 1 \n')
+            f.write('dihedral dihedral out data/dihedral_HO-OH-P-O.dat @H @O3 @P @O1 time 1 \n')
         
         if clusterAnalysis == "on":
             f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb \n")
