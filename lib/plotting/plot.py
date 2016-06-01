@@ -170,6 +170,28 @@ class Plot():
             self.pc1 = PC1
             self.pc2 = PC2
             self.pc3 = PC3
+            
+    def pcaSCREE(self):
+        
+        eigenValue = []
+        eigenNumber = []
+        n = 0
+        with open('data/pca/evecs-ca.dat') as f:
+            for line in f:
+                nextLine = next(f)
+                if "****" == line.strip():
+                    line = nextLine.split()
+                    eigenNumber.append(int(line[0]))
+                    eigenValue.append(float(line[1])) 
+        
+        plt.figure(figsize=(self.figsizeX, self.figsizeY))
+        ax = plt.gca()
+        plt.scatter(eigenNumber, eigenValue, color = 'b')
+        ax.set_xlabel('Eigenvalue number')
+        ax.set_ylabel('Eigenvalue')
+        plt.savefig("plots/ScreePlot.png")
+        plt.close()
+        
         
     def plot_pca(self):
         color = self.frame/len(self.frame)
@@ -273,6 +295,7 @@ def main():
     
     if PCAPlot == "on":
         makePlot.read_pca()
+        makePlot.pcaSCREE()
         makePlot.plot_pca()
         
     if clusterAnalysis == "on":
