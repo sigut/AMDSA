@@ -14,6 +14,7 @@ import math
 import numpy as np
 from operator import itemgetter
 import os,sys,inspect
+import random
 
 the_list = ["lib","lib/setup"]
 for folders in the_list:
@@ -36,6 +37,7 @@ class CalcIonPosition():
             self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
             
         self.ligandpdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".pdb"
+        self.ligandmol2File = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
         
         self.x,self.y,self.z = [],[],[]
         self.x_bind,self.y_bind,self.z_bind = [],[],[]
@@ -143,9 +145,9 @@ class CalcIonPosition():
         
         Binding_site = self.Binding_center - self.ion
                 
-        self.ionPosX = Binding_site[0]
-        self.ionPosY = Binding_site[1]
-        self.ionPosZ = Binding_site[2]
+        self.ionPosX = Binding_site[0] + random.random()*2-1
+        self.ionPosY = Binding_site[1] + random.random()*2-1
+        self.ionPosZ = Binding_site[2] + random.random()*2-1
         self.ionPos = [self.ionPosX,self.ionPosY,self.ionPosZ]
         return self.ionPos
     
@@ -207,6 +209,42 @@ class CalcIonPosition():
         f.close()
         print coordinates
     
+    def Rotation(self):
+        deflection = 1
+        theta, phi, z = random.random(),random.random(), random.random()
+        
+        theta = theta * 2.0*deflection*np.pi  # Rotation about the pole (Z).
+        phi = phi * 2.0*np.pi  # For direction of pole deflection.
+        z = z * 2.0*deflection  # For magnitude of pole deflection.
+        
+        # Compute a vector V used for distributing points over the sphere
+        # via the reflection I - V Transpose(V).  This formulation of V
+        # will guarantee that if x[1] and x[2] are uniformly distributed,
+        # the reflected points will be uniform on the sphere.  Note that V
+        # has length sqrt(2) to eliminate the 2 in the Householder matrix.
+        
+        r = np.sqrt(z)
+        Vx, Vy, Vz = V = (
+            np.sin(phi) * r,
+            np.cos(phi) * r,
+            np.sqrt(2.0 - z)
+            )
+        
+        st = np.sin(theta)
+        ct = np.cos(theta)
+        
+        R = np.array(((ct, st, 0), (-st, ct, 0), (0, 0, 1)))
+        
+        # Construct the rotation matrix  ( V Transpose(V) - I ) R.
+        
+        M = (np.outer(V, V) - np.eye(3)).dot(R)
+        #return M
+        print M
+        f = open(""+absdir+"/in_files/rotation.dat",'w')
+        f.write("{"+str(M[0][0])+" "+str(M[0][1])+" "+str(M[0][2])+" 0}")
+        f.write("{"+str(M[1][0])+" "+str(M[2][1])+" "+str(M[1][2])+" 0}")
+        f.write("{"+str(M[2][0])+" "+str(M[2][1])+" "+str(M[2][2])+" 0}")
+        f.close()
  
 def main():
     Calc = CalcIonPosition()        
@@ -249,5 +287,7 @@ def main():
     Calc.Evaluate()
     print "Done Optimizing the ligand position"
     print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-                
+#    if rotateAnion == "on":
+#        Calc.Rotation()
+#        print "Randomly rotating the anion"
 if __name__ == '__main__': main()

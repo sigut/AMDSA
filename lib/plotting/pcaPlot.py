@@ -45,6 +45,7 @@ class Plot():
         self.pc1 = 0
         self.pc2 = 0
         self.pc3 = 0
+        
 def pcaPlot(self):
 #        read_datafile 
         pcaFiles = ""+absdir+"/data/pca/pca-ca"
