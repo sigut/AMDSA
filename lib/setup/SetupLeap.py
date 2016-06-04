@@ -31,7 +31,11 @@ class SetupLeap(CalcIonPosition):
                 self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
         
         if insertAnion == "on":
-            self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
+            if rotation == "on":
+                self.inputAnion = ""+absdir+"/in_files/HPO4_Rotation.mol2"   
+            else:
+                self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
+            
             self.frcmodAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
 #            self.frcmodGAFF = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".dat"
         
@@ -63,6 +67,9 @@ class SetupLeap(CalcIonPosition):
             f = open(""+absdir+"/in_files/coordinates.dat",'r')
             coordinates = f.readlines()[0]
             f.close()
+#            f = open(""+absdir+"/in_files/rotation.dat",'r')
+#            rotation = f.readlines()[0]
+#            f.close()
         name = "LEaP_setup.ff"
         f = open(""+name+"",'w')
         f.write("source "+forcefield+" \n")
@@ -82,10 +89,7 @@ class SetupLeap(CalcIonPosition):
             f.write("anion = loadmol2 "+self.inputAnion+" \n")
             f.write("translate anion {"+coordinates+"} \n")
             f.write(""+protein+" = combine{"+protein+" anion} \n")
-            f.write(" \n")
-#            f.write(" \n")
-#            f.write("addions "+protein+" Na+ 0 \n")
-#            f.write("addions "+protein+" Cl- 0 \n")            
+            f.write("savepdb "+protein+" "+absdir+"/in_files/Temp.pdb \n")
             f.write(" \n")
         if implicit == "on":
             f.write("saveamberparm "+protein+" "+absdir+"/in_files/"+protein+".prmtop "+absdir+"/in_files/"+protein+".inpcrd \n")
@@ -173,7 +177,7 @@ def main():
     #Copy mol2 and frcmod file into folder 
     if insertAnion == "on":
         os.system("cp "+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"" "+absdir+"/in_files/"  )
-        os.system("cp "+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"" "+absdir+"/in_files/"  )
+        os.system("cp "+absdir_home+"/lib/setup/TemplateFiles/ion/"+frcmod+".frcmod"" "+absdir+"/in_files/"  )
         
     os.chdir(""+home+"")
     print "Finished creating the prmtop, inpcrd and pdb files for the simulation"

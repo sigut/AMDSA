@@ -28,7 +28,7 @@ for folders in the_list:
     if cmd_subfolder not in sys.path:
         sys.path.insert(0, cmd_subfolder)
 from variables import *
-import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos, Mutations, Crosslinker
+import SetupInfiles, SetupLeap, SetupSubmit, CalcIonPos, Mutations, Crosslinker, RotateIonPos
 
 
 class CreateFolders():
@@ -78,6 +78,7 @@ def main():
             RunMutations = Mutations.main()
         if insertAnion == "on" and insertProtein == "on":
             Calc = CalcIonPos.main()
+#            Rot = RotateIonPos.main()
         Runleap = SetupLeap.main() #Create the parameter topology files
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
@@ -93,6 +94,7 @@ def main():
             RunMutations = Mutations.main()
         if insertAnion == "on" and insertProtein == "on":
             Calc = CalcIonPos.main()
+#            Rot = RotateIonPos.main()
         Runleap = SetupLeap.main() #Create the parameter topology files
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()

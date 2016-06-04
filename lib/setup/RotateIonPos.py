@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 """
+Created on Fri Jun  3 15:07:01 2016
+
+@author: sigurd
+"""
+
+
+# -*- coding: utf-8 -*-
+"""
 Created on Wed Oct 21 16:31:08 2015
 
 @author: sigurd
@@ -25,20 +33,18 @@ for folders in the_list:
 from variables import *
 
 closest = []
-threshold = 3.0
+threshold = 3.2
 tries = 200
 increment = 0.25
 
-class CalcIonPosition():
+class RotIonPosition():
     def __init__(self): 
         if MakeMutations == "on":
             self.pdbFile = ""+absdir+"/in_files/"+protein+"_mutation.pdb"
         else:
             self.pdbFile = ""+absdir_home+"/lib/setup/TemplateFiles/pdb_files/"+protein+"/"+structure+""
         
-        self.ligandmol2File = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
-        self.frcmodAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
-        anionFile = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
+        self.ligandmol2File =  ""+absdir+"/in_files/HPO4_newPos.mol2"   
 #        self.ligandmol2File = ""+absdir+"/in_files/HPO4_rotation.mol2"
 
 
@@ -55,7 +61,7 @@ class CalcIonPosition():
         if protein in ("pbpu", "pbpv"):   
             self.list = [8,9,10,32,33,63,142,146,147,148]
         if protein in ("1IXH", "2ABH"): 
-            self.list = [10,11,37,38,56,137,139,140,141]
+            self.list = [10,11,38,56,135,137,139,140,141,195,254]
 #            self.list = [8,9,32,62,141,145,146,147]
         if protein in ("SGAGKT"):
             self.list = [1,2,3,4,5,6]
@@ -116,21 +122,18 @@ class CalcIonPosition():
 
         # Coordinates of the center of the entire protein
         self.residues = zip(self.atomnumber, self.atomname, self.residuename,self.residuenumber)
-        
         avgX = np.average(self.x)
         avgY = np.average(self.y)
         avgZ = np.average(self.z)
         self.CenterOfProtein = np.array([avgX,avgY,avgZ])
-        print "this is the center of geometry of the protein"
-        print self.CenterOfProtein
         self.ProteinCoordinates = np.array([self.x,self.y,self.z]) #The ProteinCoordinates contains the coordinates of the binding site atoms
         
         # Coordinates of the binding site
         self.Binding_center = np.array([np.average(self.x_bind),np.average(self.y_bind),np.average(self.z_bind)])
    
-    def IonPos(self,anionFile): # Find the position of the ligand from the pdb/mol2 file and place the ligand in the binding site.
+    def IonPos(self): # Find the position of the ligand from the pdb/mol2 file and place the ligand in the binding site.
         # Initial read of the mol2 file (Know when to start and stop reading the coordinates)           
-        f = open(anionFile,'r')
+        f = open(self.ligandmol2File,'r')
         mol2 = f.readlines()[0:]
         f.close()
         i = 0
@@ -142,12 +145,12 @@ class CalcIonPosition():
                 n = i
                 print n
             if "@<TRIPOS>BOND" == line.strip():
-                print "found @<TRIPOS>BOND"
+                print "found @@<TRIPOS>BOND"
                 m = i
                 print m
             i += 1
         # Read the coordinates and append to x-y and z -_ion
-        f = open(anionFile,'r')
+        f = open(self.ligandmol2File,'r')
         mol2 = f.readlines()[n+1:m]
         f.close()
         for line in mol2:
@@ -166,161 +169,12 @@ class CalcIonPosition():
         
         Binding_site = self.Binding_center - self.ion
                 
-        self.ionPosX = Binding_site[0] + random.random()*1-0.5
-        self.ionPosY = Binding_site[1] + random.random()*1-0.5
-        self.ionPosZ = Binding_site[2] + random.random()*1-0.5
+        self.ionPosX = Binding_site[0] + random.random()*2-1
+        self.ionPosY = Binding_site[1] + random.random()*2-1
+        self.ionPosZ = Binding_site[2] + random.random()*2-1
         self.ionPos = [self.ionPosX,self.ionPosY,self.ionPosZ]
         return self.ionPos
     
-    def Distance(self): # Find the distance of the ligand to the nearest atoms in the protein
-        self.distance = []        
-        self.dist = []
-        self.vector = []
-        self.Atomnumber = []
-
-        for i in range(0,len(self.x)): #Find the distance to each atom of the binding site atoms, and append to the dist list.
-            self.dist.append(math.sqrt((self.ionPos[0]-self.ProteinCoordinates[0][i])**2
-                                        +(self.ionPos[1]-self.ProteinCoordinates[1][i])**2
-                                        +(self.ionPos[2]-self.ProteinCoordinates[2][i])**2))
-
-        for i in range(0,len(self.dist)): # Of the binding site atoms which are below a threshold value? Print these values for information purposes.
-            if self.dist[i] < self.threshold:
-                self.Atomnumber.append(i)
-                self.distance.append(self.dist[i])
-                print self.residues[i], self.dist[i]
-        
-        closest_temp = min(self.dist) # What is the distance to the nearest atom?
-        closest.append(closest_temp)
-        return closest
-         
-    def FindNearestAtom(self):
-        #Find the nearest atom from the distance list.
-        print "this is the self.distance"        
-        print self.distance
-        self.NearestAtom = min(enumerate(self.distance), key=itemgetter(1))[0]
-        #Find the coordinates of the nearest atom!
-        AtomCoordinates = np.array([self.ProteinCoordinates[0][self.Atomnumber[self.NearestAtom ]], 
-                                    self.ProteinCoordinates[1][self.Atomnumber[self.NearestAtom ]],
-                                    self.ProteinCoordinates[2][self.Atomnumber[self.NearestAtom ]]])
-        # Find a vector to move the ligand with
-        self.vector = np.array(self.ionPos-AtomCoordinates)/np.linalg.norm(self.ionPos-AtomCoordinates)
-        print ""
-        print "Moving Ligand with direction:" 
-        print self.vector
-        
-    def MovePhosphate(self): # Move the postition of the ion with the vector multiplied by a small value
-        print ""
-        print "This is the old ion position:"
-        print self.ionPos
-        self.ionPos = self.ionPos + increment*self.vector
-        print "This is the new ion Position:"    
-        print self.ionPos
-        return self.ionPos
-                
-    def Evaluate(self): # Evaluate the distance to the nearest atom and write the coordinates to the coordinates.dat file. This value is overwritten for each iteration
-        print ""
-        for i in range(0,len(self.x)):
-            self.dist.append(math.sqrt((self.ionPos[0]-self.ProteinCoordinates[0][i])**2
-                                        +(self.ionPos[1]-self.ProteinCoordinates[1][i])**2
-                                        +(self.ionPos[2]-self.ProteinCoordinates[2][i])**2))
-        self.criterion = min(self.dist)
-        print "Evaluate: Distance to the closest atom is:"        
-        print self.criterion
-        coordinates = ""+str(round(self.ionPos[0],2))+" "+str(round(self.ionPos[1],2))+" "+str(round(self.ionPos[2],2))+""
-        f = open(""+absdir+"/in_files/coordinates.dat",'w')
-        f.write(""+coordinates+"")
-        f.close()
-        print coordinates
-    
-    
-
-    def leapInitialPosition(self):
-        print "Starting LEaP to make the new coordinate mol2 file"
-        self.inputAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
-        self.frcmodAnion = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".frcmod"
-        
-        f = open(""+absdir+"/in_files/coordinates.dat",'r')
-        coordinates = f.readlines()[0]
-        f.close()
-            
-        buffer = """#Created by CalcIonPos.py
-        HPO4 = loadmol2 """+self.ligandmol2File+"""
-        
-       loadAmberParams """+self.frcmodAnion+"""
-       anionTemp = loadmol2 """+self.inputAnion+"""
-       translate anionTemp {"""+coordinates+"""}
-                        
-                        
-        savemol2 anionTemp """+absdir+"""/in_files/HPO4_Initial.mol2 1
-        quit
-        """
-                
-        name = "LEaP_CalcPosition.ff"
-        f = open(""+absdir+"/in_files/"+name+"",'w')
-        f.write(buffer)
-        f.close()
-        
-        os.system("tleap -f "+absdir+"/in_files/"+name+"")
-        
-    def InitialIonPosition(self,anionFile,threshold):
-        print "starting initialIonPosition"
-        Calc = CalcIonPosition()        
-        Calc.ReadProteinCoordinates()  
-    
-    #Now calculate the correct position    
-        Calc.IonPos(anionFile)
-    
-        
-    #########################
-        n = 0
-        print "Starting Optimizing the Ligand Position"
-        print ""    
-        print "###############################################"    
-        print ""
-        for i in range(0,tries):
-            n +=1   
-            print "Iteration number: "+str(n)+""
-            Calc.Distance()            
-            print ""
-            print "this is the distance to the closest atom"        
-            print closest[i]
-            print "Optimizing Ligand Position"   
-            
-            if closest[i] > threshold: #If the nearest atom exceeds the threshold value the position optimization is complete
-                print "Success!! Distance to nearest atom is larger than the threshold value"
-                print ""
-                print "this is the history of the closest atoms:"
-                print closest
-                break
-            else: # Repeat the process of finding the nearest atom, move the phosphate and evaluate the new distance
-                Calc.FindNearestAtom()
-                Calc.MovePhosphate()
-                Calc.Evaluate()
-            print ""
-            print "###############################################"
-            print ""
-            if n == tries-1:
-                 raise Exception('Failure!: The ion cannot be positioned in the protein within the number of iterations \n'
-                                 'Are you sure you specified the right protein and ligand? \n'
-                                 'If yes!: You can try to increase the number of iterations or decrease the threshold limit to the nearest atom!'
-                                 'Good luck!')
-    
-            
-        Calc.Evaluate()
-        Calc.leapInitialPosition()
-        print "Done Optimizing the ligand position"
-        print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-        
-
-        
-#class RotIonPosition():
-#    def __init__(self):
-#        Calc = CalcIonPosition()
-#        Calc.__init__()
-#        Calc.ReadProteinCoordinates() 
-        
-
-        
     def CalcRotationVectors(self):
         #Define a vector from oh-ho
         print self.x_ion[0]
@@ -355,7 +209,7 @@ class CalcIonPosition():
     def CalcRotationMatrix(self):
         I = np.array([[1,0,0],[0,1,0],[0,0,1]])
         
-        v1 = self.p5ho
+        v1 = self.p5oh
         v2 = self.Cgp5
         theta = np.arccos(np.dot(v1,v2)/(np.linalg.norm(v1)*np.linalg.norm(v2)))
         k = np.cross(v1,v2)
@@ -378,7 +232,14 @@ class CalcIonPosition():
         print "this is the determinant of the rotation matrix"
         print np.linalg.det(self.R)  
         print ""
-
+        print ""
+        print ""
+        print ""
+        print ""
+        print ""
+        print ""
+        print ""
+        print ""
         
         f = open(""+absdir+"/in_files/rotation.dat",'w')
         f.write("{"+str(self.R[0][0])+" "+str(self.R[0][1])+" "+str(self.R[0][2])+" 0}")
@@ -387,54 +248,35 @@ class CalcIonPosition():
         f.write("{       0               0               0             1}")
         f.close()
         
-    def leapRotate(self,anionFile):
-        print "Starting LEaP to make the new coordinate mol2 file"
+    def leapPosition(self):
+        buffer = """#Created by CalcIonPos.py
+        source leaprc.gaff
         
+        HPO4 = loadmol2 """+self.ligandmol2File+"""
         
-        
-        f = open(""+absdir+"/in_files/rotation.dat",'r')
-        rotation = f.readlines()[0]
-        f.close()
-        
-        name = "LEaP_RotAnion.ff"
+        transform HPO4 { { """+str(self.R[0][0])+""" """+str(self.R[0][1])+""" """+str(self.R[0][2])+""" 0}
+                        { """+str(self.R[1][0])+""" """+str(self.R[1][1])+""" """+str(self.R[1][2])+""" 0}
+                        { """+str(self.R[2][0])+""" """+str(self.R[2][1])+""" """+str(self.R[2][2])+""" 0}
+                        {           0                   0                   0            1}}
+                        
+                        
+        savemol2 HPO4 """+absdir+"""/in_files/HPO4_rotation.mol2 1
+        quit
+        """
+                
+        name = "LEaP_transform.ff"
         f = open(""+absdir+"/in_files/"+name+"",'w')
-        f.write("#Created by CalcIonPos.py \n")
-        
-        f.write("loadAmberParams "+self.frcmodAnion+"\n")
-        f.write("anionTemp = loadmol2 "+anionFile+"\n")
-        f.write("transform anionTemp {"+rotation+"} \n")
-                               
-        f.write("savemol2 anionTemp "+absdir+"/in_files/HPO4_Rotation.mol2 1 \n")
-        f.write("quit \n")                     
+        f.write(buffer)
         f.close()
         
         os.system("tleap -f "+absdir+"/in_files/"+name+"")
-
-    def RotateIon(self,anionFile):
-        Calc = CalcIonPosition()
-#        Calc.__init__()
-        
-        Calc.ReadProteinCoordinates()
-        Calc.IonPos(anionFile)
-        
-#        Rot = RotIonPosition()
-        Calc.CalcRotationVectors()
-        Calc.CalcRotationMatrix()
-        Calc.leapRotate(anionFile)
-        
     
+    
+        
 def main():
-    Calc = CalcIonPosition()
-    anionFile = ""+absdir_home+"/lib/setup/TemplateFiles/ion/"+ionName+".mol2"
-    threshold = 2.6
-    Calc.InitialIonPosition(anionFile,threshold)
-    
-    if rotation == "on":
-        anionFile = ""+absdir+"/in_files/HPO4_Initial.mol2"   
-        Calc.RotateIon(anionFile)
-        
-        anionFile = ""+absdir+"/in_files/HPO4_Rotation.mol2"
-        threshold = 2.6
-        Calc.InitialIonPosition(anionFile,threshold)
-    
+    Rot = RotIonPosition()        
+    Rot.ReadProteinCoordinates()  
+    Rot.IonPos()
+    Rot.CalcRotationVectors()
+    Rot.CalcRotationMatrix() 
 if __name__ == '__main__': main()
