@@ -142,7 +142,7 @@ class Analysis:
         if PCA == "on":
             f.write("matrix mwcovar name matrixdat @CA out data/pca/covmat-ca.dat  \n")
             f.write('\n')
-            f.write("diagmatrix matrixdat out data/pca/evecs-ca.dat name data/pca/evecs-ca vecs 10 reduce \ \n")
+            f.write("diagmatrix matrixdat out data/pca/evecs-ca.dat name data/pca/evecs-ca vecs 10 reduce \n")
             f.write('nmwiz nmwizvecs 10 nmwizfile data/pca/nmwiz.nmd \n')            
             f.write('\n')
             f.write("analyze modes fluct out data/pca/analyzemodesfluct.dat name data/pca/evecs-ca beg 1 end 10  \n")
