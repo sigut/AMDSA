@@ -130,10 +130,12 @@ class Analysis:
             f.write('angle O-P-O out data/angle_O-P-O.dat @O @P @O1 time 1  \n')
             f.write('angle HO-OH-P out data/angle_HO-OH-P.dat @H @O3 @P time 1  \n')
             f.write('dihedral dihedral out data/dihedral_HO-OH-P-O.dat @H @O3 @P @O1 time 1 \n')
+            f.write('go \n')            
             f.write('\n')
         if clusterAnalysis == "on":
             f.write("cluster hieragglo epsilon "+epsilon_hier+" rms @CA,C,N sieve "+sieve_hier+" out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb \n")
             f.write("cluster dbscan minpoints 100 epsilon "+epsilon_dbscan+" rms @CA,C,N sieve "+sieve_dbscan+" out data/cluster_dbscan_out.txt summary data/cluster_dbscan_summary_out.txt repout data/cluster/dbscan_centroid repfmt pdb \n")
+            f.write("go \n")
             f.write('\n')
         if AnalyseMutations == "on":
             f.write("distance end_to_endSG :"+MutationAnalysis1+"@SG :"+MutationAnalysis2+"@SG out data/distance_"+MutationAnalysis1+"_"+MutationAnalysis2+".dat \n")
@@ -143,7 +145,7 @@ class Analysis:
             f.write("matrix mwcovar name matrixdat @CA out data/pca/covmat-ca.dat  \n")
             f.write('\n')
             f.write("diagmatrix matrixdat out data/pca/evecs-ca.dat name data/pca/evecs-ca vecs 10 reduce \n")
-            f.write('nmwiz nmwizvecs 10 nmwizfile data/pca/nmwiz.nmd \n')            
+#            f.write('nmwiz nmwizvecs 10 nmwizfile data/pca/nmwiz.nmd \n')            
             f.write('\n')
             f.write("analyze modes fluct out data/pca/analyzemodesfluct.dat name data/pca/evecs-ca beg 1 end 10  \n")
             f.write("analyze modes displ out data/pca/analyzemodesdispl.dat name data/pca/evecs-ca beg 1 end 10 \n")
