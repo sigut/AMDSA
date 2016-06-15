@@ -98,7 +98,7 @@ class CombinedPlot():
 #        plt.title(r""+title+"$\ \ \mu=%.3f,\ \sigma=%.3f$" %(mu, sigma))
         plt.legend(loc=2)
         plt.savefig(""+absdir+"/plots/1IXH_"+Mutation1+"_"+Mutation2+".png",bbox_inches='tight')
-        plt.savefig("/SCRATCH/sigut/phd/PBP_simulations/Mutations/plots/1IXH_"+Mutation1+"_"+Mutation2+".png",bbox_inches='tight')
+        plt.savefig("/SCRATCH/sigut/phd/PBP_simulations/Mutations/plots/1IXH_"+MutationAnalysis1+"_"+MutationAnalysis2+".png",bbox_inches='tight')
         plt.clf()
             
             
@@ -106,9 +106,9 @@ class CombinedPlot():
 def main():
 #    Enter the root directory
     files = ["/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_cis_2/data/distance_S_S1",
-             ""+absdir+"/data/distance_"+Mutation1+"_"+Mutation2+"",
+             ""+absdir+"/data/distance_"+MutationAnalysis1+"_"+MutationAnalysis2+"",
              "/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_trans_2/data/distance_S_S1",
-             ""+absdir+"_inP/data/distance_"+Mutation1+"_"+Mutation2+""]
+             ""+absdir+"_inP/data/distance_"+MutationAnalysis1+"_"+MutationAnalysis2+""]
     #["QM_trans","distance_226_298_P","distance_226_299_P","QM_cis","distance_226_298_open","distance_226_299_open"]
 #    files = ["rmsd_226_298","rmsd_226_298_P"]
     
