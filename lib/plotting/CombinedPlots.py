@@ -79,7 +79,7 @@ class CombinedPlot():
         
         plt.figure(figsize=(12, 6))   
         binwidth = 0.1
-        color = ["violet","g","r","darkblue","0.75","blue","violet","lavender","darkorchid"]
+        color = ["violet","darkblue","r","g","0.75","blue","violet","lavender","darkorchid"]
         
         # the histogram of the data
         print "Beginnning plot"
