@@ -59,7 +59,7 @@ class CombinedPlot():
             
             
     def combined_rmsdplot(self,files):
-        color = ["darkblue","g","g","darkmagenta","0.75","blue","violet","lavender","darkorchid"]        
+        color = ["violet","g","r","darkblue","0.75","blue","violet","lavender","darkorchid"]
         plt.figure(figsize=(12, 6))
         for i in range(0,len(files)):
 #            CombinedPlot.read_datafile(""+str(i)+"")                    
@@ -79,7 +79,7 @@ class CombinedPlot():
         
         plt.figure(figsize=(12, 6))   
         binwidth = 0.1
-        color = ["r","0.75","violet","r","0.75","darkblue","0.75","blue","violet","lavender","darkorchid"]
+        color = ["violet","g","r","darkblue","0.75","blue","violet","lavender","darkorchid"]
         
         # the histogram of the data
         print "Beginnning plot"
@@ -96,7 +96,7 @@ class CombinedPlot():
 #        title = "$\mathrm{Histogram\ of: \ "+files+"}$"
 #        title = title.replace('_', '\_')
 #        plt.title(r""+title+"$\ \ \mu=%.3f,\ \sigma=%.3f$" %(mu, sigma))
-        plt.legend(loc=2)
+        #plt.legend(loc=2)
         plt.savefig(""+absdir+"/plots/1IXH_"+Mutation1+"_"+Mutation2+".png",bbox_inches='tight')
         plt.savefig("/SCRATCH/sigut/phd/PBP_simulations/Mutations/plots/1IXH_"+MutationAnalysis1+"_"+MutationAnalysis2+".png",bbox_inches='tight')
         plt.clf()
