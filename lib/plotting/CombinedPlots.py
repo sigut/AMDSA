@@ -101,8 +101,6 @@ class CombinedPlot():
         plt.savefig("/SCRATCH/sigut/phd/PBP_simulations/Mutations/plots/1IXH_"+MutationAnalysis1+"_"+MutationAnalysis2+".png",bbox_inches='tight')
         plt.clf()
             
-            
-            
 def main():
 #    Enter the root directory
     files = ["/SCRATCH/sigut/phd/PBP_simulations/Azobenzene/QM_cis_2/data/distance_S_S1",
