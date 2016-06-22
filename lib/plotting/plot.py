@@ -119,14 +119,15 @@ class Plot():
         for i,j in enumerate(yv):
             self.x_s[int(j)].append(i)
         
-        if PCA == "on":             
-            # Define the y-rms values for each cluster       
-            self.y_rmsd = [0]*self.number
-            self.y_pc1 = [0]*self.number
-            self.y_pc2 = [0]*self.number
-            for i in xrange(self.number):
-                self.y_rmsd[i] = []
-                self.y_rmsd[i] = self.y[self.x_s[i]]
+               
+        # Define the y-rms values for each cluster       
+        self.y_rmsd = [0]*self.number
+        self.y_pc1 = [0]*self.number
+        self.y_pc2 = [0]*self.number
+        for i in xrange(self.number):
+            self.y_rmsd[i] = []
+            self.y_rmsd[i] = self.y[self.x_s[i]]
+            if PCA == "on":  
                 self.y_pc1[i] = []
                 self.y_pc1[i] = self.pc1[self.x_s[i]]
                 self.y_pc2[i] = []
