@@ -210,6 +210,7 @@ epsilon_hier        =   configAnalysis.get('Analysis','epsilon_hier')
 epsilon_dbscan      =   configAnalysis.get('Analysis','epsilon_dbscan') 
 sieve_hier          =   configAnalysis.get('Analysis','sieve_hier')
 sieve_dbscan        =   configAnalysis.get('Analysis','sieve_dbscan')
+dbscan_minpoints    =   configAnalysis.get('Analysis','dbscan_minpoints')
 
 PCA = configAnalysis.get('Analysis','PCA')
 PCAPlot = configAnalysis.get('Analysis','PCAPlot')
