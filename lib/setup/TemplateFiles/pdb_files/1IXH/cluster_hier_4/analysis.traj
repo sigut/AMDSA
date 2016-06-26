@@ -1,0 +1,7 @@
+trajin resultsDir/mergedResult_strip.dcd 1 last 1
+
+cluster dbscan kdist 4 rms @CA,C,N sieve 5 loadpairdist pairdist CpptrajPairDist
+
+cluster hieragglo clusters 4 epsilon 1.5 rms @CA,C,N sieve 5 loadpairdist pairdist CpptrajPairDist out data/cluster_hier_out.txt summary data/cluster_hier_summary_out.txt repout data/cluster/hier_centroid repfmt pdb 
+
+#cluster dbscan epsilon 0.8 minpoints 100 rms @CA,C,N sieve 5 sievetoframe loadpairdist pairdist CpptrajPairDist  out data/cluster_dbscan_out.txt summary data/cluster_dbscan_summary_out.txt repout data/cluster/dbscan_centroid repfmt pdb 
