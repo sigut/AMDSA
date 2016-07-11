@@ -150,7 +150,7 @@ class SetupLeap(CalcIonPosition):
         #solvation
         f.write(""+solvate+" "+protein+" TIP3PBOX "+self.WaterBoxSize+" \n")
         f.write("saveamberparm "+protein+" "+absdir+"/in_files/"+protein+".prmtop "+absdir+"/in_files/"+protein+".inpcrd \n")
-        f.write("savepdb "+protein+" "+absdir+"/in_files/"+proteine+"_finalLEAP.pdb \n")
+        f.write("savepdb "+protein+" "+absdir+"/in_files/"+protein+"_finalLEAP.pdb \n")
         f.write("quit  \n")
         f.close()
         os.system("tleap -f "+name+"")
