@@ -163,6 +163,10 @@ class SetupInfiles:
             f.write("  nstlim=500000,dt=0.001,          \n") # Heat for 1000000*0.001 ps = 1000 ps         
         f.write("  nscm=500, ntt=1,                     \n") # Constant temperature using the weak-coupling algorithm
         f.write("  tempi=0.0, temp0=300.0, tautp=0.5      \n")
+        f.write("/ \n")
+        if QM == "on":
+            f.write(""+self.QMMM+"")
+        f.write("/ \n")
         if not implicit == "on":
             f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
             f.write("  restraintmask=\'!:WAT\', \n")
@@ -177,9 +181,6 @@ class SetupInfiles:
             f.write("  &wt type='REST', istep1 = 0, istep2=0, value1=1.0, value2=1.0, &end \n") #Rest for relative weights of all the NMR restraint energy terms
             f.write("  &wt type='TEMP0', istep1=0, istep2=500000, value1=0.0, value2=300, &end \n")       # Varies the target temperature
         f.write("  &wt type='END' \n")
-        if QM == "on":
-            f.write(""+self.QMMM+"")
-        f.write("/ \n")
         if DISANG == "on":
             f.write("DISANG=distFile.RST                      \n")    
         f.close()
