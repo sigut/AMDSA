@@ -286,8 +286,7 @@ def main():
         if os.path.exists("data/"+str(i)+".dat") == True:
             makePlot.read_datafile(""+str(i)+"")
             print "read datafile "+str(i)+""
-            makePlot.plot_datafile(""+str(i)+"")
-            
+            makePlot.plot_datafile(""+str(i)+"")          
             print "Making hist plot"
             makePlot.plot_histplot(""+str(i)+"")
             print "plotting datafile "+str(i)+""
