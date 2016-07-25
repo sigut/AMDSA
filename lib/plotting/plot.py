@@ -267,6 +267,8 @@ class Plot():
         plt.savefig("plots/pca12_"+cluster_files+".png")
         plt.close()
         
+        
+        
 def main():
     makePlot = Plot(root)
     cluster_files = ["cluster_hier_out","cluster_dbscan_out"]

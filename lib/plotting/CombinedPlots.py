@@ -92,6 +92,7 @@ class CombinedPlot():
         ax = plt.subplot()
         ax.xaxis.set_tick_params(labelsize=self.fontsize)
         ax.yaxis.set_tick_params(labelsize=self.fontsize)
+        ax.xlim([5,25])
         plt.tick_params(labelsize=14)
 #        title = "$\mathrm{Histogram\ of: \ "+files+"}$"
 #        title = title.replace('_', '\_')
