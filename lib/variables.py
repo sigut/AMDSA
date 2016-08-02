@@ -108,8 +108,6 @@ azoConfig       =   configSetup.get('Leap','azoConfig')
 
 ####### Mutations ##############################
 MakeMutations      =   configSetup.get('Mutations','MakeMutations')
-#MutationRes1       =   args.mutation1
-#MutationRes2       =   args.mutation2
 
 #if args.mutation1 == None: 
 Mutation1       =   configSetup.get('Mutations','Mutation1')
