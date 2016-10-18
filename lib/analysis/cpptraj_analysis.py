@@ -103,13 +103,13 @@ class Analysis:
         f.write("trajout resultsDir/"+dcdnameSolvated+" charmm nobox \n")
         f.write('go')
     # Make cpptraj keep nearest water molecules  
-        f.write('\n')
-        f.write('# Keep closest 100 water molecules, remove the rest \n')
-        f.write('closest 100 :1-321 closestout data/closestmols.dat outprefix in_files/closest \n')
-        f.write('\n')
-        f.write('# Create output \n')
-        f.write('trajout resultsDir/mergedResult_closest.dcd charmm nobox \n')
-        f.write('go')
+#        f.write('\n')
+#        f.write('# Keep closest 100 water molecules, remove the rest \n')
+#        f.write('closest 100 :1-321 closestout data/closestmols.dat outprefix in_files/closest \n')
+#        f.write('\n')
+#        f.write('# Create output \n')
+#        f.write('trajout resultsDir/mergedResult_closest.dcd charmm nobox \n')
+#        f.write('go')
         f.close()
     
     def cpptrajScript(self):
