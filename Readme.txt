@@ -1,3 +1,5 @@
+#this file needs to be updated
+
 # AMDSA
 
 #Automated Molecular Dynammics Setup and Analysis is a modular program created in Python that creates the necessary files for running MD simulations in Amber. Therefore is it required to have a working version of Amber Installed. This program uses Amber14 and AmberTools15. Amber consists of many different tools that must be run through the commandline in order to run. All of these steps are run through the AMDSA program. 

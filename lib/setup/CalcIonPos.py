@@ -56,6 +56,10 @@ class CalcIonPosition():
             self.list = [8,9,10,32,33,63,142,146,147,148]
         if protein in ("1IXH", "2ABH"): 
             self.list = [10,11,37,38,56,137,139,140,141]
+#            if exterior == "off":
+#                self.list = [10,11,37,38,56,137,139,140,141]
+#            if exterior == "on":
+#                self.list = [37,39,56,137,138,176]
 #            self.list = [8,9,32,62,141,145,146,147]
         if protein in ("SGAGKT"):
             self.list = [1,2,3,4,5,6]
@@ -127,6 +131,10 @@ class CalcIonPosition():
         
         # Coordinates of the binding site
         self.Binding_center = np.array([np.average(self.x_bind),np.average(self.y_bind),np.average(self.z_bind)])
+        print "this is the Binding pocket coordinates"
+        print self.Binding_center
+        
+        self.exterior =  self.Binding_center - self.CenterOfProtein
    
     def IonPos(self,anionFile): # Find the position of the ligand from the pdb/mol2 file and place the ligand in the binding site.
         # Initial read of the mol2 file (Know when to start and stop reading the coordinates)           
@@ -164,13 +172,17 @@ class CalcIonPosition():
         ionZ = np.average(self.z_ion)
         self.ion = [ionX,ionY,ionZ]
         
-        Binding_site = self.Binding_center - self.ion
-                
+        if exterior == "on":
+            Binding_site = self.exterior - self.ion            
+        else:
+            Binding_site = self.Binding_center - self.ion
+        
         self.ionPosX = Binding_site[0] + random.random()*1-0.5
         self.ionPosY = Binding_site[1] + random.random()*1-0.5
         self.ionPosZ = Binding_site[2] + random.random()*1-0.5
         self.ionPos = [self.ionPosX,self.ionPosY,self.ionPosZ]
         return self.ionPos
+        
     
     def Distance(self): # Find the distance of the ligand to the nearest atoms in the protein
         self.distance = []        
