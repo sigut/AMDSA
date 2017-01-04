@@ -22,7 +22,7 @@ import os
 
 # The two following functions adds subfolders to the python-path and allows import of the modules into this program
 # use this if you want to include modules from a subfolder
-the_list = ["lib","lib/setup"]
+the_list = ["lib","lib/setup"] #put the path into the config file, and pull the config file down into the specific folder (and copy the config file into the folder for debugging purposes)
 for folders in the_list:
     cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],str(folders))))
     if cmd_subfolder not in sys.path:
@@ -71,18 +71,19 @@ def main():
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
         
-    if sMD == "on" and newSim == "on":
-        CheckFolder = CreateFolders()
-        CheckFolder.check_folder(root)
-        if MakeMutations == "on":
-            RunMutations = Mutations.main()
-        if insertAnion == "on" and insertProtein == "on":
-            Calc = CalcIonPos.main()
-#            Rot = RotateIonPos.main()
-        Runleap = SetupLeap.main() #Create the parameter topology files
-        Setup = SetupInfiles.main()
-        MakeSubmissionFile = SetupSubmit.main()
-    if sMD == "on" and newSim == "off":
+#    if sMD == "on" and newSim == "on":
+#        CheckFolder = CreateFolders()
+#        CheckFolder.check_folder(root)
+#        if MakeMutations == "on":
+#            RunMutations = Mutations.main()
+#        if insertAnion == "on" and insertProtein == "on":
+#            Calc = CalcIonPos.main()
+#            if rotation == "on":
+#                Rot = RotateIonPos.main()
+#        Runleap = SetupLeap.main() #Create the parameter topology files
+#        Setup = SetupInfiles.main()
+#        MakeSubmissionFile = SetupSubmit.main()
+    if sMD == "on" and newSim == "off": #If continuing another simulation with sMD then make only the setup and submission files
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
 
@@ -94,7 +95,8 @@ def main():
             RunMutations = Mutations.main()
         if insertAnion == "on" and insertProtein == "on":
             Calc = CalcIonPos.main()
-#            Rot = RotateIonPos.main()
+            if rotation == "on":
+                Rot = RotateIonPos.main()
         Runleap = SetupLeap.main() #Create the parameter topology files
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()

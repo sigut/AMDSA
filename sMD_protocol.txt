@@ -1,0 +1,11 @@
+sMD protocol
+
+setupInfiles:
+	Write the sMD_0.in (over ps) and the corresponding DST file
+	Write the sMD_1.in (relaxation, ~10 ns) and the corresponding DST file
+	
+setupSubmit:
+	Write the cMD scheme in the submit.sh files
+	Write extension of submit.sh file with the sMD.in files
+	
+	

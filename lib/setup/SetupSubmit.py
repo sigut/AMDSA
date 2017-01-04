@@ -127,12 +127,12 @@ elif [[ -e md_files/heat2.rst ]]; then
     
 fi
 
-######################
 """
 
                 if method == "cMD":
                     buffer = buffer + """
-# A function for running another step of the script
+######################      Beginning the cMD simulations           ######################      
+# A function for running the cMD 
 runMD(){
 
 # define the local step nr, previous step nr, and new step nr
@@ -169,51 +169,77 @@ do
     startI=`expr $startI + 1`
 done
             """
+#                f.write(buffer)
+#                f.close()
+            
+                if sMD == "on" and newSim == "on":
+                    buffer = buffer + """    
+######################      Beginning the sMD simulations           ######################      
+# sMD: steer the system
+echo "steer NPT ensemble"
+
+# Find the number of cMD runs and continue the sMD from that.
+arr=( md_files/equil*.rst )  # * is list of all file and dir names
+n=${#arr[@]}
+echo "Molecular Dynamics"
+echo "-- Number of previous MD runs: "$(($n-1))
+
+if [[ -e md_files/equil0.rst ]]; then
+    echo '-- equil0.rst file exists, skipping equilibration'
+elif [[ -e md_files/heat2.rst ]]; then    
+    echo '-- Running Minimization 6'
+    """+self.CALCULATOR+""" -O -i in_files/sMD_0.in -o logs/sMD_0.out -p in_files/"""+protein+""".prmtop -c md_files/equil$n.rst -r md_files/sMD_0.rst -x md_files/sMD_0.mdcrd
+    
+    # Create pdb file for the minimized structure
+    ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_0.rst > pdb_files/"""+protein+"""_sMD_0.pdb
+    
+fi
+
+######################                        
+                        
+                        
+# A function for running another step of the script
+runMD(){
+
+# define the local step nr, previous step nr, and new step nr
+local cStep=$1
+local pStep=$(($1-1))
+
+#Move the RST file to avoid it being overwritten!
+mv data/dist.sMD.RST data/dist.sMD_${pstep}.RST
+
+# Start amber MD simulation
+"""+self.CALCULATOR+""" -O -i in_files/sMD_equil.in -o logs/sMD_${cStep}.log -c md_files/sMD_{pStep}.rst -p in_files/"""+protein+""".prmtop -r md_files/sMD_${cStep}.rst -x md_files/sMD_${cStep}.mdcrd
+
+# Convert the resulting structure to a pdb-file
+ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_${cStep}.rst > pdb_files/sMD_${cStep}.pdb
+
+}
+
+# Run the MD simulations. Figure out last stop, and take "md_steps" runs from that
+arr=( md_files/sMD_*.rst )  # * is list of all file and dir names
+n=${#arr[@]}
+echo "Molecular Dynamics"
+echo "-- Number of previous sMD runs: "$(($n-1))
+
+startI=$n
+endI=$(($NumberOfsMDRuns))
+
+while [ $startI -lt $endI ]
+do
+    if [[ -e md_files/sMD_$(($startI+1)).rst ]]; then
+        echo "-- #"$startI" sMD already run, skipping to next"
+    elif [[ -e md_files/sMD_$(($startI-1)).rst ]]; then
+        echo "-- Running script #"$startI
+        runMD $startI
+    else
+        echo '-- previous equil file not found, skipping equilibration #'$startI
+    fi
+    startI=`expr $startI + 1`
+done
+            """
                 f.write(buffer)
                 f.close()
-            
-#                if sMD == "on":
-#                    if newSim == "off":
-#                        buffer = buffer + """
-## A function for running another step of the script
-#runMD(){
-#
-## define the local step nr, previous step nr, and new step nr
-#local cStep=$1
-#local pStep=$(($1-1))
-#
-## Start amber MD simulation
-#"""+self.CALCULATOR+""" -O -i in_files/sMD.in -o logs/md_${cStep}.log -c md_files/equil${pStep}.rst -p in_files/"""+protein+""".prmtop -r md_files/equil${cStep}.rst -x md_files/equil${cStep}.mdcrd
-#
-## Convert the resulting structure to a pdb-file
-#ambpdb -p in_files/"""+protein+""".prmtop < md_files/equil${cStep}.rst > pdb_files/equil${cStep}.pdb
-#
-#}
-#
-## Run the MD simulations. Figure out last stop, and take "md_steps" runs from that
-#arr=( md_files/equil*.rst )  # * is list of all file and dir names
-#n=${#arr[@]}
-#echo "Molecular Dynamics"
-#echo "-- Number of previous MD runs: "$(($n-1))
-#
-#startI=$n
-#endI=$(($n))
-#
-#while [ $startI -lt $endI ]
-#do
-#    if [[ -e md_files/equil$(($startI+1)).rst ]]; then
-#        echo "-- #"$startI" MD already run, skipping to next"
-#    elif [[ -e md_files/equil$(($startI-1)).rst ]]; then
-#        echo "-- Running script #"$startI
-#        runMD $startI
-#    else
-#        echo '-- previous equil file not found, skipping equilibration #'$startI
-#    fi
-#    startI=`expr $startI + 1`
-#done
-#            """
-#                        f.write(buffer)
-#                        f.close()
                 
     def amd_submit(self,protein,method):
         for queue in self.list:
@@ -284,39 +310,64 @@ done
                     
                 f = open(""+absdir+"/submissionScripts/sMD_submit_"+self.compiler+"_"+queue+".sh",'w')                
                 buffer = Queue(queue,name, cores, ptile )        
-                buffer = buffer + """
-# Number of MD steps
-md_steps="""+NumberOfsMDRuns+"""
+                buffer = buffer + """              
+                        
+######################      Beginning the sMD simulations           ######################      
+# sMD: steer the system
+echo "steer NPT ensemble"
 
+# Find the number of cMD runs and continue the sMD from that.
+arr=( md_files/equil*.rst )  # * is list of all file and dir names
+n=${#arr[@]}
+echo "Molecular Dynamics"
+echo "-- Number of previous MD runs: "$(($n-1))
+
+if [[ -e md_files/equil0.rst ]]; then
+    echo '-- equil0.rst file exists, skipping equilibration'
+elif [[ -e md_files/heat2.rst ]]; then    
+    echo '-- Running Minimization 6'
+    """+self.CALCULATOR+""" -O -i in_files/sMD_0.in -o logs/sMD_0.out -p in_files/"""+protein+""".prmtop -c md_files/equil$n.rst -r md_files/sMD_0.rst -x md_files/sMD_0.mdcrd
+    
+    # Create pdb file for the minimized structure
+    ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_0.rst > pdb_files/"""+protein+"""_sMD_0.pdb
+    
+fi
+
+######################                        
+                        
+                        
 # A function for running another step of the script
 runMD(){
 
 # define the local step nr, previous step nr, and new step nr
 local cStep=$1
-echo "this is the current step" $((cStep))
 local pStep=$(($1-1))
 
-# Start amber MD simulation
-"""+self.CALCULATOR+""" -O -i in_files/sMD.in -o logs/outsMD${cStep}.log -c md_files/equil${pStep}.rst -p in_files/"""+protein+""".prmtop -r md_files/equil${cStep}.rst -x md_files/equil${cStep}.mdcrd
+#Move the RST file to avoid it being overwritten!
+mv data/dist.sMD.RST data/dist.sMD_${pstep}.RST
 
-# Create pdb file from results
-ambpdb -p in_files/"""+protein+""".prmtop < md_files/equil${cStep}.rst > pdb_files/equil${cStep}.pdb
+# Start amber MD simulation
+"""+self.CALCULATOR+""" -O -i in_files/sMD_equil.in -o logs/sMD_${cStep}.log -c md_files/sMD_{pStep}.rst -p in_files/"""+protein+""".prmtop -r md_files/sMD_${cStep}.rst -x md_files/sMD_${cStep}.mdcrd
+
+# Convert the resulting structure to a pdb-file
+ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_${cStep}.rst > pdb_files/sMD_${cStep}.pdb
+
 }
 
 # Run the MD simulations. Figure out last stop, and take "md_steps" runs from that
-arr=( md_files/equil*.rst )  # * is list of all file and dir names
+arr=( md_files/sMD_*.rst )  # * is list of all file and dir names
 n=${#arr[@]}
 echo "Molecular Dynamics"
-echo "-- Number of previous MD runs: "$(($n))
+echo "-- Number of previous sMD runs: "$(($n-1))
 
 startI=$n
-endI=$md_steps
+endI=$(($NumberOfsMDRuns))
 
 while [ $startI -lt $endI ]
 do
-    if [[ -e md_files/equil$(($startI+1)).rst ]]; then
-        echo "-- #"$startI" MD already run, skipping to next"
-    elif [[ -e md_files/equil$(($startI-1)).rst ]]; then
+    if [[ -e md_files/sMD_$(($startI+1)).rst ]]; then
+        echo "-- #"$startI" sMD already run, skipping to next"
+    elif [[ -e md_files/sMD_$(($startI-1)).rst ]]; then
         echo "-- Running script #"$startI
         runMD $startI
     else
@@ -324,8 +375,7 @@ do
     fi
     startI=`expr $startI + 1`
 done
-
-"""
+            """
                 f.write(buffer)
                 f.close()
     
@@ -336,9 +386,8 @@ def main():
     CreateSubmit = Create_Submit()
     if aMD == "on":
         CreateSubmit.amd_submit(protein,method)
-    if sMD == "on":
-        if newSim == "on":
-            CreateSubmit.smd_submit(protein,method)          
+    if sMD == "on" and newSim == "off":
+        CreateSubmit.smd_submit(protein,method)          
     else:
         CreateSubmit.makeSubmitFile(protein,method)
     

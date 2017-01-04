@@ -253,10 +253,7 @@ class SetupInfiles:
             f.write(""+self.implicit+"\n")
         else:
             f.write("  cut=10.0, ntb=1, ntp=0,  \n")
-        if timestep == "0.002":
-            f.write("  nstlim=1000000,dt=0.002, ,iwrap=1 \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
-        if timestep == "0.001":
-            f.write("  nstlim=2000000,dt=0.001, \n")     # Production run for 200000*0.001 ps = 2000 ps = 2 ns (repeated in submit.sh)
+        f.write("  nstlim="+nstlim+",dt="+timestep+", ,iwrap=1 \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
         f.write("  ntc="+ntc+",ntf="+ntf+",ig=-1,       \n")
         f.write("  ntpr=1000, ntwx=1000,    \n")
         f.write("  ntt=3, gamma_ln=2.0,     \n")
@@ -271,18 +268,15 @@ class SetupInfiles:
         f.close()
     
     def sMD(self):
-        f = open("in_files/sMD.in",'w')
-        f.write(" steered MD run 2 ns     \n")
+        f = open("in_files/sMD_0.in",'w')
+        f.write(" #steered MD run     \n")
         f.write(" &cntrl                    \n")
         f.write("  irest=1,ntx=5,    \n")
         if implicit == "on":
             f.write(""+self.implicit+"\n")
         else:
-            f.write("  cut=10.0, ntb=1, ntp=0,  \n")
-        if timestep == "0.002":
-            f.write("  nstlim=1000000,dt=0.002, ,iwrap=1 \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
-        if timestep == "0.001":
-            f.write("  nstlim=2000000,dt=0.001, \n")     # Production run for 200000*0.001 ps = 2000 ps = 2 ns (repeated in submit.sh)
+            f.write("  cut=10.0, ntb=2, ntp=1,  \n") # The steering should be done in a NPT ensemble with constant pressure and periodic boundary conditions
+        f.write("  nstlim="+sMDSteps+" ,dt="+timestep+", ,iwrap=1 \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
         f.write("  ntc="+ntc+",ntf="+ntf+",ig=-1,       \n")
         f.write("  ntpr=1000, ntwx=1000,    \n")
         f.write("  ntt=3, gamma_ln=2.0,     \n")
@@ -296,16 +290,59 @@ class SetupInfiles:
         if DISANG == "on":
             f.write("DISANG=distFile.RST                      \n")
         
-        f.write("&wt type=’DUMPFREQ’, istep1=1, \n")        
+        f.write("&wt type=’DUMPFREQ’, istep1=100, \n")        
         f.write("&wt type=’END’, \n")        
-        f.write("DISANG=in_files/sMD.RST \n")        
-        f.write("DUMPAVE=dist_vs_t \n")        
+        f.write("DISANG=in_files/sMD_0.RST \n")        
+        f.write("DUMPAVE=data/sMD_0.RST \n")        
         f.write("LISTIN=POUT \n")        
         f.write("LISTOUT=POUT \n")        
         f.close()
         
-        f = open("in_files/sMD.RST",'w')
-        f.write("&rst  iat= "+str(self.AtomNumber1)+","+str(self.AtomNumber2)+" , r2="+initialDistance+", r2k="+r2k+", r2a="+finalDistance+"")
+        f = open("in_files/sMD_0.RST",'w')
+        f.write("&rst \n" )
+        f.write("   iat= "+str(self.AtomNumber1)+","+str(self.AtomNumber2)+" , \n")
+        f.write("   r2="+initialDistance+", r2a="+finalDistance+", \n")
+        f.write("   r2k="+r2k+" \n")
+        f.write("&end \n" )
+        f.close()
+
+# Write the sMD equilibration files
+        
+        f = open("in_files/sMD_equil.in",'w')
+        f.write(" #steered MD run     \n")
+        f.write(" &cntrl                    \n")
+        f.write("  irest=1,ntx=5,    \n")
+        if implicit == "on":
+            f.write(""+self.implicit+"\n")
+        else:
+            f.write("  cut=10.0, ntb=1, ntp=0,  \n")
+        f.write("  nstlim="+sMDEquilSteps+" ,dt="+timestep+", ,iwrap=1 \n")     # Production run for 100000*0.002 ps = 2000 ps = 2 ns (repeated in submit.sh)
+        f.write("  ntc="+ntc+",ntf="+ntf+",ig=-1,       \n")
+        f.write("  ntpr=1000, ntwx=1000,    \n")
+        f.write("  ntt=3, gamma_ln=2.0,     \n")
+        f.write("  temp0=300.0,ioutfm=1, \n")
+        f.write("  jar = 1, \n")
+        if DISANG == "on":
+            f.write("  nmropt = 1,                      \n")
+        if QM == "on":
+            f.write(""+self.QMMM+"")
+        f.write("/ \n")
+        if DISANG == "on":
+            f.write("DISANG=distFile.RST                      \n")        
+        f.write("&wt type=’DUMPFREQ’, istep1=1000, \n")        
+        f.write("&wt type=’END’, \n")        
+        f.write("DISANG=in_files/sMD_equil.RST \n")        
+        f.write("DUMPAVE=data/dist.sMD.RST \n")        
+        f.write("LISTIN=POUT \n")        
+        f.write("LISTOUT=POUT \n")        
+        f.close()
+        
+        f = open("in_files/sMD_equil.RST",'w')
+        f.write("&rst \n" )
+        f.write("   iat= "+str(self.AtomNumber1)+","+str(self.AtomNumber2)+" , \n")
+        f.write("   r2="+finalDistance+", r2a="+finalDistance+", \n")
+        f.write("   r2k="+r2k+" \n")
+        f.write("&end \n" )
         f.close()
     
     def DISANG(self):
