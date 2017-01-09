@@ -52,8 +52,15 @@ class CreateFolders():
                 os.mkdir(""+root+"/data")
             if not os.path.exists(""+root+"/submissionScripts"):
                 os.mkdir(""+root+"/submissionScripts")
+                
+    def warning(Self,root):   
+        if sMD == "on" and method == "aMD":
+            var = raw_input("Both aMD and sMD is specified - this is not advised. Press 'y' to continue and 'n' to discontinue")
+            if var == 'n':
+                raise Exception('You opted not to continue with aMD and sMD simulations')
+            if var == 'y':
+                pass
             
-           
     def check_folder(self,root):
         if os.path.isdir(""+str(root)+"") == True:
             print "Trying to create the folder "+root+""
@@ -90,7 +97,8 @@ def main():
     else:
         print "apparently going into else loop"
         CheckFolder = CreateFolders()
-        CheckFolder.check_folder(root)
+        CheckFolder.warning(root)
+        CheckFolder.check_folder(root)        
         if MakeMutations == "on":
             RunMutations = Mutations.main()
         if insertAnion == "on" and insertProtein == "on":
@@ -100,7 +108,7 @@ def main():
         Runleap = SetupLeap.main() #Create the parameter topology files
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
-        
+    os.system("cp configSetup.cfg "+root+"/") # copy the cfg file into the folder for debugging
     print ""
     print "\"May the Force(Field) be with you\""
 if __name__ == '__main__': main()

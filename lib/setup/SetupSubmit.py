@@ -149,9 +149,10 @@ ambpdb -p in_files/"""+protein+""".prmtop < md_files/equil${cStep}.rst > pdb_fil
 
 # Run the MD simulations. Figure out last stop, and take "md_steps" runs from that
 arr=( md_files/equil*.rst )  # * is list of all file and dir names
-n=${#arr[@]}
+m=${#arr[@]}
+n=$(($n-1))
 echo "Molecular Dynamics"
-echo "-- Number of previous MD runs: "$(($n-1))
+echo "-- Number of previous MD runs: "$(($n))
 
 startI=$n
 endI=$md_steps
@@ -181,21 +182,22 @@ echo "steer NPT ensemble"
 # Find the number of cMD runs and continue the sMD from that.
 arr=( md_files/equil*.rst )  # * is list of all file and dir names
 n=${#arr[@]}
+m=$(($n-1))
 echo "Molecular Dynamics"
 echo "-- Number of previous MD runs: "$(($n-1))
 
-if [[ -e md_files/equil0.rst ]]; then
-    echo '-- equil0.rst file exists, skipping equilibration'
-elif [[ -e md_files/heat2.rst ]]; then    
-    echo '-- Running Minimization 6'
-    """+self.CALCULATOR+""" -O -i in_files/sMD_0.in -o logs/sMD_0.out -p in_files/"""+protein+""".prmtop -c md_files/equil$n.rst -r md_files/sMD_0.rst -x md_files/sMD_0.mdcrd
+if [[ -e md_files/sMD_0.rst ]]; then
+    echo '-- sMD_0.rst file exists, proceeding to phase 1'
+else
+    echo '-- starting sMD phase 0'
+    """+self.CALCULATOR+""" -O -i in_files/sMD_0.in -o logs/sMD_0.log -p in_files/"""+protein+""".prmtop -c md_files/equil$m.rst -r md_files/sMD_0.rst -x md_files/sMD_0.mdcrd
     
     # Create pdb file for the minimized structure
     ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_0.rst > pdb_files/"""+protein+"""_sMD_0.pdb
     
 fi
 
-######################                        
+######################      Beginning the sMD equilibration         ######################                        
                         
                         
 # A function for running another step of the script
@@ -209,7 +211,7 @@ local pStep=$(($1-1))
 mv data/dist.sMD.RST data/dist.sMD_${pstep}.RST
 
 # Start amber MD simulation
-"""+self.CALCULATOR+""" -O -i in_files/sMD_equil.in -o logs/sMD_${cStep}.log -c md_files/sMD_{pStep}.rst -p in_files/"""+protein+""".prmtop -r md_files/sMD_${cStep}.rst -x md_files/sMD_${cStep}.mdcrd
+"""+self.CALCULATOR+""" -O -i in_files/sMD_equil.in -o logs/sMD_${cStep}.log -c md_files/sMD_${pStep}.rst -p in_files/"""+protein+""".prmtop -r md_files/sMD_${cStep}.rst -x md_files/sMD_${cStep}.mdcrd
 
 # Convert the resulting structure to a pdb-file
 ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_${cStep}.rst > pdb_files/sMD_${cStep}.pdb
@@ -218,9 +220,12 @@ ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_${cStep}.rst > pdb_file
 
 # Run the MD simulations. Figure out last stop, and take "md_steps" runs from that
 arr=( md_files/sMD_*.rst )  # * is list of all file and dir names
-n=${#arr[@]}
+m=${#arr[@]}
+n=$(($n-1))
 echo "Molecular Dynamics"
-echo "-- Number of previous sMD runs: "$(($n-1))
+echo "-- Number of previous sMD runs: "$(($n))
+
+NumberOfsMDruns = """+NumberOfsMDRuns+"""
 
 startI=$n
 endI=$(($NumberOfsMDRuns))
@@ -228,7 +233,7 @@ endI=$(($NumberOfsMDRuns))
 while [ $startI -lt $endI ]
 do
     if [[ -e md_files/sMD_$(($startI+1)).rst ]]; then
-        echo "-- #"$startI" sMD already run, skipping to next"
+        echo "-- #"$startI" sMD already run, proceeding to next"
     elif [[ -e md_files/sMD_$(($startI-1)).rst ]]; then
         echo "-- Running script #"$startI
         runMD $startI
@@ -274,7 +279,8 @@ ambpdb -p in_files/"""+protein+""".prmtop < md_files/equil${cStep}.rst > pdb_fil
 
 # Run the MD simulations. Figure out last stop, and take "md_steps" runs from that
 arr=( md_files/equil*.rst )  # * is list of all file and dir names
-n=${#arr[@]}
+m=${#arr[@]}
+n=$(($n-1))
 echo "Molecular Dynamics"
 echo "-- Number of previous MD runs: "$(($n))
 
@@ -319,21 +325,22 @@ echo "steer NPT ensemble"
 # Find the number of cMD runs and continue the sMD from that.
 arr=( md_files/equil*.rst )  # * is list of all file and dir names
 n=${#arr[@]}
+m=$(($n-1))
 echo "Molecular Dynamics"
 echo "-- Number of previous MD runs: "$(($n-1))
 
-if [[ -e md_files/equil0.rst ]]; then
-    echo '-- equil0.rst file exists, skipping equilibration'
-elif [[ -e md_files/heat2.rst ]]; then    
-    echo '-- Running Minimization 6'
-    """+self.CALCULATOR+""" -O -i in_files/sMD_0.in -o logs/sMD_0.out -p in_files/"""+protein+""".prmtop -c md_files/equil$n.rst -r md_files/sMD_0.rst -x md_files/sMD_0.mdcrd
+if [[ -e md_files/sMD_0.rst ]]; then
+    echo '-- sMD_0.rst file exists, proceeding to phase 1'
+else
+    echo '-- starting sMD phase 0'
+    """+self.CALCULATOR+""" -O -i in_files/sMD_0.in -o logs/sMD_0.log -p in_files/"""+protein+""".prmtop -c md_files/equil$m.rst -r md_files/sMD_0.rst -x md_files/sMD_0.mdcrd
     
     # Create pdb file for the minimized structure
     ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_0.rst > pdb_files/"""+protein+"""_sMD_0.pdb
     
 fi
 
-######################                        
+######################      Beginning the sMD equilibration         ######################                        
                         
                         
 # A function for running another step of the script
@@ -347,7 +354,7 @@ local pStep=$(($1-1))
 mv data/dist.sMD.RST data/dist.sMD_${pstep}.RST
 
 # Start amber MD simulation
-"""+self.CALCULATOR+""" -O -i in_files/sMD_equil.in -o logs/sMD_${cStep}.log -c md_files/sMD_{pStep}.rst -p in_files/"""+protein+""".prmtop -r md_files/sMD_${cStep}.rst -x md_files/sMD_${cStep}.mdcrd
+"""+self.CALCULATOR+""" -O -i in_files/sMD_equil.in -o logs/sMD_${cStep}.log -c md_files/sMD_${pStep}.rst -p in_files/"""+protein+""".prmtop -r md_files/sMD_${cStep}.rst -x md_files/sMD_${cStep}.mdcrd
 
 # Convert the resulting structure to a pdb-file
 ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_${cStep}.rst > pdb_files/sMD_${cStep}.pdb
@@ -356,9 +363,12 @@ ambpdb -p in_files/"""+protein+""".prmtop < md_files/sMD_${cStep}.rst > pdb_file
 
 # Run the MD simulations. Figure out last stop, and take "md_steps" runs from that
 arr=( md_files/sMD_*.rst )  # * is list of all file and dir names
-n=${#arr[@]}
+m=${#arr[@]}
+n=$(($n-1))
 echo "Molecular Dynamics"
-echo "-- Number of previous sMD runs: "$(($n-1))
+echo "-- Number of previous sMD runs: "$(($m-1))
+
+NumberOfsMDruns = """+NumberOfsMDRuns+"""
 
 startI=$n
 endI=$(($NumberOfsMDRuns))
@@ -366,7 +376,7 @@ endI=$(($NumberOfsMDRuns))
 while [ $startI -lt $endI ]
 do
     if [[ -e md_files/sMD_$(($startI+1)).rst ]]; then
-        echo "-- #"$startI" sMD already run, skipping to next"
+        echo "-- #"$startI" sMD already run, proceeding to next"
     elif [[ -e md_files/sMD_$(($startI-1)).rst ]]; then
         echo "-- Running script #"$startI
         runMD $startI

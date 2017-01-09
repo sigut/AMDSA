@@ -302,7 +302,7 @@ class SetupInfiles:
         f.write("&rst \n" )
         f.write("   iat= "+str(self.AtomNumber1)+","+str(self.AtomNumber2)+" , \n")
         f.write("   r2="+initialDistance+", r2a="+finalDistance+", \n")
-        f.write("   r2k="+r2k+" \n")
+        f.write("   r2k="+sMDForce+" \n")
         f.write("&end \n" )
         f.close()
 
@@ -321,7 +321,7 @@ class SetupInfiles:
         f.write("  ntpr=1000, ntwx=1000,    \n")
         f.write("  ntt=3, gamma_ln=2.0,     \n")
         f.write("  temp0=300.0,ioutfm=1, \n")
-        f.write("  jar = 1, \n")
+        f.write("  jar = 1,nmropt = 1, \n")
         if DISANG == "on":
             f.write("  nmropt = 1,                      \n")
         if QM == "on":
@@ -340,8 +340,12 @@ class SetupInfiles:
         f = open("in_files/sMD_equil.RST",'w')
         f.write("&rst \n" )
         f.write("   iat= "+str(self.AtomNumber1)+","+str(self.AtomNumber2)+" , \n")
-        f.write("   r2="+finalDistance+", r2a="+finalDistance+", \n")
-        f.write("   r2k="+r2k+" \n")
+        f.write("   r1 = "+r1+"  \n")
+        f.write("   r2 = "+r2+"  \n")
+        f.write("   r3 = "+r3+"  \n")
+        f.write("   r4 = "+r4+"  \n")
+        f.write("   rk2= "+rk2+" \n")
+        f.write("   rk3= "+rk3+" \n")
         f.write("&end \n" )
         f.close()
     

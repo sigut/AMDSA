@@ -160,7 +160,16 @@ AtomType2      = configSetup.get('Steered','AtomType2')
 
 initialDistance= configSetup.get('Steered','initialDistance')
 finalDistance  = configSetup.get('Steered','finalDistance')
-r2k            = configSetup.get('Steered','r2k')
+sMDForce       = configSetup.get('Steered','sMDForce')
+
+r1             = configSetup.get('Steered','r1')
+r2             = configSetup.get('Steered','r2')
+r3             = configSetup.get('Steered','r3')
+r4             = configSetup.get('Steered','r4')
+rk2            = configSetup.get('Steered','rk2')
+rk3            = configSetup.get('Steered','rk3')
+
+
 
 ###############################################################################
 #################         Config analysis variables  ##########################
