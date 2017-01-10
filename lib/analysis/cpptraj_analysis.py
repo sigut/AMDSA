@@ -72,7 +72,12 @@ class Analysis:
     #Cpptraj for stripping all the water
         f.write('\n')
         f.write('# Center \n')
-        f.write('center :1 origin \n')
+        if ligand == "on":
+            f.write('unwrap :1-322 origin \n')
+            f.write('center :1-322 origin \n')
+        if ligand == "off":
+            f.write('unwrap :1-321 origin \n')
+            f.write('center :1-321 origin \n')
         f.write('image origin center familiar \n')
         f.write('\n')
         f.write('# Remove all water molecules \n')
@@ -96,12 +101,18 @@ class Analysis:
     #Cpptraj for stripping all the water
         f.write('\n')
         f.write('# Center \n')
-        f.write('center :1 origin \n')
+        if ligand == "on":
+            f.write('unwrap :1-322 origin \n')
+            f.write('center :1-322 origin \n')
+        if ligand == "off":
+            f.write('unwrap :1-321 origin \n')
+            f.write('center :1-321 origin \n')
         f.write('image origin center familiar \n')
         f.write('\n')
         f.write('# Create output \n')
         f.write("trajout resultsDir/"+dcdnameSolvated+" charmm nobox \n")
         f.write('go')
+        
     # Make cpptraj keep nearest water molecules  
 #        f.write('\n')
 #        f.write('# Keep closest 100 water molecules, remove the rest \n')
