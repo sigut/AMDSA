@@ -55,6 +55,9 @@ class Analysis:
                 elif file.startswith("prod"):
                     name = file
                     mdcrd_files.append(name)
+                elif file.startswith("sMD"):
+                    name = file
+                    mdcrd_files.append(name)
         mdcrd_files = natural_sort(mdcrd_files)
         print "found"
         print len(mdcrd_files)
