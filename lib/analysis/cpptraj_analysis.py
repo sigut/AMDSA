@@ -166,10 +166,10 @@ class Analysis:
             f.write("analyze modes fluct out data/pca/analyzemodesfluct.dat stack data/pca/evecs-ca beg 1 end 10  \n")
             f.write("analyze modes displ out data/pca/analyzemodesdispl.dat stack data/pca/evecs-ca beg 1 end 10 \n")
             f.write('\n')
-            f.write("projection modes data/pca/evecs-ca.dat out data/pca/pca12-ca beg 1 end 3 @CA  \n")
-            f.write('\n')
             f.write("go \n")
-        
+            f.write("projection modes data/pca/evecs-ca.dat out data/pca/pca12-ca beg 1 end 3 @CA  \n")
+            f.write('\n')        
+            f.write("go \n")
         f.close()
     
 #    def analyse_azo(self):
