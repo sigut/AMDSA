@@ -149,7 +149,7 @@ class Plot():
         plt.close()
         
     def read_pca(self):
-        pcaFiles = ""+absdir+"/data/pca/pca-ca12"
+        pcaFiles = ""+absdir+"/data/pca/pca12-ca"
         data = open(""+pcaFiles+".dat", "r")
         lines = data.readlines()[1:]
         data.close()
