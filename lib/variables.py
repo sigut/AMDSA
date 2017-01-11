@@ -210,6 +210,7 @@ interval            =   configAnalysis.get('Analysis','interval')
 #removeWaters        =   configAnalysis.get('Analysis','removeWaters')
 
 makeAnalysis        =   configAnalysis.get('Analysis','makeAnalysis')
+trajinStepSize      =   configAnalysis.get('Analysis','trajinStepSize')
 makePlots           =   configAnalysis.get('Analysis','makePlots')
 makeHistPlots       =   configAnalysis.get('Analysis','makeHistPlots')
 

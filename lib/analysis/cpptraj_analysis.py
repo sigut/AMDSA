@@ -135,7 +135,7 @@ class Analysis:
             os.makedirs("data/pca")
             
         f = open("in_files/analysis.traj",'w')
-        f.write("trajin resultsDir/"+dcdname+" 1 last 1 \n")
+        f.write("trajin resultsDir/"+dcdname+" 1 last "+trajinStepSize+" \n")
         f.write('rms first out data/rmsd.dat @N,CA,C time 1 \n')
         f.write('\n')
         if ligand == "on":
@@ -167,7 +167,7 @@ class Analysis:
             f.write("analyze modes displ out data/pca/analyzemodesdispl.dat stack data/pca/evecs-ca beg 1 end 10 \n")
             f.write('\n')
             f.write("go \n")
-            f.write("projection modes data/pca/evecs-ca.dat out data/pca/pca12-ca beg 1 end 3 @CA  \n")
+            f.write("projection modes data/pca/evecs-ca.dat out data/pca/pca12-ca.dat beg 1 end 3 @CA  \n")
             f.write('\n')        
             f.write("go \n")
         f.close()
