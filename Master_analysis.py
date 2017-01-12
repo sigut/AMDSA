@@ -65,24 +65,27 @@ def main():
         
     
     if qsub == None:
-        CPPTRAJ = cpptraj_analysis.main()
+        if PCACombinedOnly == "off":
+            CPPTRAJ = cpptraj_analysis.main()
             
-        if R_Analysis == "on":        
-            RPlot = R_analysis.main()  
-            
-        if MMPBSA == "on":
-            mmpbsa = MMPBSA_analysis.main()
-            
-        if makePlots == "on":
-            Plot = plot.main()
-        if makeHistPlots == "on":
-            HistPlot = CombinedPlots.main()
-            
-        if PCACombined == "on":
-            PCA_combined = PCA_combined.main()
+            if R_Analysis == "on":        
+                RPlot = R_analysis.main()  
+                
+            if MMPBSA == "on":
+                mmpbsa = MMPBSA_analysis.main()
+                
+            if makePlots == "on":
+                Plot = plot.main()
+            if makeHistPlots == "on":
+                HistPlot = CombinedPlots.main()
+                
+            if PCACombined == "on":
+                PCA_combined = PCA_combined.main()
         
-    else:
-        submit = qsub_hpc.main()
+            else:
+                submit = qsub_hpc.main()
+        if PCACombinedOnly == "on":
+            PCA_combined = PCA_combined.main()
 if __name__ == '__main__': main()
 
 
