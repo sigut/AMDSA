@@ -224,8 +224,10 @@ sieve_hier          =   configAnalysis.get('Analysis','sieve_hier')
 sieve_dbscan        =   configAnalysis.get('Analysis','sieve_dbscan')
 dbscan_minpoints    =   configAnalysis.get('Analysis','dbscan_minpoints')
 
-PCA = configAnalysis.get('Analysis','PCA')
-PCAPlot = configAnalysis.get('Analysis','PCAPlot')
+PCA                 =   configAnalysis.get('Analysis','PCA')
+PCAPlot             =   configAnalysis.get('Analysis','PCAPlot')
+PCACombined         =   configAnalysis.get('Analysis','PCACombined')
+PCACombinedOnly     =   configAnalysis.get('Analysis','PCACombinedOnly')
 
 R_Analysis          =   configAnalysis.get('Analysis','R_analysis')
 
@@ -237,8 +239,16 @@ qmcharge_complex    =   configAnalysis.get('Analysis','qmcharge_complex')
 qm_residues         =   configAnalysis.get('Analysis','qm_residues')
 
 ###############################################################################
+#################         Config PCA variables  ###############################
 ###############################################################################
-###############################################################################
+configPCA = ConfigParser.ConfigParser()
+configPCA.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','configPCA.cfg'))
+
+
+#read file and loop over foldernames
+#f.open("configPCA.cfg")
+#for i in names:
+#    folder+str(i)  = configPCA.get('FolderNames',"folder"+str(i)+"")
 
 def Queue(queue,name, cores, ptile):
     if queue == "memento": 

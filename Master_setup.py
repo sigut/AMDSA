@@ -72,7 +72,11 @@ class CreateFolders():
         else:
             print "Creating new folder"
             CreateFolders.create_folder(self,root)
-            
+          
+
+        
+        
+        
 def main():
     if aMD == "on": # iamd is specified in the config file. If specified it will be taken care of in the setupInfiles module
         Setup = SetupInfiles.main()
@@ -111,4 +115,5 @@ def main():
     os.system("cp configSetup.cfg "+root+"/") # copy the cfg file into the folder for debugging
     print ""
     print "\"May the Force(Field) be with you\""
+    
 if __name__ == '__main__': main()

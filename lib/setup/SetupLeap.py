@@ -96,6 +96,7 @@ class SetupLeap(CalcIonPosition):
             f.write("\n")
             if insertAnion =="on":        
                 f.write("saveamberparm "+ionName+" "+absdir+"/in_files/"+ionName+"_nowat.prmtop "+absdir+"/in_files/"+ionName+"_nowat.inpcrd \n")
+            f.write("savepdb "+protein+" "+absdir+"/in_files/"+protein+"_finalLEAP_nowat.pdb \n")
             f.write(" \n")
         else:
             f.write("savepdb "+protein+" "+absdir+"/in_files/"+protein+"_finalLEAP_nowat.pdb \n")            

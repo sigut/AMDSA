@@ -27,6 +27,8 @@ from variables import *
 class CreateFolders():
     def __init__(self,absdir):
         # Make necessary folders
+        if not os.path.exists(""+root+""):
+            os.mkdir(""+absdir+"")
         if not os.path.exists(""+root+"/resultsDir"):
             os.mkdir(""+absdir+"/resultsDir")
         if not os.path.exists(""+root+"/data"):
@@ -37,6 +39,7 @@ class CreateFolders():
     def deleteOldData(self,absdir):
         os.system("rm -rf "+absdir+"/data/*")
         os.system("rm -rf "+absdir+"/plots/*")
+        
 
 
 
@@ -45,7 +48,8 @@ def main():
     Createfolder = CreateFolders(absdir)
 #    Createfolder.create_folder(absdir)
     Createfolder.__init__(absdir)
-             
+    
+                 
     if deleteOldData == "on":
         Createfolder.deleteOldData(absdir)
      # This script plots the cpptraj created data-files
@@ -56,9 +60,11 @@ def main():
     import plot
     import CombinedPlots
     import MMPBSA_analysis
+    import PCA_combined
         
+        
+    
     if qsub == None:
-        
         CPPTRAJ = cpptraj_analysis.main()
             
         if R_Analysis == "on":        
@@ -71,6 +77,9 @@ def main():
             Plot = plot.main()
         if makeHistPlots == "on":
             HistPlot = CombinedPlots.main()
+            
+        if PCACombined == "on":
+            PCA_combined = PCA_combined.main()
         
     else:
         submit = qsub_hpc.main()
