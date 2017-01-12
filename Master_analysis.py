@@ -26,6 +26,9 @@ from variables import *
 
 class CreateFolders():
     def __init__(self,absdir):
+        print "starting analysis"
+    
+    def createFolder(absdir):
         # Make necessary folders
         if not os.path.exists(""+root+""):
             os.mkdir(""+absdir+"")
@@ -66,6 +69,7 @@ def main():
     
     if qsub == None:
         if PCACombinedOnly == "off":
+            CreateFolder.createFolder(absdir)
             CPPTRAJ = cpptraj_analysis.main()
             
             if R_Analysis == "on":        

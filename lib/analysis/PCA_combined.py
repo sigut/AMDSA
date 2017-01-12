@@ -46,7 +46,7 @@ class PCA_combined:
         j = 0
         for name in self.folder:
             self.newName[j] = os.path.basename(os.path.normpath(""+name+""))    
-            os.system("cp "+name+"/resultsDir/"+dcdname+" "+root+"/data/"+self.newName[j]+".dcd")
+            #os.system("cp "+name+"/resultsDir/"+dcdname+" "+root+"/data/"+self.newName[j]+".dcd")
             os.system("cp "+name+"/in_files/strip."+protein+".prmtop "+root+"/data/strip."+protein+".prmtop")
             j+=1
         print self.newName
@@ -57,7 +57,7 @@ class PCA_combined:
 
         f = open(""+root+"/PCA.in",'w')
         for i in range (0,len(self.folder)):
-            f.write("trajin data/"+self.newName[i]+".dcd 1 100000 1 ["+self.newName[i]+"] \n")
+            f.write("trajin "+name+"/resultsDir/"+dcdname+" 1 100000 1 ["+self.newName[i]+"] \n")
             
         f.write("rms first @CA \n")
         f.write("createcrd combined-trajectories \n")
@@ -76,7 +76,7 @@ class PCA_combined:
         f.write("\n")
         
         for i in range(0,len(self.folder)):
-            f.write("crdaction combined-trajectories projection "+self.newName[i]+" modes myEvecs out pca-"+str(i+1)+".dat beg 1 end 3 @CA crdframes 1,100000)\n")
+            f.write("crdaction combined-trajectories projection "+self.newName[i]+" modes myEvecs out pca-"+str(i+1)+".dat beg 1 end 3 @CA crdframes "+str(1+int(i)*100000)+","+str(100001+int(i)*100000)+"\n")
         f.write("\n")
             
         for i in range(0,len(self.folder)):    
