@@ -46,7 +46,7 @@ class PCA_combined:
         j = 0
         for name in self.folder:
             self.newName[j] = os.path.basename(os.path.normpath(""+name+""))    
-            os.system("cp "+name+"/"+dcdname+" "+root+"/data/"+self.newName[j]+".dcd")
+            os.system("cp "+name+"/resultsDir/"+dcdname+" "+root+"/data/"+self.newName[j]+".dcd")
             os.system("cp "+name+"/in_files/strip."+protein+".prmtop "+root+"/data/strip."+protein+".prmtop")
             j+=1
         print self.newName
