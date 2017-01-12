@@ -57,7 +57,7 @@ class PCA_combined:
 
         f = open(""+root+"/PCA.in",'w')
         for i in range (0,len(self.folder)):
-            f.write("trajin "+name+"/resultsDir/"+dcdname+" 1 100000 1 ["+self.newName[i]+"] \n")
+            f.write("trajin "+self.folder+"/resultsDir/"+dcdname+" 1 100000 1 ["+self.newName[i]+"] \n")
             
         f.write("rms first @CA \n")
         f.write("createcrd combined-trajectories \n")
