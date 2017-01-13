@@ -515,6 +515,7 @@ class SetupAMD:
         f.write("The Edihed    = "+str(DIHED)+" \n")
         f.write(" \n")
         f.write("The found number of residues: "+str(NumberOfResidues)+" \n")
+        f.write("The found number of atoms: "+str(NumberOfAtoms)+" \n")        
         f.write("EnergyAtom = "+str(EnergyAtom)+" \n")
         f.write("EnergyResi = "+str(EnergyResi)+" \n")
         f.write(" \n")

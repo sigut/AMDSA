@@ -82,24 +82,11 @@ def main():
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
         
-#    if sMD == "on" and newSim == "on":
-#        CheckFolder = CreateFolders()
-#        CheckFolder.check_folder(root)
-#        if MakeMutations == "on":
-#            RunMutations = Mutations.main()
-#        if insertAnion == "on" and insertProtein == "on":
-#            Calc = CalcIonPos.main()
-#            if rotation == "on":
-#                Rot = RotateIonPos.main()
-#        Runleap = SetupLeap.main() #Create the parameter topology files
-#        Setup = SetupInfiles.main()
-#        MakeSubmissionFile = SetupSubmit.main()
-    if sMD == "on" and newSim == "off": #If continuing another simulation with sMD then make only the setup and submission files
+    elif sMD == "on" and newSim == "off": #If continuing another simulation with sMD then make only the setup and submission files
         Setup = SetupInfiles.main()
         MakeSubmissionFile = SetupSubmit.main()
 
     else:
-        print "apparently going into else loop"
         CheckFolder = CreateFolders()
         CheckFolder.warning(root)
         CheckFolder.check_folder(root)        
