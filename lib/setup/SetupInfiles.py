@@ -103,14 +103,22 @@ class SetupInfiles:
         f.write("  tautp  = 0.5,   \n")      # Time constant in ps for heat bath coupling
         f.write("  ntt    = 1,     \n")      # Constant temperature using the weak-coupling algorithm
         f.write("  tol    = 0.00001,\n")     #
+        if DISANG == "on":
+            f.write("  nmropt = 1,                      \n")
         if not implicit == "on":
             f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
             f.write("  restraintmask=\'!:WAT\',\n") # String that specifies the restrained atoms when ntr = 1
             f.write("  restraint_wt = 10.0,  \n")# Weight of the positional restraints
         if QM == "on":
             f.write(""+self.QMMM+"")
-        f.write("&end \n             ")
-        f.write(" / \n")
+        if DISANG == "on":
+            f.write("&wt type=’DUMPFREQ’, istep1=100, \n")        
+            f.write("&wt type=’END’, \n")   
+            f.write(" DISANG=distFile.RST\n")
+            f.write(" DUMPAVE=logs/disFile.dat\n")
+            f.write(" LISTIN=POUT\n")
+            f.write(" LISTOUT=POUT\n")
+            
         f.close()
         
         # Minimize water and protein (20000 cycles)
@@ -138,6 +146,8 @@ class SetupInfiles:
             f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
             f.write("  restraintmask=\'!:WAT\',\n")# String that specifies the restrained atoms when ntr = 1 
             f.write("  restraint_wt = 10.0,\n")  # Weight of the positional restraints
+        if DISANG == "on":
+            f.write("DISANG=distFile.RST                      \n")
         if QM == "on":
             f.write(""+self.QMMM+"")
         f.write("&end                 \n")
@@ -182,7 +192,12 @@ class SetupInfiles:
             f.write("  &wt type='TEMP0', istep1=0, istep2=500000, value1=0.0, value2=300, &end \n")       # Varies the target temperature
         f.write("  &wt type='END' \n")
         if DISANG == "on":
-            f.write("DISANG=distFile.RST                      \n")    
+            f.write("&wt type=’DUMPFREQ’, istep1=100, \n")        
+            f.write("&wt type=’END’, \n")   
+            f.write(" DISANG=distFile.RST\n")
+            f.write(" DUMPAVE=logs/disFile.dat\n")
+            f.write(" LISTIN=POUT\n")
+            f.write(" LISTOUT=POUT\n")  
         f.close()
         
         f = open("in_files/heat2.in",'w')
@@ -212,7 +227,12 @@ class SetupInfiles:
             f.write(""+self.QMMM+"")
         f.write("/ \n")
         if DISANG == "on":
-            f.write("DISANG=distFile.RST                      \n")
+            f.write("&wt type=’DUMPFREQ’, istep1=100, \n")        
+            f.write("&wt type=’END’, \n")   
+            f.write(" DISANG=distFile.RST\n")
+            f.write(" DUMPAVE=logs/disFile.dat\n")
+            f.write(" LISTIN=POUT\n")
+            f.write(" LISTOUT=POUT\n")  
         f.close()
     
      
@@ -240,7 +260,12 @@ class SetupInfiles:
             f.write(""+self.QMMM+"")
         f.write("/ \n")
         if DISANG == "on":
-            f.write("DISANG=in_files/distFile.RST       \n")
+            f.write("&wt type=’DUMPFREQ’, istep1=100, \n")        
+            f.write("&wt type=’END’, \n")   
+            f.write(" DISANG=distFile.RST\n")
+            f.write(" DUMPAVE=logs/disFile.dat\n")
+            f.write(" LISTIN=POUT\n")
+            f.write(" LISTOUT=POUT\n")  
         f.close()
         
     def cMD(self):
@@ -264,7 +289,12 @@ class SetupInfiles:
             f.write(""+self.QMMM+"")
         f.write("/ \n")
         if DISANG == "on":
-            f.write("DISANG=distFile.RST                      \n")
+            f.write("&wt type=’DUMPFREQ’, istep1=100, \n")        
+            f.write("&wt type=’END’, \n")   
+            f.write(" DISANG=distFile.RST\n")
+            f.write(" DUMPAVE=logs/disFile.dat\n")
+            f.write(" LISTIN=POUT\n")
+            f.write(" LISTOUT=POUT\n")  
         f.close()
     
     def sMD(self):
@@ -467,7 +497,7 @@ class SetupAMD:
         print "Dihedral Energy: "+str(DIHED)+""
         
         self.alphaP = EnergyAtom*NumberOfAtoms
-        self.EthreshP = EPTOT - self.alphaP
+        self.EthreshP = EPTOT + self.alphaP
         
         self.alphaD = 0.2*EnergyResi*NumberOfResidues
         self.EthreshD = DIHED + 5*self.alphaD
@@ -477,6 +507,28 @@ class SetupAMD:
         
         print "This is AlphaD: "+str(self.alphaD)+""
         print "This is EthreshD: "+str(self.EthreshD)+""
+        
+        f = open("in_files/aMDBoostEnergies.txt",'w')
+        f.write("The calculated aMD boost energies from the equil0.log file \n")
+        f.write(" \n")
+        f.write("The EPtot      = "+EPTOT+" \n")
+        f.write("The Edihed    = "+DIHED+" \n")
+        f.write(" \n")
+        f.write("The found number of residues: "+NumberOfResidues+" \n")
+        f.write("EnergyAtom = "+EnergyAtom+" \n")
+        f.write("EnergyResi = "+EnergyResi+" \n")
+        f.write(" \n")
+        f.write("alphaP    = EnergyAtom*NumberOfAtoms \n")
+        f.write("alphaP    = "+EnergyAtom+"*"+NumberOfAtoms+" = "+self.alphaP+" \n")
+        f.write("EthreshP  = EPtot + alphaP  \n")
+        f.write("EthreshP  = "+EPTOT+" + "+self.alphaP+" = "+self.EthreshP+" \n")
+        f.write(" \n")
+        f.write("alphaD   = 0.2*EnergyResi*NumberOfResidues  \n")
+        f.write("alphaD   = 0.2*"+EnergyResi+"*"+NumberOfResidues+" = "+self.alphaD+" \n")
+        f.write("EthreshD = Edihed + 5*alphaD \n")
+        f.write("EthreshD = "+DIHED+" + 5*"+self.alphaD+" = "+self.EthreshD+" \n")
+        f.write(" \n")
+        f.close()
         
     def aMD_in(self):
             #If aMD is specified then:
