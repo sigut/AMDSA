@@ -25,7 +25,7 @@ for folders in the_list:
 from variables import *
 
 class CreateFolders():
-    def __init__(self,absdir):
+    def __init__(self):
         print "starting analysis"
     
     def createFolder(absdir):
@@ -48,13 +48,13 @@ class CreateFolders():
 
 #Enter the cases of the main folder and execute the script writing
 def main():
-    Createfolder = CreateFolders(absdir)
+    Start = CreateFolders()
 #    Createfolder.create_folder(absdir)
-    Createfolder.__init__(absdir)
+    #Start.__init__(absdir)
     
                  
     if deleteOldData == "on":
-        Createfolder.deleteOldData(absdir)
+        Start.deleteOldData(absdir)
      # This script plots the cpptraj created data-files
     
     import qsub_hpc             # If qsub is specified the ccptraj, R and plot scripts will be submitted to the hpc-queue. 
@@ -69,7 +69,7 @@ def main():
     
     if qsub == None:
         if PCACombinedOnly == "off":
-            CreateFolder.createFolder(absdir)
+            Start.createFolder()
             CPPTRAJ = cpptraj_analysis.main()
             
             if R_Analysis == "on":        
