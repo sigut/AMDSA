@@ -80,16 +80,18 @@ def main():
                 
             if makePlots == "on":
                 Plot = plot.main()
+            
             if makeHistPlots == "on":
                 HistPlot = CombinedPlots.main()
                 
             if PCACombined == "on":
                 PCA_combined = PCA_combined.main()
-        
-            else:
-                submit = qsub_hpc.main()
-        if PCACombinedOnly == "on":
-            PCA_combined = PCA_combined.main()
+    	
+    	elif PCACombinedOnly == "on":
+        		PCA_combined = PCA_combined.main()    
+    else:
+        submit = qsub_hpc.main()
+    
 if __name__ == '__main__': main()
 
 
