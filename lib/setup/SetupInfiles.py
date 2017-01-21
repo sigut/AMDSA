@@ -70,7 +70,6 @@ class SetupInfiles:
         if QM == "on":
             f.write(""+self.QMMM+"")
         f.write("&end\n")
-        f.write(" / \n")
         f.close()
         
         #Let water move (NTP, 300K), restraining the protein
@@ -118,6 +117,7 @@ class SetupInfiles:
             f.write(" DUMPAVE=logs/disFile.dat\n")
             f.write(" LISTIN=POUT\n")
             f.write(" LISTOUT=POUT\n")
+        f.write("&end\n")
             
         f.close()
         
@@ -173,10 +173,8 @@ class SetupInfiles:
             f.write("  nstlim=500000,dt=0.001,          \n") # Heat for 1000000*0.001 ps = 1000 ps         
         f.write("  nscm=500, ntt=1,                     \n") # Constant temperature using the weak-coupling algorithm
         f.write("  tempi=0.0, temp0=300.0, tautp=0.5      \n")
-        f.write("/ \n")
         if QM == "on":
             f.write(""+self.QMMM+"")
-        f.write("/ \n")
         if not implicit == "on":
             f.write("  ntr=1,           \n")     # flag for restraining specified atoms in Cartesian space using a harmonic potential, if ntr > 0
             f.write("  restraintmask=\'!:WAT\', \n")
@@ -225,7 +223,6 @@ class SetupInfiles:
             f.write("  nmropt = 1,                      \n")
         if QM == "on":
             f.write(""+self.QMMM+"")
-        f.write("/ \n")
         if DISANG == "on":
             f.write("&wt type=’DUMPFREQ’, istep1=100, \n")        
             f.write("&wt type=’END’, \n")   
