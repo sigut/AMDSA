@@ -516,16 +516,18 @@ class SetupAMD:
         f.write("EnergyAtom = "+str(EnergyAtom)+" \n")
         f.write("EnergyResi = "+str(EnergyResi)+" \n")
         f.write(" \n")
-        f.write("alphaP    = EnergyAtom*NumberOfAtoms \n")
-        f.write("alphaP    = "+str(EnergyAtom)+"*"+str(NumberOfAtoms)+" = "+str(self.alphaP)+" \n")
-        f.write("EthreshP  = EPtot + alphaP  \n")
-        f.write("EthreshP  = "+str(EPTOT)+" + "+str(self.alphaP)+" = "+str(self.EthreshP)+" \n")
-        f.write(" \n")
-        f.write("alphaD   = 0.2*EnergyResi*NumberOfResidues  \n")
-        f.write("alphaD   = 0.2*"+str(EnergyResi)+"*"+str(NumberOfResidues)+" = "+str(self.alphaD)+" \n")
-        f.write("EthreshD = Edihed + 5*alphaD \n")
-        f.write("EthreshD = "+str(DIHED)+" + 5*"+str(self.alphaD)+" = "+str(self.EthreshD)+" \n")
-        f.write(" \n")
+        if iamd == "1" or iamd =="3":
+            f.write("alphaP    = EnergyAtom*NumberOfAtoms \n")
+            f.write("alphaP    = "+str(EnergyAtom)+"*"+str(NumberOfAtoms)+" = "+str(self.alphaP)+" \n")
+            f.write("EthreshP  = EPtot + alphaP  \n")
+            f.write("EthreshP  = "+str(EPTOT)+" + "+str(self.alphaP)+" = "+str(self.EthreshP)+" \n")
+            f.write(" \n")
+        if iamd == "2" or iamd == "2":
+            f.write("alphaD   = 0.2*EnergyResi*NumberOfResidues  \n")
+            f.write("alphaD   = 0.2*"+str(EnergyResi)+"*"+str(NumberOfResidues)+" = "+str(self.alphaD)+" \n")
+            f.write("EthreshD = Edihed + 5*alphaD \n")
+            f.write("EthreshD = "+str(DIHED)+" + 5*"+str(self.alphaD)+" = "+str(self.EthreshD)+" \n")
+            f.write(" \n")
         f.close()
         
     def aMD_in(self):
@@ -548,8 +550,10 @@ class SetupAMD:
         f.write("  ntt=3, gamma_ln=2.0,     \n")
         f.write("  temp0=300.0,ioutfm=1 \n")
         f.write("  iamd = "+iamd+", \n")
-        f.write("  ethreshd="+str(round(self.EthreshD,2))+", alphad="+str(round(self.alphaD,2))+",   \n")
-        f.write("  ethreshp="+str(round(self.EthreshP,2))+", alphap="+str(round(self.alphaP,2))+"     ,\n")
+        if iamd == "2" or iamd =="3":
+            f.write("  ethreshd="+str(round(self.EthreshD,1))+", alphad="+str(round(self.alphaD,1))+",   \n")
+        if iamd == "1" or iamd =="3":
+            f.write("  ethreshp="+str(round(self.EthreshP,1))+", alphap="+str(round(self.alphaP,1))+"     ,\n")
         if DISANG == "on":
             f.write("  nmropt = 1,                      \n")
         if QM == "on":        
